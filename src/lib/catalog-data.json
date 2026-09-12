@@ -1,0 +1,825 @@
+[
+  {
+    "slug": "word-counter",
+    "name": "Word Counter",
+    "category": "Text",
+    "shortDescription": "Count words, characters, and reading time.",
+    "icon": "Type",
+    "intro": "Paste an essay, draft, or social caption to measure its length before you publish. The counter reports words, Unicode characters, characters without whitespace, sentence segments, and reading time. Use the same text to compare a short edit with your original draft. Nothing leaves this browser, so you can work on a private first draft without creating an account. You can reset the workspace between separate tasks.",
+    "how": "Words are groups of Unicode letters or numbers, with internal apostrophes and hyphens kept together. Reading time rounds up at 200 words per minute. Sentence segments are separated by terminal punctuation.",
+    "examples": [
+      {
+        "input": "Hello world!",
+        "output": "2 words · 12 characters · 1 sentence"
+      },
+      {
+        "input": "One two three. Four five!",
+        "output": "5 words · 2 sentences · 1 minute"
+      }
+    ],
+    "limitations": "Character counts use Unicode code points, not visual grapheme clusters. Emoji sequences may count as multiple characters. Sentence counts are estimates; abbreviations may create extra segments. Maximum input: 100,000 characters.",
+    "faq": [
+      {
+        "question": "Does a hyphenated word count as one?",
+        "answer": "Yes. Well-written and contractions count as single words."
+      },
+      {
+        "question": "How is reading time calculated?",
+        "answer": "The word count is divided by 200 and rounded up to whole minutes."
+      },
+      {
+        "question": "Can I count non-English text?",
+        "answer": "Unicode letters are recognized. Languages without spaces may need a language-specific tokenizer."
+      }
+    ],
+    "keywords": ["word", "counter", "text"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "slug-generator",
+      "utm-builder",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "json-formatter",
+    "name": "JSON Formatter",
+    "category": "Developer",
+    "shortDescription": "Format, validate, and tidy up your JSON.",
+    "icon": "Braces",
+    "intro": "Turn compact JSON into an indented document you can read and copy. Choose Format for two-space indentation or Minify to remove unnecessary whitespace. The validator identifies the approximate line and column of a syntax error so you can repair a missing quote, comma, or bracket. Input is parsed as data in your browser and never executed as code or uploaded to a server.",
+    "how": "The browser JSON parser validates the input. The parsed value is serialized with two-space indentation, or no indentation in Minify mode.",
+    "examples": [
+      {
+        "input": " {\"name\":\"Ada\",\"active\":true} ",
+        "output": "{\n  \"name\": \"Ada\",\n  \"active\": true\n}"
+      },
+      {
+        "input": "[1, 2, 3]",
+        "output": "[1,2,3] in Minify mode"
+      }
+    ],
+    "limitations": "Maximum input: 100,000 characters. JavaScript number precision applies; very large integers can lose precision. Duplicate keys retain the last value. Comments and trailing commas are not JSON. Errors identify a location, not a semantic object path.",
+    "faq": [
+      {
+        "question": "Can I format JSON with comments?",
+        "answer": "No. Remove comments and trailing commas before formatting."
+      },
+      {
+        "question": "Does this reorder keys?",
+        "answer": "Object key ordering follows JavaScript serialization rules, including numeric keys."
+      },
+      {
+        "question": "Is pasted JSON executed?",
+        "answer": "No. JSON is parsed as data and displayed as escaped text."
+      }
+    ],
+    "keywords": ["json", "formatter", "developer"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "base64-encoder-decoder",
+      "url-encoder-decoder",
+      "uuid-generator",
+      "slug-generator"
+    ]
+  },
+  {
+    "slug": "percentage-calculator",
+    "name": "Percentage Calculator",
+    "category": "Calculators",
+    "shortDescription": "Make quick work of everyday percentages.",
+    "icon": "Percent",
+    "intro": "Find a percentage of a number, express one number as a percentage of another, or measure a percentage change. Choose the mode that matches your question, then enter the two values. This is useful for discounts, progress reports, scores, and comparisons. Results use ordinary arithmetic and remain in your browser. The labels explain the role of each number so you can check your calculation before using it.",
+    "how": "Percentage of: A × B / 100. A as a percentage of B: A / B × 100. Change from A to B: (B − A) / |A| × 100.",
+    "examples": [
+      {
+        "input": "20% of 150",
+        "output": "30"
+      },
+      {
+        "input": "Change from 80 to 100",
+        "output": "25%"
+      }
+    ],
+    "limitations": "A zero denominator has no defined percentage. Negative starting values use an absolute denominator for change. Results are displayed to two decimal places.",
+    "faq": [
+      {
+        "question": "Can I use decimal percentages?",
+        "answer": "Yes, values such as 12.5 are supported."
+      },
+      {
+        "question": "Why is changing from zero rejected?",
+        "answer": "Percentage change divides by the starting value, and division by zero is undefined."
+      },
+      {
+        "question": "Is a percentage-point change the same?",
+        "answer": "No. Moving from 20% to 30% is 10 percentage points and a 50% relative increase."
+      }
+    ],
+    "keywords": ["percentage", "calculator", "calculators"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "sip-calculator",
+      "age-calculator",
+      "nutrition-calculator",
+      "bmi-calculator"
+    ]
+  },
+  {
+    "slug": "age-calculator",
+    "name": "Age Calculator",
+    "category": "Calculators",
+    "shortDescription": "Your age, down to the day. Next birthday, too.",
+    "icon": "CalendarDays",
+    "intro": "Calculate elapsed calendar years, months, and days between a birth date and a comparison date. The comparison defaults to today on your device, but you can choose another date to check an anniversary or a form requirement. The result also reports days until the next birthday. Dates are handled as calendar values, so daylight-saving changes do not add or remove an hour from the calculation.",
+    "how": "Whole years and months are counted using calendar anniversaries. When a day does not exist in a destination month it is clamped to that month’s last day. Remaining days use UTC date differences.",
+    "examples": [
+      {
+        "input": "2000-01-15 to 2026-09-12",
+        "output": "26 years, 7 months, 28 days"
+      },
+      {
+        "input": "2000-02-29 to 2025-02-28",
+        "output": "25 years, 0 months, 0 days"
+      }
+    ],
+    "limitations": "Birth dates must be from 1900 onward. February 29 birthdays use February 28 in non-leap years. This convention may differ from legal age rules in your location.",
+    "faq": [
+      {
+        "question": "Can I compare against a future date?",
+        "answer": "Yes. Enter that date in the comparison field."
+      },
+      {
+        "question": "How are leap-day birthdays handled?",
+        "answer": "February 28 is used in years without February 29."
+      },
+      {
+        "question": "Does time of birth matter?",
+        "answer": "No. This tool compares whole calendar dates, not timestamps."
+      }
+    ],
+    "keywords": ["age", "calculator", "calculators"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "bmi-calculator",
+      "nutrition-calculator",
+      "percentage-calculator",
+      "sip-calculator"
+    ]
+  },
+  {
+    "slug": "base64-encoder-decoder",
+    "name": "Base64 Encoder / Decoder",
+    "category": "Developer",
+    "shortDescription": "Encode and decode UTF-8 text in a click.",
+    "icon": "Binary",
+    "intro": "Convert ordinary text into standard Base64, or decode Base64 back into readable UTF-8 text. Switch modes before running the transformation. This is useful when inspecting a text payload or preparing a value for a system that expects Base64. Unicode text is encoded as UTF-8 bytes first. Processing happens locally and the output can be copied directly without sending its contents to an external service.",
+    "how": "Encoding converts UTF-8 bytes to the standard Base64 alphabet. Decoding validates padded Base64 and then decodes bytes as UTF-8.",
+    "examples": [
+      {
+        "input": "Hello",
+        "output": "SGVsbG8="
+      },
+      {
+        "input": "✓",
+        "output": "4pyT"
+      }
+    ],
+    "limitations": "Text only; arbitrary binary files are not supported. Use standard padded Base64, not Base64URL. Maximum input: 100,000 characters. Base64 is encoding, not encryption.",
+    "faq": [
+      {
+        "question": "Is Base64 private encryption?",
+        "answer": "No. Anyone with the string can decode it."
+      },
+      {
+        "question": "Are emoji supported?",
+        "answer": "Yes, through UTF-8 encoding."
+      },
+      {
+        "question": "Why did decoding fail?",
+        "answer": "The input may be unpadded, use the URL-safe alphabet, or contain bytes that are not valid UTF-8."
+      }
+    ],
+    "keywords": ["base64", "encoder", "/", "decoder", "developer"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "url-encoder-decoder",
+      "json-formatter",
+      "uuid-generator",
+      "slug-generator"
+    ]
+  },
+  {
+    "slug": "url-encoder-decoder",
+    "name": "URL Encoder / Decoder",
+    "category": "Developer",
+    "shortDescription": "Make text safe for URLs, or readable again.",
+    "icon": "Link",
+    "intro": "Encode a query value or inspect percent-encoded text without navigating to the address. Component mode escapes URL separators and is useful for a single parameter value. Full URL mode preserves the separators in a complete address. Select encode or decode, choose the scope, and run the conversion. The tool only transforms text in your browser; it does not request the pasted URL or inspect its destination.",
+    "how": "Component mode uses encodeURIComponent and decodeURIComponent. Full URL mode uses encodeURI and decodeURI, preserving reserved URL delimiters.",
+    "examples": [
+      {
+        "input": "hello world (component)",
+        "output": "hello%20world"
+      },
+      {
+        "input": "a&b (component)",
+        "output": "a%26b"
+      }
+    ],
+    "limitations": "Maximum input: 100,000 characters. A plus sign is not automatically interpreted as a space. Malformed percent escapes and invalid Unicode are rejected.",
+    "faq": [
+      {
+        "question": "Which mode should I choose for a query value?",
+        "answer": "Use Component so characters such as & and = are escaped."
+      },
+      {
+        "question": "Does this open the URL?",
+        "answer": "No, it only transforms your text."
+      },
+      {
+        "question": "Why does Full URL preserve some escapes?",
+        "answer": "Reserved separators are preserved to avoid changing the structure of an address."
+      }
+    ],
+    "keywords": ["url", "encoder", "/", "decoder", "developer"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "utm-builder",
+      "slug-generator",
+      "base64-encoder-decoder",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "uuid-generator",
+    "name": "UUID Generator",
+    "category": "Developer",
+    "shortDescription": "Generate secure, copy-ready UUIDs.",
+    "icon": "Fingerprint",
+    "intro": "Create one or a batch of version 4 UUIDs for development, fixtures, and identifiers. Choose a quantity between one and one hundred, then generate a fresh batch. Each identifier uses the browser’s cryptographically secure random UUID API. Results are listed one per line for copying into a file or a development tool. There is no account, remote request, or shared history of the identifiers you generate.",
+    "how": "The browser crypto.randomUUID API produces random version 4 UUIDs with standard version and variant bits.",
+    "examples": [
+      {
+        "input": "Quantity 1",
+        "output": "One UUID in the pattern xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+      },
+      {
+        "input": "Quantity 3",
+        "output": "Three independently generated UUIDs, one per line"
+      }
+    ],
+    "limitations": "Requires a secure context such as HTTPS or localhost. Random identifiers have extremely low but nonzero collision probability. UUIDs are not passwords or access tokens.",
+    "faq": [
+      {
+        "question": "Are these version 4 UUIDs?",
+        "answer": "Yes, they are cryptographically random v4 UUIDs."
+      },
+      {
+        "question": "Can I generate the same UUID again?",
+        "answer": "There is no seed or deterministic mode."
+      },
+      {
+        "question": "How many can I generate at once?",
+        "answer": "Between 1 and 100. Use another run for a fresh batch."
+      }
+    ],
+    "keywords": ["uuid", "generator", "developer"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "json-formatter",
+      "base64-encoder-decoder",
+      "url-encoder-decoder",
+      "slug-generator"
+    ]
+  },
+  {
+    "slug": "slug-generator",
+    "name": "Slug Generator",
+    "category": "SEO & social",
+    "shortDescription": "Turn a title into a clean, readable URL slug.",
+    "icon": "Hash",
+    "intro": "Turn a heading or article title into a consistent URL segment. Choose a hyphen or underscore separator, then decide whether to keep Unicode letters. The default ASCII mode removes accents where normalization permits it and drops unsupported characters. The result is lowercase with repeated punctuation replaced by a single separator. This is a text transformation only; check your own website for duplicate slugs before publishing a page.",
+    "how": "NFKD normalization separates compatible forms and accents. Combining marks are removed, letters are lowercased, and runs of unsupported characters become the selected separator.",
+    "examples": [
+      {
+        "input": "Hello, Beautiful World!",
+        "output": "hello-beautiful-world"
+      },
+      {
+        "input": "Café & Crème",
+        "output": "cafe-creme"
+      }
+    ],
+    "limitations": "Maximum input: 100,000 characters. ASCII mode is not transliteration: scripts without Latin equivalents may disappear. Unicode mode retains letters and digits but removes combining marks.",
+    "faq": [
+      {
+        "question": "Should I use hyphens or underscores?",
+        "answer": "Hyphens are the default. Match your existing site’s URL convention."
+      },
+      {
+        "question": "Will Chinese letters be retained?",
+        "answer": "Yes, when Keep Unicode letters is selected."
+      },
+      {
+        "question": "Does this ensure the URL is unique?",
+        "answer": "No. Check for an existing page with the same slug in your site."
+      }
+    ],
+    "keywords": ["slug", "generator", "seo", "&", "social"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "url-encoder-decoder",
+      "utm-builder",
+      "word-counter",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "utm-builder",
+    "name": "UTM Link Builder",
+    "category": "SEO & social",
+    "shortDescription": "Build consistent links for your next campaign.",
+    "icon": "Route",
+    "intro": "Add campaign tags to an HTTP or HTTPS address without manually escaping each value. Enter the destination, source, medium, and campaign name; term and content are optional. The builder keeps unrelated query parameters and the fragment while replacing existing standard UTM fields. Copy the finished address into your campaign workflow. No address is opened or submitted, and the builder does not connect to an analytics provider.",
+    "how": "The URL API validates the address and URLSearchParams serializes five standard UTM parameters. Blank optional fields remove their existing values.",
+    "examples": [
+      {
+        "input": "https://example.com + newsletter / email / launch",
+        "output": "https://example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=launch"
+      },
+      {
+        "input": "Content: blue button",
+        "output": "utm_content=blue+button"
+      }
+    ],
+    "limitations": "Destination limit: 8,192 characters; each campaign field: 200 characters. Only HTTP and HTTPS without embedded credentials are accepted. Avoid personal information in tags.",
+    "faq": [
+      {
+        "question": "Are existing query parameters kept?",
+        "answer": "Yes, unrelated parameters and the URL fragment are preserved."
+      },
+      {
+        "question": "Are tags case sensitive?",
+        "answer": "Analytics tools can distinguish different capitalization. Choose a consistent convention."
+      },
+      {
+        "question": "Does this measure clicks?",
+        "answer": "No. Your destination’s analytics system interprets the tags."
+      }
+    ],
+    "keywords": ["utm", "link", "builder", "seo", "&", "social"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "url-encoder-decoder",
+      "slug-generator",
+      "word-counter",
+      "percentage-calculator"
+    ]
+  },
+  {
+    "slug": "sip-calculator",
+    "name": "SIP Calculator",
+    "category": "Finance",
+    "shortDescription": "Explore how monthly investments could grow.",
+    "icon": "TrendingUp",
+    "intro": "Estimate a future balance from a fixed monthly contribution and an assumed annual return. Adjust the amount, number of years, rate, and whether deposits occur at the beginning or end of each month. The result separates contributions from estimated growth, helping you understand the effect of time and assumptions. This is a simplified mathematical illustration. It does not predict any investment’s performance or recommend a product.",
+    "how": "Monthly rate r = annual rate / 12 / 100; n = years × 12. End-month value = P × ((1+r)^n − 1) / r. Beginning-month deposits multiply that result by (1+r). A zero rate returns contributions only.",
+    "examples": [
+      {
+        "input": "1,000 monthly, 0%, 10 years",
+        "output": "120,000 contributed; 0 growth; 120,000 total"
+      },
+      {
+        "input": "1,000 monthly, 12%, 1 year, month end",
+        "output": "12,000 contributed; 682.50 growth; 12,682.50 total"
+      }
+    ],
+    "limitations": "Assumes constant returns with monthly compounding and regular deposits. Excludes taxes, fees, inflation, and market volatility. Returns are not guaranteed. Amounts use your selected currency as a display unit.",
+    "faq": [
+      {
+        "question": "Does the rate mean a guaranteed return?",
+        "answer": "No. It is only an assumption for the projection."
+      },
+      {
+        "question": "When are contributions made?",
+        "answer": "Choose beginning or end of month. Beginning-month deposits grow for one additional month."
+      },
+      {
+        "question": "Does this account for inflation?",
+        "answer": "No. Results are nominal and do not account for changes in purchasing power."
+      }
+    ],
+    "keywords": ["sip", "calculator", "finance"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "percentage-calculator",
+      "age-calculator",
+      "json-formatter",
+      "word-counter"
+    ]
+  },
+  {
+    "slug": "nutrition-calculator",
+    "name": "Nutrition Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Estimate daily energy and a balanced macro split.",
+    "icon": "Apple",
+    "intro": "Estimate adult daily energy needs from height, weight, age, the selected formula sex coefficient, and an activity multiplier. Set protein and fat percentages to see an illustrative split in grams, with carbohydrates taking the remainder. This general tool is for adults aged 18 and over and is not a meal plan. It is not suitable for pregnancy, breastfeeding, eating disorders, medical conditions, or decisions about medication or supplements.",
+    "how": "The simplified Mifflin–St Jeor equation is 10 × kg + 6.25 × cm − 5 × age, plus 5 for the male coefficient or minus 161 for the female coefficient. Resting energy is multiplied by the chosen activity factor. Protein and carbohydrate use 4 kcal/g; fat uses 9 kcal/g.",
+    "examples": [
+      {
+        "input": "Male coefficient, 70 kg, 175 cm, 30 years, factor 1.2",
+        "output": "1,648.75 resting kcal; 1,978.50 daily kcal"
+      },
+      {
+        "input": "2,000 kcal at 20% protein / 30% fat / 50% carbohydrate",
+        "output": "100 g protein; 66.67 g fat; 250 g carbohydrate"
+      }
+    ],
+    "limitations": "General estimates only, not diagnosis, treatment, or an individualized diet. Activity multipliers are rough assumptions. Consult a qualified healthcare professional for decisions affecting health. Formula content awaits human review before indexing.",
+    "faq": [
+      {
+        "question": "Is this a weight-loss plan?",
+        "answer": "No. The output estimates maintenance energy under the assumptions you choose."
+      },
+      {
+        "question": "Why does the formula ask for sex?",
+        "answer": "The original equation has two sex coefficients. This is a model limitation, not a complete description of individual physiology."
+      },
+      {
+        "question": "Can children or pregnant people use it?",
+        "answer": "No. Their needs require a different assessment with an appropriate professional."
+      }
+    ],
+    "keywords": ["nutrition", "calculator", "health", "&", "nutrition"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "bmi-calculator",
+      "age-calculator",
+      "percentage-calculator",
+      "sip-calculator"
+    ]
+  },
+  {
+    "slug": "bmi-calculator",
+    "name": "BMI Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Calculate adult BMI with clear context.",
+    "icon": "HeartPulse",
+    "intro": "Calculate body mass index using height and weight, then see the corresponding adult screening category. Metric and imperial inputs are supported and converted before calculation. This tool uses CDC adult categories for people aged 20 and over. BMI is a broad screening measure and does not directly measure body fat or individual health. Consider the result alongside other information and professional advice when making decisions about your health.",
+    "how": "BMI = weight in kilograms / (height in meters)². Categories use the unrounded result: below 18.5, underweight; 18.5 to below 25, healthy weight; 25 to below 30, overweight; 30 and above, obesity.",
+    "examples": [
+      {
+        "input": "70 kg, 175 cm",
+        "output": "BMI 22.86 · Healthy weight"
+      },
+      {
+        "input": "90 kg, 180 cm",
+        "output": "BMI 27.78 · Overweight"
+      }
+    ],
+    "limitations": "Only for adults aged 20 or older. Not a diagnostic test, body-fat measurement, or pregnancy assessment. Muscularity and other individual factors can affect interpretation. Consult a qualified healthcare professional. Content awaits human review before indexing.",
+    "faq": [
+      {
+        "question": "Why is the minimum age 20?",
+        "answer": "CDC adult categories apply to ages 20 and over. Children and teens use age- and sex-specific percentiles."
+      },
+      {
+        "question": "Does BMI measure body fat?",
+        "answer": "No. It is a ratio of weight to squared height."
+      },
+      {
+        "question": "Can I use pounds and inches?",
+        "answer": "Yes. Choose Imperial and the inputs are converted to kilograms and centimeters."
+      }
+    ],
+    "keywords": ["bmi", "calculator", "health", "&", "nutrition"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "nutrition-calculator",
+      "age-calculator",
+      "percentage-calculator",
+      "sip-calculator"
+    ]
+  },
+  {
+    "slug": "image-compressor",
+    "name": "Image Compressor",
+    "category": "Images",
+    "shortDescription": "Smaller files. Ready for the web.",
+    "icon": "ImageDown",
+    "intro": "Reduce an image’s file size before sharing it, attaching it to an email, or adding it to a website. Choose a JPG, PNG, or WebP, set a quality level, and compare the original size with the new file. You can also set maximum dimensions and choose an output format. The preview and downloaded result are generated on your device, so no file is uploaded to a service.",
+    "how": "The image is decoded into pixels in a browser worker, fitted within the maximum dimensions without upscaling, and re-encoded as WebP, JPG, or PNG. Quality affects lossy JPG and WebP. PNG uses lossless encoding.",
+    "examples": [
+      {
+        "input": "2,000 × 1,000 image, max 1,080 × 1,080",
+        "output": "1,080 × 540 output; exact file size depends on the image"
+      },
+      {
+        "input": "100 KB original and 60 KB output",
+        "output": "40% smaller"
+      }
+    ],
+    "limitations": "One JPG, PNG, or WebP up to 20 MB and 12 million pixels. Output sides are limited to 4,096 pixels. Compression savings vary and a result can be larger. PNG ignores quality. JPG replaces transparency with white. Animation, EXIF, and color profiles are not preserved. Web Workers and OffscreenCanvas are required.",
+    "faq": [
+      {
+        "question": "Does my photo get uploaded?",
+        "answer": "No. A browser worker processes it on your device."
+      },
+      {
+        "question": "Why is the result larger?",
+        "answer": "Some source files are already well optimized. Try WebP, lower quality, or smaller dimensions."
+      },
+      {
+        "question": "Is quality 80 lossless?",
+        "answer": "No. JPG and WebP at that setting are lossy. PNG retains the rendered pixels but may increase file size."
+      }
+    ],
+    "keywords": [
+      "image",
+      "compressor",
+      "images",
+      "jpg",
+      "jpeg",
+      "png",
+      "webp",
+      "photo",
+      "picture",
+      "smaller",
+      "size"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "image-resizer",
+      "merge-pdf",
+      "images-to-pdf",
+      "qr-code-generator"
+    ]
+  },
+  {
+    "slug": "image-resizer",
+    "name": "Image Resizer",
+    "category": "Images",
+    "shortDescription": "The right dimensions, without the guesswork.",
+    "icon": "Crop",
+    "intro": "Fit an image into the dimensions you need for a website, email, or creative project. Enter a maximum width and height, or start with a Web, Social, or Email preset. The image keeps its original proportions and is never stretched or enlarged. You can check the output dimensions and preview before downloading. Processing takes place locally in a browser worker rather than uploading your image to a remote service.",
+    "how": "The scale is the smaller of maximum width / original width, maximum height / original height, and 1. Both dimensions are multiplied by that scale and rounded to whole pixels. The output fits inside the requested box.",
+    "examples": [
+      {
+        "input": "2,000 × 1,000 into a 1,080 × 1,080 box",
+        "output": "1,080 × 540 pixels"
+      },
+      {
+        "input": "640 × 480 into a 1,920 × 1,920 box",
+        "output": "640 × 480 pixels; no enlargement"
+      }
+    ],
+    "limitations": "This is fit-within resizing, not cropping or an exact social-platform template. One image up to 20 MB and 12 million pixels. Maximum output side 4,096 pixels. Re-encoding can remove metadata and animation. JPG flattens transparency to white.",
+    "faq": [
+      {
+        "question": "Will it crop my photo?",
+        "answer": "No. The entire image fits within the chosen box."
+      },
+      {
+        "question": "Can I make a small photo bigger?",
+        "answer": "This tool does not upscale. Small inputs keep their original dimensions."
+      },
+      {
+        "question": "What do the presets mean?",
+        "answer": "They are convenient maximum-size boxes, not guarantees of current platform upload requirements."
+      }
+    ],
+    "keywords": [
+      "image",
+      "resizer",
+      "images",
+      "jpg",
+      "jpeg",
+      "png",
+      "webp",
+      "photo",
+      "picture",
+      "smaller",
+      "size"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "image-compressor",
+      "merge-pdf",
+      "images-to-pdf",
+      "qr-code-generator"
+    ]
+  },
+  {
+    "slug": "merge-pdf",
+    "name": "Merge PDF",
+    "category": "PDF tools",
+    "shortDescription": "A stack of files. One tidy PDF.",
+    "icon": "Files",
+    "intro": "Combine separate PDFs into a single document for sharing, applications, or project handoffs. Choose your files, then use the up and down controls to put them in the right order. Every page from the first file is followed by the pages from the next file. Your documents are processed inside a browser worker and the final PDF is downloaded directly, with no account or upload required.",
+    "how": "A new PDF is created and pages are copied from each source document in the displayed file order. The page-count limit is checked before pages are added. Processing can be canceled or times out after 45 seconds.",
+    "examples": [
+      {
+        "input": "A 2-page PDF followed by a 3-page PDF",
+        "output": "One 5-page PDF"
+      },
+      {
+        "input": "Move file B above file A",
+        "output": "Pages from B appear before pages from A"
+      }
+    ],
+    "limitations": "Two to ten files, up to 20 MB each, 30 MB combined, and 200 total pages. Password-protected or damaged PDFs are not supported. Bookmarks, signatures, forms, attachments, and document-level features may not survive. This is not a PDF security sanitizer. Review the downloaded result before sharing.",
+    "faq": [
+      {
+        "question": "Can I change the order?",
+        "answer": "Yes. Use the up and down buttons before merging."
+      },
+      {
+        "question": "Does merging shrink the files?",
+        "answer": "No. This tool combines pages; it does not optimize PDF size."
+      },
+      {
+        "question": "Are signed PDFs still signed afterward?",
+        "answer": "No. Creating a new document does not preserve the validity of source digital signatures."
+      }
+    ],
+    "keywords": ["merge", "pdf", "pdf", "tools"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "image-compressor",
+      "image-resizer",
+      "images-to-pdf",
+      "qr-code-generator"
+    ]
+  },
+  {
+    "slug": "images-to-pdf",
+    "name": "Images to PDF",
+    "category": "PDF tools",
+    "shortDescription": "Turn a camera roll into a document.",
+    "icon": "FileImage",
+    "intro": "Create a PDF from photos, scans, or design exports without installing a document editor. Add JPG, PNG, or WebP images and arrange the files in the order you want. Each image is centered on its own A4 page with margins and its proportions preserved. This is useful for collecting receipts or sharing a visual reference pack. The images stay in your browser while the PDF is assembled.",
+    "how": "Each image is fitted within 2,400 × 2,400 pixels, flattened on white, and encoded as a high-quality JPEG. It is then centered inside the margins of a portrait A4 PDF page. There is one page per image, in the selected order.",
+    "examples": [
+      {
+        "input": "Three selected images",
+        "output": "One PDF with three A4 pages"
+      },
+      {
+        "input": "A landscape image",
+        "output": "Centered on a portrait A4 page without cropping"
+      }
+    ],
+    "limitations": "Up to ten images, 20 MB each and 30 MB combined. Each image must be no more than 12 million pixels. Images are re-encoded with lossy JPEG and white backgrounds. Text remains an image, not selectable or searchable text. This tool does not perform OCR.",
+    "faq": [
+      {
+        "question": "Can I select text in the PDF?",
+        "answer": "No. The PDF contains images; no optical character recognition is performed."
+      },
+      {
+        "question": "Are transparent backgrounds preserved?",
+        "answer": "No. Transparent areas are flattened to white before PDF creation."
+      },
+      {
+        "question": "Can I rearrange the pages?",
+        "answer": "Yes. Reorder your input images before creating the PDF."
+      }
+    ],
+    "keywords": ["images", "to", "pdf", "pdf", "tools"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "image-compressor",
+      "image-resizer",
+      "merge-pdf",
+      "qr-code-generator"
+    ]
+  },
+  {
+    "slug": "qr-code-generator",
+    "name": "QR Code Generator",
+    "category": "SEO & social",
+    "shortDescription": "One link. A million places to put it.",
+    "icon": "QrCode",
+    "intro": "Make a static QR code for a website address or short piece of text. Paste the content, choose a dark ink color and PNG size, then create and download the result. Print it on a card or use it in a digital design after testing it with the intended scanner. The code contains exactly your entered content, without a tracking redirect, account, or expiry controlled by ToolzPoint.",
+    "how": "Content is encoded as a standard QR symbol with medium error correction and a four-module white quiet zone. Dark color options preserve strong contrast against white. PNG exports are available at 320, 640, and 1,280 pixels.",
+    "examples": [
+      {
+        "input": "https://example.com",
+        "output": "A QR code that decodes to exactly https://example.com"
+      },
+      {
+        "input": "Hello, world!",
+        "output": "A QR code containing the text Hello, world!"
+      }
+    ],
+    "limitations": "Maximum 1,000 UTF-8 bytes. Dense codes require adequate printed size and a good scanner. The PNG does not expire, but a linked website can change or disappear. Test the downloaded code before printing. Changing a destination requires generating and replacing the static QR code.",
+    "faq": [
+      {
+        "question": "Does the QR code expire?",
+        "answer": "The static code itself does not expire. Availability of its linked destination is separate."
+      },
+      {
+        "question": "Can I edit the link after printing?",
+        "answer": "No. The link is stored in the symbol itself. Generate and replace the code if it changes."
+      },
+      {
+        "question": "Does it track scans?",
+        "answer": "No. ToolzPoint adds no tracking redirect or scan analytics."
+      }
+    ],
+    "keywords": ["qr", "code", "generator", "seo", "&", "social"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-12",
+    "updatedAt": "2026-09-12",
+    "reviewed": false,
+    "relatedSlugs": [
+      "image-compressor",
+      "image-resizer",
+      "merge-pdf",
+      "images-to-pdf"
+    ]
+  }
+]
