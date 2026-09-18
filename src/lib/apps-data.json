@@ -1,0 +1,58 @@
+[
+  {
+    "slug": "cashyai",
+    "name": "CashyAi",
+    "tagline": "Expense tracker & AI money coach",
+    "shortDescription": "Track spending, split bills with friends, and ask an on-device AI before you spend — private by design.",
+    "description": "CashyAi is an Android expense tracker that helps you log income and spending, plan savings goals, split bills with friends, and get bill reminders. A local, on-device AI (no cloud calls for your financial data) answers questions like \"Can I afford this?\" using your own transaction history. An optional Google Drive backup keeps a copy of your data in a private folder tied to your account, so you can restore it on a new device.",
+    "category": "Finance",
+    "platforms": ["Android"],
+    "icon": "/apps/cashyai/icon.png",
+    "screenshots": [
+      {
+        "src": "/apps/cashyai/screenshot-dashboard.png",
+        "alt": "CashyAi dashboard showing monthly cash flow, income, expenses, and upcoming bills"
+      },
+      {
+        "src": "/apps/cashyai/screenshot-ai-chat.png",
+        "alt": "CashyAi on-device AI chat answering a spending-safety question"
+      },
+      {
+        "src": "/apps/cashyai/screenshot-splits.png",
+        "alt": "CashyAi split expenses screen showing balances owed between friends"
+      }
+    ],
+    "features": [
+      "Expense, income, and bill tracking with reminders",
+      "Split expenses with friends and a running contact ledger",
+      "Savings goals and a safe-to-spend daily limit",
+      "On-device AI chat for spending questions — no financial data leaves the device",
+      "PDF and CSV export of your own records",
+      "Optional Google Drive backup and restore"
+    ],
+    "playStoreUrl": "https://play.google.com/store/apps/details?id=com.abhi.fin_track_ai",
+    "packageId": "com.abhi.fin_track_ai",
+    "developer": "ToolzPoint",
+    "supportEmail": "support@cashyai.com",
+    "googleSignIn": {
+      "purpose": "CashyAi uses Google Sign-In for exactly one feature: backing up your app data to your own Google Drive and restoring it later, for example after switching devices. Sign-in is optional — the app is fully usable without it, and no Google account is required to track expenses, split bills, or use the AI chat.",
+      "scopes": [
+        {
+          "scope": "email (basic profile)",
+          "reason": "Shown in Settings so you can see which Google account a backup is signed in with. Not used for advertising, analytics, or any purpose beyond identifying the signed-in account."
+        },
+        {
+          "scope": "https://www.googleapis.com/auth/drive.appdata",
+          "reason": "Lets the app read and write only its own hidden application-data folder in your Drive — the same folder other apps' Drive backups cannot see. CashyAi cannot see, list, or modify any other file in your Google Drive with this scope."
+        }
+      ],
+      "dataNotAccessed": "CashyAi never requests access to your Gmail, contacts, calendar, general Drive files, or any other Google data."
+    },
+    "privacyPolicyPath": "/apps/cashyai/privacy",
+    "termsPath": "/apps/cashyai/terms",
+    "status": "published",
+    "reviewed": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19"
+  }
+]

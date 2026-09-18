@@ -27,6 +27,10 @@ export function Header() {
             Explore tools
             <Icon name="ArrowUpRight" size={15} />
           </Link>
+          <Link href="/apps" className="all-tools-link">
+            Apps
+            <Icon name="ArrowUpRight" size={15} />
+          </Link>
           <Link
             href="/tools?view=favorites"
             className="saved-link"

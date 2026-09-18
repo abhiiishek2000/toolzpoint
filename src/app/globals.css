@@ -3025,3 +3025,110 @@ body {
 .spotlight-symbol > span {
   opacity: 1;
 }
+
+/* Apps section */
+.app-icon {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 0;
+  overflow: hidden;
+}
+.app-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.app-icon-large {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+}
+.app-hero {
+  align-items: center;
+}
+.app-hero-meta {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.app-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin: 20px 0 8px;
+}
+.app-cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.play-store-badge {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 11px 20px;
+  border-radius: 10px;
+}
+.play-store-badge:hover {
+  opacity: 0.88;
+}
+.app-feature-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.app-feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--ink);
+}
+.app-feature-list svg {
+  color: var(--green);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.app-content article {
+  min-width: 0;
+}
+.app-screenshots {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.app-screenshots img {
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  height: auto;
+}
+.scope-list {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+}
+.scope-item {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.scope-item code {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  word-break: break-all;
+}
+.scope-item p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--muted);
+}

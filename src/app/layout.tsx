@@ -44,6 +44,7 @@ export default function RootLayout({
                 <strong>Explore</strong>
                 <Link href="/tools">All tools</Link>
                 <Link href="/#browse-tools">Categories</Link>
+                <Link href="/apps">Apps</Link>
                 <Link href="/changelog">What’s new</Link>
               </div>
               <div>

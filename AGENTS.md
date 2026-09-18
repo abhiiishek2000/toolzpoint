@@ -3,6 +3,7 @@
 ## Boundaries
 
 - `src/app`: Next.js routes, server-rendered content, metadata and infrastructure routes.
+- `src/app/apps`, `src/lib/app-registry.ts`, `src/lib/apps-data.json`: the mobile-app showcase (distinct from the browser tools). Each app entry carries its own privacy policy and terms content, ported verbatim from that app's own legal source rather than paraphrased, since it is used as the app's public homepage/policy link for platform (e.g. Google OAuth) verification. A published slug is stable here too.
 - `src/features/tools`: pure domain calculations and validation. No React, network requests, local storage, or analytics.
 - `src/features/files`: bounded image/PDF logic and browser workers. Parse image dimensions before bitmap allocation; keep timeout and cancellation.
 - `src/features/qr-code-generator`: static QR generation and validation.
