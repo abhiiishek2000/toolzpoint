@@ -51,6 +51,7 @@ export function Consent() {
     } catch {
       setMessage("Preference applies to this visit; storage is unavailable.");
     }
+    window.dispatchEvent(new Event("toolzpoint:consent-changed"));
     setOpen(false);
   }
   return (
@@ -63,8 +64,8 @@ export function Consent() {
           <strong>Your privacy choices</strong>
           <p>
             Favorites and settings use local storage. Optional analytics are off
-            by default. No analytics or advertising provider is currently
-            connected.
+            by default; choosing to allow them loads Google Analytics for
+            anonymous usage statistics. No advertising provider is connected.
           </p>
           <div className="button-row">
             <button

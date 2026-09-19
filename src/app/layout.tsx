@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Consent } from "@/components/Preferences";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { Icon } from "@/components/Icon";
 import { siteUrl, allowIndexing } from "@/lib/seo";
 import "./globals.css";
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <GoogleAnalytics />
         <a className="skip-link" href="#main">
           Skip to content
         </a>

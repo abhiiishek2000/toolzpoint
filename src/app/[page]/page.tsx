@@ -50,7 +50,7 @@ export const pages: Record<
       ],
       [
         "Hosting and optional services",
-        "A hosting provider can receive IP addresses, requested paths, browser information, and ordinary technical logs. No analytics, advertising, or error-reporting provider is connected in this build. Optional analytics consent is off by default and may be changed in the footer.",
+        "A hosting provider can receive IP addresses, requested paths, browser information, and ordinary technical logs. Optional analytics consent is off by default and may be changed in the footer; choosing to allow it loads Google Analytics, which receives page views and the tool interactions described on the Cookies page. No advertising or error-reporting provider is connected in this build.",
       ],
       [
         "Operator and requests",
@@ -90,7 +90,7 @@ export const pages: Record<
       ],
       [
         "Optional analytics",
-        "No analytics provider is connected. Consent defaults to off. The footer’s Cookie preferences control lets you allow or reject optional analytics; this preference alone does not load a provider.",
+        "Consent defaults to off. The footer’s Cookie preferences control lets you allow or reject optional analytics; choosing “Allow optional analytics” loads Google Analytics, which sets its own cookies and receives page views, the tool you're viewing, and whether a tool ran successfully — never the text, files, or values you enter into a tool. Choosing “Essential only” keeps Google Analytics from loading at all.",
       ],
       [
         "Advertising",
