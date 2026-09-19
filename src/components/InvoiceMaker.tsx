@@ -1,11 +1,13 @@
 "use client";
-import { useState } from "react";
+/* eslint-disable @next/next/no-img-element -- Preview is a local blob URL, not a remotely optimized image. */
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "./Icon";
 import { UtilityFrame, markUsed } from "./UtilityFrame";
 import {
   invoiceTotals,
   type InvoiceItem,
 } from "@/features/tools/invoice-maker/domain";
+const MAX_LOGO_BYTES = 2 * 1024 * 1024;
 type Row = InvoiceItem & { id: number };
 let nextId = 1;
 function emptyRow(): Row {
@@ -26,6 +28,43 @@ export default function InvoiceMaker() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [logoBytes, setLogoBytes] = useState<Uint8Array | null>(null);
+  const [logoPreview, setLogoPreview] = useState("");
+  const [logoError, setLogoError] = useState("");
+  const logoInput = useRef<HTMLInputElement>(null);
+  const logoUrl = useRef("");
+  useEffect(() => () => URL.revokeObjectURL(logoUrl.current), []);
+  async function chooseLogo(file: File | undefined) {
+    setLogoError("");
+    if (!file) return;
+    try {
+      if (!["image/png", "image/jpeg"].includes(file.type))
+        throw new Error("Choose a PNG or JPEG image.");
+      if (file.size > MAX_LOGO_BYTES)
+        throw new Error("Logo must be 2 MB or smaller.");
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const { imageDimensions } = await import("@/features/files/domain");
+      imageDimensions(bytes);
+      URL.revokeObjectURL(logoUrl.current);
+      logoUrl.current = URL.createObjectURL(file);
+      setLogoPreview(logoUrl.current);
+      setLogoBytes(bytes);
+      setNotice("");
+    } catch (e) {
+      setLogoError(
+        e instanceof Error ? e.message : "Choose a valid PNG or JPEG image.",
+      );
+    } finally {
+      if (logoInput.current) logoInput.current.value = "";
+    }
+  }
+  function removeLogo() {
+    URL.revokeObjectURL(logoUrl.current);
+    logoUrl.current = "";
+    setLogoPreview("");
+    setLogoBytes(null);
+    setLogoError("");
+  }
   function updateItem(id: number, patch: Partial<InvoiceItem>) {
     setItems((rows) => rows.map((r) => (r.id === id ? { ...r, ...patch } : r)));
     setNotice("");
@@ -54,23 +93,26 @@ export default function InvoiceMaker() {
     try {
       const { generateInvoicePdf } =
         await import("@/features/tools/invoice-maker/domain");
-      const bytes = await generateInvoicePdf({
-        businessName,
-        businessDetails: businessDetails || undefined,
-        clientName,
-        clientDetails: clientDetails || undefined,
-        invoiceNumber,
-        invoiceDate: invoiceDate || new Date().toISOString().slice(0, 10),
-        dueDate: dueDate || undefined,
-        currency,
-        notes: notes || undefined,
-        taxRate,
-        items: validItems.map((r) => ({
-          description: r.description,
-          quantity: r.quantity,
-          price: r.price,
-        })),
-      });
+      const bytes = await generateInvoicePdf(
+        {
+          businessName,
+          businessDetails: businessDetails || undefined,
+          clientName,
+          clientDetails: clientDetails || undefined,
+          invoiceNumber,
+          invoiceDate: invoiceDate || new Date().toISOString().slice(0, 10),
+          dueDate: dueDate || undefined,
+          currency,
+          notes: notes || undefined,
+          taxRate,
+          items: validItems.map((r) => ({
+            description: r.description,
+            quantity: r.quantity,
+            price: r.price,
+          })),
+        },
+        logoBytes ? { bytes: logoBytes } : undefined,
+      );
       const blob = new Blob([new Uint8Array(bytes)], {
         type: "application/pdf",
       });
@@ -123,6 +165,58 @@ export default function InvoiceMaker() {
                   onChange={(e) => setBusinessDetails(e.target.value)}
                 />
               </label>
+              <div className="field full-width">
+                Company logo (optional)
+                <div className="photo-picker">
+                  {logoPreview ? (
+                    <img
+                      className="logo-preview"
+                      src={logoPreview}
+                      alt="Company logo preview"
+                    />
+                  ) : (
+                    <span className="photo-picker-empty logo-preview">
+                      <Icon name="ImageUp" size={22} />
+                    </span>
+                  )}
+                  <div>
+                    <button
+                      type="button"
+                      className="text-button"
+                      onClick={() => logoInput.current?.click()}
+                    >
+                      <Icon name="Plus" size={16} />
+                      {logoPreview ? "Change logo" : "Add a logo"}
+                    </button>
+                    {logoPreview && (
+                      <button
+                        type="button"
+                        className="text-button"
+                        onClick={removeLogo}
+                      >
+                        <Icon name="X" size={15} />
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    ref={logoInput}
+                    className="sr-only"
+                    type="file"
+                    aria-label="Choose a company logo"
+                    accept="image/png,image/jpeg"
+                    onChange={(e) => void chooseLogo(e.target.files?.[0])}
+                  />
+                </div>
+                <span className="setting-hint">
+                  PNG or JPEG, up to 2 MB. Shown at the top of the invoice.
+                </span>
+                {logoError && (
+                  <span className="error-message" role="alert">
+                    {logoError}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="studio-step">
               <span>02</span>

@@ -25,6 +25,10 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const [rotation, setRotation] = useState(90);
   const [flip, setFlip] = useState<"none" | "horizontal" | "vertical">("none");
   const [pageRange, setPageRange] = useState("");
+  const [pageOrder, setPageOrder] = useState("");
+  const [watermarkText, setWatermarkText] = useState("DRAFT");
+  const [watermarkOpacity, setWatermarkOpacity] = useState(20);
+  const [watermarkFontSize, setWatermarkFontSize] = useState(60);
   const [presetId, setPresetId] = useState(PHOTO_ID_PRESETS[0]!.id);
   const [customWidthMm, setCustomWidthMm] = useState(35);
   const [customHeightMm, setCustomHeightMm] = useState(45);
@@ -49,7 +53,9 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
     slug === "merge-pdf" ||
     slug === "split-pdf" ||
     slug === "rotate-pdf" ||
-    slug === "add-page-numbers-to-pdf";
+    slug === "add-page-numbers-to-pdf" ||
+    slug === "organize-pdf-pages" ||
+    slug === "watermark-pdf";
   const imageOutput =
     slug === "image-compressor" ||
     slug === "image-resizer" ||
@@ -84,6 +90,7 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
         selected[0] && !pdf ? URL.createObjectURL(selected[0]) : "";
       setPreview(inputUrl.current);
       setPageRange("");
+      setPageOrder("");
       setZoom(1);
       setVerticalBias(0);
       setRemoveBg(false);
@@ -109,6 +116,10 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
         throw new Error("Choose at least two PDFs to merge.");
       if (slug === "split-pdf" && !pageRange.trim())
         throw new Error("Enter a page range, such as 1-3, 5.");
+      if (slug === "organize-pdf-pages" && !pageOrder.trim())
+        throw new Error('Enter a page order, such as "3,1,2".');
+      if (slug === "watermark-pdf" && !watermarkText.trim())
+        throw new Error("Enter watermark text.");
       let photoWidth = width,
         photoHeight = height;
       if (slug === "passport-photo-maker") {
@@ -169,6 +180,10 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
         rotation,
         flip,
         pageRange,
+        pageOrder,
+        watermarkText,
+        watermarkOpacity: watermarkOpacity / 100,
+        watermarkFontSize,
         zoom,
         verticalBias,
         maxKB:
@@ -211,7 +226,7 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
             <h2>
               {multiple
                 ? "Add your files"
-                : slug === "split-pdf"
+                : pdf
                   ? "Start with a PDF"
                   : slug === "passport-photo-maker"
                     ? "Start with a photo"
@@ -492,6 +507,87 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 </p>
               </>
             )}
+            {slug === "organize-pdf-pages" && (
+              <>
+                <div className="studio-step">
+                  <span>02</span>
+                  <h2>Set the new page order</h2>
+                </div>
+                <label className="field">
+                  New page order
+                  <input
+                    type="text"
+                    value={pageOrder}
+                    placeholder="e.g. 3,1,2"
+                    maxLength={2000}
+                    onChange={(e) => {
+                      setPageOrder(e.target.value);
+                      changed();
+                    }}
+                  />
+                </label>
+                <p className="setting-hint">
+                  List page numbers separated by commas, in the order you want
+                  them. Repeat a number to duplicate that page, and leave out a
+                  number to delete it. Up to 400 resulting pages. Encrypted
+                  files aren’t supported.
+                </p>
+              </>
+            )}
+            {slug === "watermark-pdf" && (
+              <>
+                <div className="studio-step">
+                  <span>02</span>
+                  <h2>Set the watermark</h2>
+                </div>
+                <label className="field">
+                  Watermark text
+                  <input
+                    type="text"
+                    value={watermarkText}
+                    placeholder="DRAFT"
+                    maxLength={60}
+                    onChange={(e) => {
+                      setWatermarkText(e.target.value);
+                      changed();
+                    }}
+                  />
+                </label>
+                <div className="quality-row">
+                  <label htmlFor="watermark-opacity">Opacity</label>
+                  <strong>{watermarkOpacity}%</strong>
+                </div>
+                <input
+                  id="watermark-opacity"
+                  type="range"
+                  min="5"
+                  max="100"
+                  value={watermarkOpacity}
+                  onChange={(e) => {
+                    setWatermarkOpacity(Number(e.target.value));
+                    changed();
+                  }}
+                />
+                <label className="field">
+                  Font size (points)
+                  <input
+                    type="number"
+                    min="8"
+                    max="200"
+                    value={watermarkFontSize}
+                    onChange={(e) => {
+                      setWatermarkFontSize(Number(e.target.value));
+                      changed();
+                    }}
+                  />
+                </label>
+                <p className="setting-hint">
+                  Stamped once per page at a 45-degree angle, centered on the
+                  page. Standard Latin characters only, up to 60 characters.
+                  Encrypted files aren’t supported.
+                </p>
+              </>
+            )}
             {slug === "passport-photo-maker" && (
               <>
                 <div className="studio-step">
@@ -671,13 +767,17 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                             ? "Merge PDFs"
                             : slug === "split-pdf"
                               ? "Split PDF"
-                              : slug === "images-to-pdf"
-                                ? "Create PDF"
-                                : slug === "image-resizer"
-                                  ? "Resize image"
-                                  : slug === "passport-photo-maker"
-                                    ? "Create ID photo"
-                                    : "Compress image"}
+                              : slug === "organize-pdf-pages"
+                                ? "Rebuild PDF"
+                                : slug === "watermark-pdf"
+                                  ? "Add watermark"
+                                  : slug === "images-to-pdf"
+                                    ? "Create PDF"
+                                    : slug === "image-resizer"
+                                      ? "Resize image"
+                                      : slug === "passport-photo-maker"
+                                        ? "Create ID photo"
+                                        : "Compress image"}
                 <Icon name="ArrowRight" size={17} />
               </button>
               <button
@@ -692,6 +792,10 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                   setFiles([]);
                   setPreview("");
                   setPageRange("");
+                  setPageOrder("");
+                  setWatermarkText("DRAFT");
+                  setWatermarkOpacity(20);
+                  setWatermarkFontSize(60);
                   setZoom(1);
                   setVerticalBias(0);
                   setRemoveBg(false);
@@ -718,7 +822,7 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 : "The result, before the download."}
             </h2>
           </div>
-          <div className="image-preview">
+          <div className={`image-preview ${pdf ? "image-preview-plain" : ""}`}>
             {isImageResult &&
             files.length > 0 &&
             ((result && url) || preview) ? (
@@ -750,9 +854,13 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                     ? "Add your files, put them in order, and create your PDF."
                     : slug === "split-pdf"
                       ? "Choose a PDF and the pages you want to keep."
-                      : slug === "passport-photo-maker"
-                        ? "Choose a photo to see it here."
-                        : "Choose an image to see it here."}
+                      : slug === "organize-pdf-pages"
+                        ? "Choose a PDF and set the new page order."
+                        : slug === "watermark-pdf"
+                          ? "Choose a PDF and set your watermark text."
+                          : slug === "passport-photo-maker"
+                            ? "Choose a photo to see it here."
+                            : "Choose an image to see it here."}
                 </p>
               </div>
             )}

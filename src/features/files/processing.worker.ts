@@ -14,7 +14,7 @@ scope.onmessage = async ({ data }) => {
   } catch (e) {
     const message = e instanceof Error ? e.message : "";
     const known =
-      /Choose|Use |must|combined|browser|Quality|Dimensions|Output dimensions|no pages|Enter|valid page|does not exist|Could not compress|Try a smaller|too small/.test(
+      /Choose|Use |must|combined|browser|Quality|Dimensions|Output dimensions|no pages|Enter|valid page|does not exist|Could not compress|Try a smaller|too small|is not a page|Watermark|renderable/.test(
         message,
       );
     scope.postMessage({

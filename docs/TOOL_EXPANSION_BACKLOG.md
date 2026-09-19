@@ -22,6 +22,14 @@ Added 27 tools covering every current category: binary text; URL parser, timesta
 
 The BMR tool reuses the existing nutrition domain function. Its equation reference is [Mifflin et al. (1990)](https://pubmed.ncbi.nlm.nih.gov/2305711/); the output is an estimate of resting energy, not a prescribed intake. Product decisions for live exchange rates, tax jurisdictions, browser speech privacy, and advanced PDF/JavaScript processing remain deferred.
 
+## Implementation progress — 2026-09-19 (second batch)
+
+The catalog now contains 84 tools. Completed the remaining Tier 1 Health & nutrition candidates — Macro Calculator, Sleep Cycle Calculator, and Calories Burned Calculator (MET-based, source: Ainsworth et al., Compendium of Physical Activities (2011)) — and the remaining Tier 1 PDF candidates buildable with the existing `pdf-lib` dependency: Reorder & Delete PDF Pages, PDF Page Count & Info Viewer (a read-only inspector, not a file-download tool), and Watermark PDF. All six were reviewed and shipped as `reviewed: true`.
+
+`pdf-to-images`, `pdf-to-text`, and `compress-pdf` remain deferred: the first two need a new `pdfjs-dist` dependency (a real bundle-size and worker-setup decision, not just implementation effort), and meaningful client-side PDF compression is limited to re-rasterizing pages as images, which trades away vector text quality — both need a product decision before building, not just engineering time.
+
+Also polished existing Random & fun tools: Coin Flip and Dice Roller now show a real flip/roll animation (a CSS 3D coin flip, and rolling dice with pip faces for d6) before revealing the result, instead of a static number. Invoice Maker gained an optional company logo upload (PNG/JPEG, embedded via `pdf-lib`), and PDF-only tools no longer show the image-transparency checkerboard behind their preview panel.
+
 ## Research basis
 
 Web search across current (Sept 2026) "most popular free online tools"

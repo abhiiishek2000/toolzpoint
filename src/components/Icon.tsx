@@ -72,6 +72,7 @@ import {
   LayoutTemplate,
   Receipt,
   UserSquare2,
+  Flame,
 } from "lucide-react";
 const icons = {
   ArrowUpDown,
@@ -147,6 +148,7 @@ const icons = {
   LayoutTemplate,
   Receipt,
   UserSquare2,
+  Flame,
 };
 export function Icon({
   name,

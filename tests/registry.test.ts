@@ -6,9 +6,9 @@ import {
   searchTools,
 } from "../src/lib/tool-registry";
 import { safeJson } from "../src/lib/seo";
-it("has seventy-eight unique published browser tools with complete content", () => {
-  expect(tools).toHaveLength(78);
-  expect(new Set(tools.map((t) => t.slug)).size).toBe(78);
+it("has eighty-four unique published browser tools with complete content", () => {
+  expect(tools).toHaveLength(84);
+  expect(new Set(tools.map((t) => t.slug)).size).toBe(84);
   for (const t of tools) {
     expect(t.slug).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     expect(t.execution).toBe("client");

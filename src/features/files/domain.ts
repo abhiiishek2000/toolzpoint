@@ -76,6 +76,29 @@ export function parsePageRange(spec: string, pageCount: number) {
   if (!indices.size) throw new Error("Enter at least one page number.");
   return [...indices].sort((a, b) => a - b);
 }
+export function parsePageOrder(spec: string, pageCount: number) {
+  const parts = spec
+    .trim()
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (!parts.length)
+    throw new Error(
+      'Enter the pages to keep, in order, such as "3,1,2" or "1,1,2,3".',
+    );
+  if (parts.length > 400)
+    throw new Error("The rebuilt PDF can contain at most 400 pages.");
+  const indices = parts.map((part) => {
+    if (!/^\d+$/.test(part)) throw new Error(`"${part}" is not a page number.`);
+    const page = Number(part);
+    if (page < 1 || page > pageCount)
+      throw new Error(
+        `Page ${part} does not exist in this ${pageCount}-page PDF.`,
+      );
+    return page - 1;
+  });
+  return indices;
+}
 export type PhotoIdPreset = {
   id: string;
   label: string;
@@ -244,6 +267,8 @@ export type FileTask = {
     | "merge-pdf"
     | "images-to-pdf"
     | "split-pdf"
+    | "organize-pdf-pages"
+    | "watermark-pdf"
     | "passport-photo-maker";
   files: File[];
   quality: number;
@@ -253,6 +278,10 @@ export type FileTask = {
   rotation?: number;
   flip?: "none" | "horizontal" | "vertical";
   pageRange?: string;
+  pageOrder?: string;
+  watermarkText?: string;
+  watermarkOpacity?: number;
+  watermarkFontSize?: number;
   zoom?: number;
   verticalBias?: number;
   maxKB?: number;
@@ -349,4 +378,52 @@ export function rotationDegrees(value: number) {
   if (![0, 90, 180, 270].includes(value))
     throw new Error("Choose 0, 90, 180 or 270 degrees.");
   return value;
+}
+export function watermarkOptions(
+  text: string,
+  opacity: number,
+  fontSize: number,
+) {
+  const trimmed = text.trim();
+  if (!trimmed || trimmed.length > 60 || /[\r\n\x00-\x1f]/.test(trimmed))
+    throw new Error(
+      "Enter watermark text of 1–60 characters, without line breaks.",
+    );
+  if (!Number.isFinite(opacity) || opacity < 0.05 || opacity > 1)
+    throw new Error("Opacity must be between 5% and 100%.");
+  if (!Number.isFinite(fontSize) || fontSize < 8 || fontSize > 200)
+    throw new Error("Font size must be between 8 and 200 points.");
+  return { text: trimmed, opacity, fontSize };
+}
+// Standard formula for centering text of a given width/height that is
+// rotated about its own visual center, rather than pdf-lib's default
+// bottom-left baseline anchor.
+export function centeredRotatedTextOrigin(
+  centerX: number,
+  centerY: number,
+  width: number,
+  height: number,
+  angleDegrees: number,
+) {
+  const angle = (angleDegrees * Math.PI) / 180;
+  return {
+    x: centerX - (width / 2) * Math.cos(angle) + (height / 2) * Math.sin(angle),
+    y: centerY - (width / 2) * Math.sin(angle) - (height / 2) * Math.cos(angle),
+  };
+}
+const PAPER_SIZES: [string, number, number][] = [
+  ["A4", 595, 842],
+  ["A3", 842, 1191],
+  ["A5", 420, 595],
+  ["US Letter", 612, 792],
+  ["US Legal", 612, 1008],
+];
+export function paperSizeLabel(width: number, height: number) {
+  const [w, h] = [Math.round(width), Math.round(height)];
+  const match = PAPER_SIZES.find(
+    ([, pw, ph]) =>
+      (Math.abs(pw - w) <= 2 && Math.abs(ph - h) <= 2) ||
+      (Math.abs(pw - h) <= 2 && Math.abs(ph - w) <= 2),
+  );
+  return match ? ` (${match[0]})` : "";
 }

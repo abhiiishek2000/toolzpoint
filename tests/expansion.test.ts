@@ -24,7 +24,7 @@ it("covers every category and runs every new form with its defaults", () => {
         "add-page-numbers-to-pdf",
       ].includes(t.slug),
   );
-  expect(added).toHaveLength(27);
+  expect(added).toHaveLength(30);
   expect(new Set(added.map((t) => t.category))).toEqual(
     new Set(categories.map((c) => c.name)),
   );
@@ -216,6 +216,75 @@ it.each([
     run(slug as string, input as string, values as Record<string, string>),
   ).toEqual(expected);
 });
+it.each([
+  [
+    "macro-calculator",
+    { calories: "2000", protein: "30", fat: "30" },
+    {
+      "Protein (g)": 150,
+      "Fat (g)": 66.666666666666671,
+      "Carbohydrate (g)": 200,
+    },
+  ],
+  [
+    "macro-calculator",
+    { calories: "2500", protein: "25", fat: "25" },
+    {
+      "Protein (g)": 156.25,
+      "Fat (g)": 69.444444444444443,
+      "Carbohydrate (g)": 312.5,
+    },
+  ],
+])("%s matches independent arithmetic", (slug, values, expected) => {
+  expect(run(slug, "", values)).toEqual(expected);
+});
+it("rejects a macro split that exceeds 100% combined", () => {
+  expect(() =>
+    run("macro-calculator", "", { calories: "2000", protein: "70", fat: "40" }),
+  ).toThrow();
+});
+it("computes sleep-cycle bedtimes and wake times across midnight", () => {
+  expect(
+    run("sleep-cycle-calculator", "", { direction: "wake", time: "07:00" }),
+  ).toEqual({
+    "6 cycles (9.0h sleep)": "21:46",
+    "5 cycles (7.5h sleep)": "23:16",
+    "4 cycles (6.0h sleep)": "00:46",
+    "3 cycles (4.5h sleep)": "02:16",
+  });
+  expect(
+    run("sleep-cycle-calculator", "", { direction: "sleep", time: "23:00" }),
+  ).toEqual({
+    "6 cycles (9.0h sleep)": "08:14",
+    "5 cycles (7.5h sleep)": "06:44",
+    "4 cycles (6.0h sleep)": "05:14",
+    "3 cycles (4.5h sleep)": "03:44",
+  });
+  expect(() =>
+    run("sleep-cycle-calculator", "", { direction: "wake", time: "25:00" }),
+  ).toThrow();
+});
+it.each([
+  [
+    "walking-4mph",
+    "70",
+    "30",
+    { "Calories burned (kcal)": 175, "MET value used": 5 },
+  ],
+  [
+    "running-6mph",
+    "70",
+    "45",
+    { "Calories burned (kcal)": 514.5, "MET value used": 9.8 },
+  ],
+])(
+  "calories-burned-calculator computes %s calories",
+  (activity, weight, minutes, expected) => {
+    expect(
+      run("calories-burned-calculator", "", { activity, weight, minutes }),
+    ).toEqual(expected);
+  },
+);
 it("creates escaped same-origin sitemap XML and removes duplicate URLs", () => {
   const result = run(
     "sitemap-generator",

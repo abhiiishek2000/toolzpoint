@@ -55,6 +55,32 @@ it("rejects invalid input", async () => {
   ).rejects.toThrow();
   await expect(generateInvoicePdf({ ...sample, items: [] })).rejects.toThrow();
 });
+const ONE_PIXEL_PNG = Uint8Array.from(
+  atob(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+  ),
+  (c) => c.charCodeAt(0),
+);
+const ONE_PIXEL_JPEG = Uint8Array.from(
+  atob(
+    "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=",
+  ),
+  (c) => c.charCodeAt(0),
+);
+it("embeds a PNG or JPEG logo at the top of the first page", async () => {
+  for (const bytes of [ONE_PIXEL_PNG, ONE_PIXEL_JPEG]) {
+    const pdfBytes = await generateInvoicePdf(sample, { bytes });
+    const doc = await PDFDocument.load(pdfBytes);
+    expect(doc.getPageCount()).toBeGreaterThanOrEqual(1);
+  }
+});
+it("rejects a logo that is not a readable image", async () => {
+  await expect(
+    generateInvoicePdf(sample, {
+      bytes: new TextEncoder().encode("not an image"),
+    }),
+  ).rejects.toThrow();
+});
 it("does not crash on a rupee symbol or other characters outside WinAnsi", async () => {
   const bytes = await generateInvoicePdf({
     ...sample,

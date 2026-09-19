@@ -1883,8 +1883,8 @@
     "category": "Documents & design",
     "shortDescription": "Fill in a form and download a clean PDF invoice.",
     "icon": "Receipt",
-    "intro": "Create a professional-looking invoice without a spreadsheet template or design software. Enter your business details, your client's details, an invoice number and dates, and as many line items as the job needs, and this tool lays them out on a clean single page with automatic subtotal, tax, and total calculations. Add a currency symbol that matches your market and any notes your client should see, such as payment terms or bank details, then download a ready-to-send PDF. Everything is generated in your browser; no invoice data is uploaded anywhere.",
-    "how": "Each line item's quantity multiplied by its price is summed into a subtotal, tax is calculated as a percentage of that subtotal, and the total is their sum. Business and client details, the item table, and the totals are laid out directly onto an A4 PDF page using precise text positioning, with automatic wrapping for longer text and a new page added if the item list runs long.",
+    "intro": "Create a professional-looking invoice without a spreadsheet template or design software. Enter your business details, your client's details, an invoice number and dates, and as many line items as the job needs, and this tool lays them out on a clean single page with automatic subtotal, tax, and total calculations. Optionally add your company logo (PNG or JPEG, up to 2 MB) to appear at the top of the page. Add a currency symbol that matches your market and any notes your client should see, such as payment terms or bank details, then download a ready-to-send PDF. Everything is generated in your browser; no invoice data or logo is uploaded anywhere.",
+    "how": "Each line item's quantity multiplied by its price is summed into a subtotal, tax is calculated as a percentage of that subtotal, and the total is their sum. Business and client details, an optional logo, the item table, and the totals are laid out directly onto an A4 PDF page using precise text positioning, with automatic wrapping for longer text and a new page added if the item list runs long.",
     "examples": [
       {
         "input": "3 line items, 8% tax, from Acme Studio to Globex Corp",
@@ -1908,6 +1908,10 @@
       {
         "question": "Can I show multiple tax lines, like separate state and federal tax?",
         "answer": "Not currently. Only a single combined tax rate is supported; calculate a combined rate first if your invoice needs to show more than one tax."
+      },
+      {
+        "question": "Can I add my company logo?",
+        "answer": "Yes. Upload a PNG or JPEG up to 2 MB in the business details step, and it's placed at the top of the invoice, scaled to fit without stretching. It stays on your device like everything else in this tool."
       }
     ],
     "keywords": ["invoice", "maker", "generator", "pdf", "billing", "business"],
@@ -3706,5 +3710,287 @@
     "updatedAt": "2026-09-19",
     "reviewed": true,
     "relatedSlugs": ["merge-pdf", "images-to-pdf", "split-pdf", "word-counter"]
+  },
+  {
+    "slug": "macro-calculator",
+    "name": "Macro (Protein/Carb/Fat) Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Split a daily calorie target into protein, fat, and carbohydrate grams.",
+    "icon": "Apple",
+    "intro": "Split a daily calorie target into protein, fat, and carbohydrate grams using percentages you choose. Enter your daily calorie goal along with a protein percentage and a fat percentage; the remaining share is treated as carbohydrate. Protein and carbohydrate are converted to grams using 4 calories per gram, and fat uses 9 calories per gram — the standard energy values used across nutrition references. This is useful for planning meals around a diet or training plan that specifies macronutrient ratios rather than raw grams. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Enter your daily calorie goal along with a protein percentage and a fat percentage; the remainder is treated as carbohydrate. Protein and carbohydrate grams use 4 calories per gram, and fat uses 9 calories per gram.",
+    "examples": [
+      {
+        "input": "2000 kcal; 30% protein; 30% fat",
+        "output": "150 g protein, 66.67 g fat, 200 g carbohydrate"
+      },
+      {
+        "input": "2500 kcal; 25% protein; 25% fat",
+        "output": "156.25 g protein, 69.44 g fat, 312.5 g carbohydrate"
+      }
+    ],
+    "limitations": "Calorie goal must be between 800 and 10,000 kcal. Protein and fat percentages must each be 0–100 and must not exceed 100 combined. This only performs the arithmetic split; it does not recommend which ratio to use or account for individual health conditions.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Enter your daily calorie goal along with a protein percentage and a fat percentage; the remainder is treated as carbohydrate. Protein and carbohydrate grams use 4 calories per gram, and fat uses 9 calories per gram."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Calorie goal must be between 800 and 10,000 kcal. Protein and fat percentages must each be 0–100 and must not exceed 100 combined. This only performs the arithmetic split; it does not recommend which ratio to use or account for individual health conditions."
+      }
+    ],
+    "keywords": ["macro", "calculator", "protein", "carbs", "fat"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "nutrition-calculator",
+      "bmr-calculator",
+      "bmi-calculator",
+      "water-intake-calculator"
+    ]
+  },
+  {
+    "slug": "sleep-cycle-calculator",
+    "name": "Sleep Cycle Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Work out bedtimes or wake-up times based on 90-minute sleep cycles.",
+    "icon": "Moon",
+    "intro": "Work out bedtimes or wake-up times based on 90-minute sleep cycles, the approximate length of a full cycle of light, deep, and REM sleep. Choose whether you're planning around a wake-up time or a bedtime, enter that time, and this tool works out four options — 3, 4, 5, or 6 complete cycles — each including roughly 14 minutes to fall asleep. Waking up at the end of a cycle, rather than in the middle of one, is commonly associated with feeling less groggy. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Adds or subtracts 14 minutes (to fall asleep) plus a whole number of 90-minute cycles (3 to 6) from the time you enter, wrapping across midnight as needed.",
+    "examples": [
+      {
+        "input": "Wake-up time 07:00",
+        "output": "For 6 cycles (9.0h sleep), go to bed at 21:46"
+      },
+      {
+        "input": "Bedtime 23:00",
+        "output": "For 6 cycles (9.0h sleep), wake at 08:14"
+      }
+    ],
+    "limitations": "Assumes a fixed 14-minute time to fall asleep and exact 90-minute cycles; actual cycle length and time to fall asleep vary by person and by night. This is a planning estimate, not a sleep-tracking or medical tool.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Adds or subtracts 14 minutes (to fall asleep) plus a whole number of 90-minute cycles (3 to 6) from the time you enter, wrapping across midnight as needed."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Assumes a fixed 14-minute time to fall asleep and exact 90-minute cycles; actual cycle length and time to fall asleep vary by person and by night. This is a planning estimate, not a sleep-tracking or medical tool."
+      }
+    ],
+    "keywords": ["sleep", "cycle", "calculator", "bedtime", "wake"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "heart-rate-zone-calculator",
+      "water-intake-calculator",
+      "bmr-calculator",
+      "nutrition-calculator"
+    ]
+  },
+  {
+    "slug": "calories-burned-calculator",
+    "name": "Calories Burned Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Estimate calories burned for common activities using MET values.",
+    "icon": "Flame",
+    "intro": "Estimate calories burned during common activities using standard MET (metabolic equivalent of task) values. Choose an activity, enter your body weight and how long you did it for, and this tool multiplies the activity's MET value by your weight in kilograms and the duration in hours — the standard formula used across fitness and clinical references. MET values here are commonly cited figures adapted from the Compendium of Physical Activities (Ainsworth et al., 2011). Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Calories = MET × weight in kilograms × duration in hours. MET values come from a small fixed reference table per activity; source: Ainsworth et al., Compendium of Physical Activities (2011).",
+    "examples": [
+      {
+        "input": "Brisk walking (4 mph); 70 kg; 30 minutes",
+        "output": "175 kcal"
+      },
+      {
+        "input": "Running (6 mph); 70 kg; 45 minutes",
+        "output": "514.5 kcal"
+      }
+    ],
+    "limitations": "MET values are fixed, commonly cited averages for each activity category, not personalized measurements; actual energy expenditure varies with fitness level, terrain, effort, and individual metabolism. Weight must be 30–300 kg and duration 1–600 minutes.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Calories = MET × weight in kilograms × duration in hours. MET values come from a small fixed reference table per activity; source: Ainsworth et al., Compendium of Physical Activities (2011)."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "MET values are fixed, commonly cited averages for each activity category, not personalized measurements; actual energy expenditure varies with fitness level, terrain, effort, and individual metabolism. Weight must be 30–300 kg and duration 1–600 minutes."
+      }
+    ],
+    "keywords": ["calories", "burned", "calculator", "met", "exercise"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "bmr-calculator",
+      "nutrition-calculator",
+      "heart-rate-zone-calculator",
+      "water-intake-calculator"
+    ]
+  },
+  {
+    "slug": "organize-pdf-pages",
+    "name": "Reorder & Delete PDF Pages",
+    "category": "PDF tools",
+    "shortDescription": "Reorder, duplicate, or delete pages in a PDF without uploading it.",
+    "icon": "LayoutGrid",
+    "intro": "Reorder, duplicate, or delete pages in a PDF by typing the new page order, right in your browser. Enter the pages you want to keep as a comma-separated list in the exact order you want them — repeat a page number to duplicate it, and simply leave out any page number to delete it. The tool rebuilds a new PDF from your source file using that order, without touching the original file. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Pages are copied from your source PDF into a new document in exactly the order you list them; repeating a number duplicates that page, and page numbers you leave out are dropped.",
+    "examples": [
+      {
+        "input": "5-page PDF; order \"3,1,2\"",
+        "output": "A new 3-page PDF: original pages 3, 1, then 2"
+      },
+      {
+        "input": "3-page PDF; order \"1,1,2,3\"",
+        "output": "A new 4-page PDF with page 1 duplicated"
+      }
+    ],
+    "limitations": "One nonempty PDF up to 20 MB and 200 source pages. The rebuilt PDF can contain at most 400 pages (duplicates count toward this limit). Encrypted PDFs are unsupported, and rewriting invalidates digital signatures; verify the downloaded copy.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Pages are copied from your source PDF into a new document in exactly the order you list them; repeating a number duplicates that page, and page numbers you leave out are dropped."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "One nonempty PDF up to 20 MB and 200 source pages. The rebuilt PDF can contain at most 400 pages (duplicates count toward this limit). Encrypted PDFs are unsupported, and rewriting invalidates digital signatures; verify the downloaded copy."
+      }
+    ],
+    "keywords": ["organize", "reorder", "delete", "pdf", "pages"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "split-pdf",
+      "merge-pdf",
+      "rotate-pdf",
+      "add-page-numbers-to-pdf"
+    ]
+  },
+  {
+    "slug": "pdf-page-counter",
+    "name": "PDF Page Count & Info Viewer",
+    "category": "PDF tools",
+    "shortDescription": "Check a PDF's page count, page size, and basic document info.",
+    "icon": "FileText",
+    "intro": "Check a PDF's page count, page size, and basic document info before you use it, without uploading the file anywhere. Choose a PDF and this tool reads its page count, the size of its first page in points (and the closest common paper size, when it matches one), whether the file is encrypted, and any title or author recorded in the document's metadata. This is useful for quickly confirming a file before merging, splitting, or printing it. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Reads the PDF's page count, the first page's width and height in points, its encryption flag, and any Title/Author metadata directly from the file's structure.",
+    "examples": [
+      {
+        "input": "3-page A4 PDF",
+        "output": "Pages: 3 · Page size: 595 × 842 pt (A4)"
+      },
+      {
+        "input": "Password-protected PDF",
+        "output": "Encrypted: Yes — page contents are not readable without a password"
+      }
+    ],
+    "limitations": "One PDF up to 20 MB. Page size is read from the first page only; later pages can differ. Title and author are only shown when the source file's metadata includes them, and this tool cannot open or decrypt a password-protected PDF.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Reads the PDF's page count, the first page's width and height in points, its encryption flag, and any Title/Author metadata directly from the file's structure."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "One PDF up to 20 MB. Page size is read from the first page only; later pages can differ. Title and author are only shown when the source file's metadata includes them, and this tool cannot open or decrypt a password-protected PDF."
+      }
+    ],
+    "keywords": ["pdf", "page", "count", "info", "viewer"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "merge-pdf",
+      "split-pdf",
+      "rotate-pdf",
+      "organize-pdf-pages"
+    ]
+  },
+  {
+    "slug": "watermark-pdf",
+    "name": "Watermark PDF",
+    "category": "PDF tools",
+    "shortDescription": "Stamp a diagonal text watermark across every page of a PDF.",
+    "icon": "Files",
+    "intro": "Stamp a diagonal text watermark, such as \"DRAFT\" or \"CONFIDENTIAL\", across every page of a PDF, right in your browser. Enter the watermark text, choose its size and opacity, and this tool draws it once per page at a 45-degree angle, centered on the page, before saving a new PDF. Lower opacity keeps the original content readable underneath the stamp. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Draws your watermark text once per page, rotated 45 degrees and centered, at the font size and opacity you choose, then saves a new PDF.",
+    "examples": [
+      {
+        "input": "\"DRAFT\"; 60pt; 25% opacity",
+        "output": "Every page shows a faint diagonal \"DRAFT\" stamp"
+      },
+      {
+        "input": "\"CONFIDENTIAL\"; 36pt; 15% opacity",
+        "output": "A subtle diagonal watermark on every page"
+      }
+    ],
+    "limitations": "One nonempty PDF up to 20 MB and 200 pages. Watermark text supports standard Latin characters only, up to 60 characters, and is drawn identically on every page — it cannot vary per page or follow existing page rotation. Encrypted PDFs are unsupported, and rewriting invalidates digital signatures.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Draws your watermark text once per page, rotated 45 degrees and centered, at the font size and opacity you choose, then saves a new PDF."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "One nonempty PDF up to 20 MB and 200 pages. Watermark text supports standard Latin characters only, up to 60 characters, and is drawn identically on every page — it cannot vary per page or follow existing page rotation. Encrypted PDFs are unsupported, and rewriting invalidates digital signatures."
+      }
+    ],
+    "keywords": ["watermark", "pdf", "stamp", "draft", "confidential"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "add-page-numbers-to-pdf",
+      "rotate-pdf",
+      "merge-pdf",
+      "split-pdf"
+    ]
   }
 ]

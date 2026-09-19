@@ -504,9 +504,22 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [coinPhase, setCoinPhase] = useState<"idle" | "rolling" | "done">(
+    "idle",
+  );
+  const [coinSpin, setCoinSpin] = useState(0);
+  const [coinFace, setCoinFace] = useState<"Heads" | "Tails">("Heads");
+  const [dicePhase, setDicePhase] = useState<"idle" | "rolling" | "done">(
+    "idle",
+  );
+  const [diceFaces, setDiceFaces] = useState<number[]>([]);
+  const [diceSides, setDiceSides] = useState(6);
   const favorite = useLocalList("favorites").includes(slug);
   const localDate = useLocalDate();
   const isText = textTools.includes(slug);
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
   useEffect(() => {
     track("tool_view", { toolSlug: slug });
   }, [slug]);
@@ -532,6 +545,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
     setResult(null);
     setError("");
     setNotice("");
+    setCoinPhase("idle");
+    setDicePhase("idle");
   }
   async function run() {
     if (busy) return;
@@ -555,6 +570,49 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
         caseMode,
         algorithm,
       });
+      if (
+        slug === "coin-flip" &&
+        Number(values.count) === 1 &&
+        typeof output === "object" &&
+        "Sequence" in output
+      ) {
+        const heads = output.Heads === 1;
+        setCoinFace(heads ? "Heads" : "Tails");
+        setCoinPhase("rolling");
+        setCoinSpin((s) => s + 1800 + (heads ? 0 : 180));
+        await sleep(900);
+        setCoinPhase("done");
+      } else {
+        setCoinPhase("idle");
+      }
+      if (
+        slug === "dice-roller" &&
+        typeof output === "object" &&
+        "Rolls" in output
+      ) {
+        const sides = Math.max(2, Math.round(Number(values.sides) || 6));
+        const rolls = String(output.Rolls).split(", ").map(Number);
+        if (rolls.length <= 12) {
+          setDiceSides(sides);
+          setDicePhase("rolling");
+          const flicker = () =>
+            setDiceFaces(
+              rolls.map(() => 1 + Math.floor(Math.random() * sides)),
+            );
+          flicker();
+          const start = performance.now();
+          while (performance.now() - start < 600) {
+            await sleep(70);
+            flicker();
+          }
+          setDiceFaces(rolls);
+          setDicePhase("done");
+        } else {
+          setDicePhase("idle");
+        }
+      } else if (slug === "dice-roller") {
+        setDicePhase("idle");
+      }
       setResult(output);
       writeList(
         "recents",
@@ -567,6 +625,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
       setNotice("Result ready.");
     } catch (e) {
       setResult(null);
+      setCoinPhase("idle");
+      setDicePhase("idle");
       setError(
         e instanceof Error ? e.message : "Check your input and try again.",
       );
@@ -634,6 +694,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
     setResult(null);
     setError("");
     setNotice("Inputs reset.");
+    setCoinPhase("idle");
+    setDicePhase("idle");
   }
   return (
     <section className="workspace" aria-label="Tool workspace">
@@ -950,9 +1012,11 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                         ? "Generate passwords"
                         : slug === "coin-flip"
                           ? "Flip"
-                          : isText
-                            ? "Run tool"
-                            : "Calculate result"}
+                          : slug === "dice-roller"
+                            ? "Roll"
+                            : isText
+                              ? "Run tool"
+                              : "Calculate result"}
                   <Icon name="ArrowRight" size={17} />
                 </button>
                 <button className="button quiet" type="button" onClick={reset}>
@@ -974,7 +1038,31 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   Copy
                 </button>
               </div>
-              {result === null ? (
+              {coinPhase === "rolling" ? (
+                <div className="result-empty">
+                  <div className="coin-stage">
+                    <div
+                      className="coin"
+                      style={{ transform: `rotateY(${coinSpin}deg)` }}
+                    >
+                      <div className="coin-face coin-face-heads">H</div>
+                      <div className="coin-face coin-face-tails">T</div>
+                    </div>
+                  </div>
+                  <span>Flipping…</span>
+                </div>
+              ) : dicePhase === "rolling" ? (
+                <div className="result-empty">
+                  <div className="dice-tray">
+                    {diceFaces.map((face, i) => (
+                      <div key={i} className="die is-rolling">
+                        {face}
+                      </div>
+                    ))}
+                  </div>
+                  <span>Rolling…</span>
+                </div>
+              ) : result === null ? (
                 <div className="result-empty">
                   <span className="result-empty-icon">
                     <Icon name="CheckCircle2" size={30} />
@@ -990,14 +1078,53 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   value={result}
                 />
               ) : (
-                <dl className="result-stats">
-                  {Object.entries(result).map(([k, v]) => (
-                    <div key={k}>
-                      <dt>{k}</dt>
-                      <dd>{display(v, k)}</dd>
+                <>
+                  {coinPhase === "done" && (
+                    <div className="coin-stage coin-stage-done">
+                      <div
+                        className="coin"
+                        style={{ transform: `rotateY(${coinSpin}deg)` }}
+                      >
+                        <div className="coin-face coin-face-heads">H</div>
+                        <div className="coin-face coin-face-tails">T</div>
+                      </div>
+                      <strong className="coin-call">{coinFace}!</strong>
                     </div>
-                  ))}
-                </dl>
+                  )}
+                  {dicePhase === "done" && (
+                    <div className="dice-tray dice-tray-done">
+                      {diceFaces.map((face, i) =>
+                        diceSides === 6 ? (
+                          <div
+                            key={i}
+                            className="die die-pips"
+                            data-face={face}
+                          >
+                            <span className="tl" />
+                            <span className="tr" />
+                            <span className="ml" />
+                            <span className="c" />
+                            <span className="mr" />
+                            <span className="bl" />
+                            <span className="br" />
+                          </div>
+                        ) : (
+                          <div key={i} className="die">
+                            {face}
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
+                  <dl className="result-stats">
+                    {Object.entries(result).map(([k, v]) => (
+                      <div key={k}>
+                        <dt>{k}</dt>
+                        <dd>{display(v, k)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </>
               )}
               <p className="result-status" role="status" aria-live="polite">
                 {notice}

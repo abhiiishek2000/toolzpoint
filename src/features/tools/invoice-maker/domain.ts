@@ -28,15 +28,26 @@ export const invoiceSchema = z.object({
   items: z.array(invoiceItemSchema).min(1).max(30),
 });
 export type InvoiceInput = z.infer<typeof invoiceSchema>;
+export type InvoiceLogo = { bytes: Uint8Array };
 const PAGE_WIDTH = 595.28;
 const PAGE_HEIGHT = 841.89;
 const MARGIN = 50;
-export async function generateInvoicePdf(input: InvoiceInput) {
+function detectLogoFormat(bytes: Uint8Array): "png" | "jpeg" {
+  if (bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71)
+    return "png";
+  if (bytes[0] === 255 && bytes[1] === 216) return "jpeg";
+  throw new Error("The logo must be a PNG or JPEG image.");
+}
+export async function generateInvoicePdf(
+  input: InvoiceInput,
+  logo?: InvoiceLogo,
+) {
   const v = invoiceSchema.parse(input);
   const totals = invoiceTotals(v.items, v.taxRate);
   const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
   const { wrapText, wrapParagraphs, sanitizeForPdf } =
     await import("../../files/pdf-text");
+  const { fitDimensions, imageDimensions } = await import("../../files/domain");
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
@@ -56,6 +67,22 @@ export async function generateInvoicePdf(input: InvoiceInput) {
   const currency = s(v.currency?.trim() || "$");
   let page = doc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   let y = PAGE_HEIGHT - MARGIN;
+  if (logo) {
+    imageDimensions(logo.bytes);
+    const format = detectLogoFormat(logo.bytes);
+    const embedded =
+      format === "png"
+        ? await doc.embedPng(logo.bytes)
+        : await doc.embedJpg(logo.bytes);
+    const dims = fitDimensions(embedded.width, embedded.height, 140, 50);
+    page.drawImage(embedded, {
+      x: MARGIN,
+      y: y - dims.height,
+      width: dims.width,
+      height: dims.height,
+    });
+    y -= dims.height + 18;
+  }
   function ensureSpace(needed: number) {
     if (y - needed < MARGIN + 30) {
       page = doc.addPage([PAGE_WIDTH, PAGE_HEIGHT]);

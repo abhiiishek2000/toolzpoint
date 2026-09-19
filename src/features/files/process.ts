@@ -4,6 +4,9 @@ import {
   fitDimensions,
   validateFiles,
   parsePageRange,
+  parsePageOrder,
+  watermarkOptions,
+  centeredRotatedTextOrigin,
   coverCropRect,
   replaceBackground,
   hexToRgb,
@@ -24,7 +27,9 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
     task.kind === "merge-pdf" ||
     task.kind === "split-pdf" ||
     task.kind === "rotate-pdf" ||
-    task.kind === "add-page-numbers-to-pdf";
+    task.kind === "add-page-numbers-to-pdf" ||
+    task.kind === "organize-pdf-pages" ||
+    task.kind === "watermark-pdf";
   validateFiles(
     task.files,
     isPdfInput ? "pdf" : "image",
@@ -102,6 +107,67 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
         type: "application/pdf",
       }),
       pages: indices.length,
+    };
+  }
+  if (task.kind === "organize-pdf-pages") {
+    const { PDFDocument } = await import("pdf-lib");
+    const file = task.files[0];
+    if (!file) throw new Error("Choose a PDF.");
+    const src = await PDFDocument.load(await file.arrayBuffer());
+    const indices = parsePageOrder(task.pageOrder ?? "", src.getPageCount());
+    const out = await PDFDocument.create();
+    const pages = await out.copyPages(src, indices);
+    for (const page of pages) out.addPage(page);
+    return {
+      blob: new Blob([new Uint8Array(await out.save())], {
+        type: "application/pdf",
+      }),
+      pages: indices.length,
+    };
+  }
+  if (task.kind === "watermark-pdf") {
+    const { PDFDocument, StandardFonts, rgb, degrees } =
+      await import("pdf-lib");
+    const { sanitizeForPdf } = await import("./pdf-text");
+    const file = task.files[0];
+    if (!file) throw new Error("Choose a PDF.");
+    const doc = await PDFDocument.load(await file.arrayBuffer());
+    const pages = doc.getPages();
+    if (!pages.length || pages.length > 200)
+      throw new Error("Use a PDF with 1–200 pages.");
+    const font = await doc.embedFont(StandardFonts.HelveticaBold);
+    const { text, opacity, fontSize } = watermarkOptions(
+      task.watermarkText ?? "",
+      task.watermarkOpacity ?? 0.2,
+      task.watermarkFontSize ?? 60,
+    );
+    const clean = sanitizeForPdf(text, font);
+    if (!clean) throw new Error("Watermark text has no renderable characters.");
+    const width = font.widthOfTextAtSize(clean, fontSize);
+    for (const page of pages) {
+      const box = page.getCropBox();
+      const { x, y } = centeredRotatedTextOrigin(
+        box.x + box.width / 2,
+        box.y + box.height / 2,
+        width,
+        fontSize,
+        45,
+      );
+      page.drawText(clean, {
+        x,
+        y,
+        size: fontSize,
+        font,
+        color: rgb(0.4, 0.4, 0.45),
+        opacity,
+        rotate: degrees(45),
+      });
+    }
+    return {
+      blob: new Blob([new Uint8Array(await doc.save())], {
+        type: "application/pdf",
+      }),
+      pages: pages.length,
     };
   }
   if (task.kind === "images-to-pdf") {

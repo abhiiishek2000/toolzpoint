@@ -6,6 +6,10 @@ import {
   validateFiles,
   savings,
   parsePageRange,
+  parsePageOrder,
+  watermarkOptions,
+  centeredRotatedTextOrigin,
+  paperSizeLabel,
   mmToPx,
   coverCropRect,
   hexToRgb,
@@ -117,6 +121,83 @@ it("splits a PDF into a new document containing only the chosen pages", async ()
   expect(split.getPageCount()).toBe(2);
   expect(split.getPages().map((p) => p.getWidth())).toEqual([100, 300]);
   expect(out.pages).toBe(2);
+});
+it("parses an explicit page order, allowing repeats and any sequence", () => {
+  expect(parsePageOrder("3,1,2", 5)).toEqual([2, 0, 1]);
+  expect(parsePageOrder("1,1,2", 5)).toEqual([0, 0, 1]);
+  expect(() => parsePageOrder("", 5)).toThrow();
+  expect(() => parsePageOrder("0", 5)).toThrow();
+  expect(() => parsePageOrder("6", 5)).toThrow(/does not exist/);
+  expect(() => parsePageOrder("abc", 5)).toThrow();
+  expect(() => parsePageOrder(Array(401).fill("1").join(","), 5)).toThrow();
+});
+it("rebuilds a PDF in a custom order, duplicating and dropping pages", async () => {
+  const doc = await PDFDocument.create();
+  for (const size of [100, 200, 300]) doc.addPage([size, size]);
+  const file = new File([new Uint8Array(await doc.save())], "a.pdf", {
+    type: "application/pdf",
+  });
+  const out = await processFiles({
+    id: 1,
+    kind: "organize-pdf-pages",
+    files: [file],
+    quality: 0.8,
+    maxWidth: 1920,
+    maxHeight: 1920,
+    format: "image/webp",
+    pageOrder: "3,1,1",
+  });
+  const rebuilt = await PDFDocument.load(await out.blob.arrayBuffer());
+  expect(rebuilt.getPages().map((p) => p.getWidth())).toEqual([300, 100, 100]);
+  expect(out.pages).toBe(3);
+});
+it("validates watermark text length and opacity/font-size bounds", () => {
+  expect(watermarkOptions(" DRAFT ", 0.2, 60)).toEqual({
+    text: "DRAFT",
+    opacity: 0.2,
+    fontSize: 60,
+  });
+  expect(() => watermarkOptions("", 0.2, 60)).toThrow();
+  expect(() => watermarkOptions("a".repeat(61), 0.2, 60)).toThrow();
+  expect(() => watermarkOptions("DRAFT\nTEXT", 0.2, 60)).toThrow();
+  expect(() => watermarkOptions("DRAFT", 0, 60)).toThrow();
+  expect(() => watermarkOptions("DRAFT", 1.5, 60)).toThrow();
+  expect(() => watermarkOptions("DRAFT", 0.2, 4)).toThrow();
+  expect(() => watermarkOptions("DRAFT", 0.2, 500)).toThrow();
+});
+it("stamps a diagonal watermark on every page", async () => {
+  const doc = await PDFDocument.create();
+  doc.addPage([300, 400]);
+  doc.addPage([300, 400]);
+  const file = new File([new Uint8Array(await doc.save())], "a.pdf", {
+    type: "application/pdf",
+  });
+  const out = await processFiles({
+    id: 1,
+    kind: "watermark-pdf",
+    files: [file],
+    quality: 0.8,
+    maxWidth: 1920,
+    maxHeight: 1920,
+    format: "image/webp",
+    watermarkText: "CONFIDENTIAL",
+    watermarkOpacity: 0.15,
+    watermarkFontSize: 36,
+  });
+  const stamped = await PDFDocument.load(await out.blob.arrayBuffer());
+  expect(stamped.getPageCount()).toBe(2);
+  expect(out.pages).toBe(2);
+});
+it("centers rotated text about its own visual center", () => {
+  const origin = centeredRotatedTextOrigin(100, 100, 40, 10, 0);
+  expect(origin.x).toBeCloseTo(80, 5);
+  expect(origin.y).toBeCloseTo(95, 5);
+});
+it("labels page sizes that match a common paper size", () => {
+  expect(paperSizeLabel(595, 842)).toBe(" (A4)");
+  expect(paperSizeLabel(612, 792)).toBe(" (US Letter)");
+  expect(paperSizeLabel(842, 595)).toBe(" (A4)");
+  expect(paperSizeLabel(123, 456)).toBe("");
 });
 it("converts millimeters to pixels at 300 DPI and bounds the range", () => {
   expect(mmToPx(35)).toBe(413);

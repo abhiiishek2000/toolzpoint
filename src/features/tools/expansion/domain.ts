@@ -51,6 +51,9 @@ export const expansionSlugs = [
   "roi-calculator",
   "break-even-calculator",
   "bmr-calculator",
+  "macro-calculator",
+  "sleep-cycle-calculator",
+  "calories-burned-calculator",
   "sitemap-generator",
   "hashtag-generator",
   "pin-code-generator",
@@ -319,6 +322,66 @@ export function runExpansion(
       });
       return {
         "Estimated resting energy (kcal/day)": result["Resting energy (kcal)"],
+      };
+    }
+    case "macro-calculator": {
+      const calories = num("calories", 800, 10000);
+      const protein = num("protein", 0, 100);
+      const fat = num("fat", 0, 100);
+      if (protein + fat > 100)
+        throw new Error("Protein % and fat % must not exceed 100 combined.");
+      return {
+        "Protein (g)": (calories * protein) / 100 / 4,
+        "Fat (g)": (calories * fat) / 100 / 9,
+        "Carbohydrate (g)": (calories * (100 - protein - fat)) / 100 / 4,
+      };
+    }
+    case "sleep-cycle-calculator": {
+      const direction = option("direction", ["wake", "sleep"]);
+      const time = str("time");
+      const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(time);
+      if (!match) throw new Error("Enter a valid 24-hour time.");
+      const base = Number(match[1]) * 60 + Number(match[2]);
+      const FALL_ASLEEP = 14;
+      const CYCLE = 90;
+      const result: Record<string, string> = {};
+      for (const cycles of [6, 5, 4, 3]) {
+        const total = cycles * CYCLE + FALL_ASLEEP;
+        const target =
+          (((direction === "wake" ? base - total : base + total) % 1440) +
+            1440) %
+          1440;
+        const hh = Math.floor(target / 60)
+          .toString()
+          .padStart(2, "0");
+        const mm = (target % 60).toString().padStart(2, "0");
+        const label = `${cycles} cycles (${((cycles * CYCLE) / 60).toFixed(1)}h sleep)`;
+        result[label] = `${hh}:${mm}`;
+      }
+      return result;
+    }
+    case "calories-burned-calculator": {
+      const met: Record<string, number> = {
+        "walking-3mph": 3.5,
+        "walking-4mph": 5.0,
+        "running-5mph": 8.3,
+        "running-6mph": 9.8,
+        "running-8mph": 11.8,
+        "cycling-leisure": 4.0,
+        "cycling-moderate": 8.0,
+        "swimming-moderate": 6.0,
+        yoga: 2.5,
+        "weight-training": 6.0,
+        "jump-rope": 11.8,
+        dancing: 4.8,
+        hiking: 6.0,
+      };
+      const activity = option("activity", Object.keys(met));
+      const weight = num("weight", 30, 300);
+      const minutes = num("minutes", 1, 600);
+      return {
+        "Calories burned (kcal)": met[activity]! * weight * (minutes / 60),
+        "MET value used": met[activity]!,
       };
     }
     case "sitemap-generator": {

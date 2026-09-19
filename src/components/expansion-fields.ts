@@ -86,6 +86,47 @@ export const expansionFields: Record<string, WorkspaceField[]> = {
     number("age", "Age (18–100 years)", "30"),
     select("sex", "Sex used in formula", "male", ["male", "female"]),
   ],
+  "macro-calculator": [
+    number("calories", "Daily calories (kcal)", "2000"),
+    number("protein", "Protein (% of calories)", "30"),
+    number("fat", "Fat (% of calories)", "30"),
+  ],
+  "sleep-cycle-calculator": [
+    {
+      key: "direction",
+      label: "I'm planning around",
+      value: "wake",
+      options: [
+        ["wake", "A wake-up time"],
+        ["sleep", "A bedtime"],
+      ],
+    },
+    { key: "time", label: "Time", type: "time", value: "07:00" },
+  ],
+  "calories-burned-calculator": [
+    {
+      key: "activity",
+      label: "Activity",
+      value: "walking-4mph",
+      options: [
+        ["walking-3mph", "Walking (3 mph, moderate)"],
+        ["walking-4mph", "Walking (4 mph, brisk)"],
+        ["running-5mph", "Running (5 mph)"],
+        ["running-6mph", "Running (6 mph)"],
+        ["running-8mph", "Running (8 mph)"],
+        ["cycling-leisure", "Cycling, leisure (under 10 mph)"],
+        ["cycling-moderate", "Cycling, moderate (12–13.9 mph)"],
+        ["swimming-moderate", "Swimming, moderate effort"],
+        ["yoga", "Yoga"],
+        ["weight-training", "Weight training, vigorous"],
+        ["jump-rope", "Jump rope"],
+        ["dancing", "Dancing (general)"],
+        ["hiking", "Hiking, cross-country"],
+      ],
+    },
+    number("weight", "Weight (kg)", "70"),
+    number("minutes", "Duration (minutes)", "30"),
+  ],
   "pin-code-generator": [
     number("length", "PIN length (4–12)", "6"),
     number("count", "Number of PINs (1–20)", "5"),
