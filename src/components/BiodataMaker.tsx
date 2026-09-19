@@ -43,6 +43,85 @@ const initial: Fields = {
   phone: "",
   email: "",
 };
+function BiodataPreview({
+  fields,
+  photoPreview,
+}: {
+  fields: Fields;
+  photoPreview: string;
+}) {
+  const row = (label: string, value: string) =>
+    value.trim() ? (
+      <div className="bp-row" key={label}>
+        <dt>{label}</dt>
+        <dd>{value}</dd>
+      </div>
+    ) : null;
+  const personal = [
+    row("Date of Birth", fields.dateOfBirth),
+    row("Time of Birth", fields.timeOfBirth),
+    row("Place of Birth", fields.placeOfBirth),
+    row("Height", fields.height),
+    row("Complexion", fields.complexion),
+    row("Blood Group", fields.bloodGroup),
+    row("Religion", fields.religion),
+    row("Caste / Community", fields.caste),
+    row("Education", fields.education),
+    row("Occupation", fields.occupation),
+    row("Annual Income", fields.income),
+  ].filter(Boolean);
+  const family = [
+    row("Father's Name", fields.fatherName),
+    row("Mother's Name", fields.motherName),
+    row("Siblings", fields.siblings),
+  ].filter(Boolean);
+  const contact = [
+    row("Address", fields.address),
+    row("Phone", fields.phone),
+    row("Email", fields.email),
+  ].filter(Boolean);
+  return (
+    <div className="doc-page biodata-preview">
+      <div className="bp-head">
+        <div>
+          <div className="bp-name">{fields.fullName.trim() || "Your Name"}</div>
+          <div className="bp-label">Biodata</div>
+        </div>
+        {photoPreview && (
+          // eslint-disable-next-line @next/next/no-img-element -- local blob preview
+          <img className="bp-photo" src={photoPreview} alt="" />
+        )}
+      </div>
+      <hr className="bp-divider" />
+      {personal.length > 0 && (
+        <div className="bp-section">
+          <div className="bp-section-title">Personal Details</div>
+          <dl style={{ margin: 0 }}>{personal}</dl>
+        </div>
+      )}
+      {family.length > 0 && (
+        <div className="bp-section">
+          <div className="bp-section-title">Family Details</div>
+          <dl style={{ margin: 0 }}>{family}</dl>
+        </div>
+      )}
+      {contact.length > 0 && (
+        <div className="bp-section">
+          <div className="bp-section-title">Contact Details</div>
+          <dl style={{ margin: 0 }}>{contact}</dl>
+        </div>
+      )}
+      {!fields.fullName.trim() &&
+        !personal.length &&
+        !family.length &&
+        !contact.length && (
+          <p className="doc-placeholder" style={{ fontSize: "1.8cqw" }}>
+            Fill in the form to see your biodata take shape here.
+          </p>
+        )}
+    </div>
+  );
+}
 export default function BiodataMaker() {
   const [fields, setFields] = useState<Fields>(initial);
   const [photo, setPhoto] = useState<File | null>(null);
@@ -134,7 +213,7 @@ export default function BiodataMaker() {
   );
   return (
     <UtilityFrame slug="biodata-maker">
-      <div className="document-studio">
+      <div className="document-studio document-studio-preview">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -146,6 +225,11 @@ export default function BiodataMaker() {
               <span>01</span>
               <h2>Name and photo</h2>
             </div>
+            <p className="setting-hint">
+              Every field but your name is optional. Religion, caste, income,
+              and other sensitive fields are entirely up to you — leave any of
+              them blank and they won&apos;t appear on the page.
+            </p>
             <div className="fields-grid">
               {field("fullName", "Full name", "text", true)}
             </div>
@@ -251,13 +335,14 @@ export default function BiodataMaker() {
             </div>
           </fieldset>
         </form>
-        <aside className="invoice-summary">
-          <h3>Every field but your name is optional.</h3>
-          <p>
-            Religion, caste, income, and other sensitive fields are entirely up
-            to you — leave any of them blank and they won&apos;t appear on the
-            page. Fill in only what you&apos;re comfortable sharing.
-          </p>
+        <aside className="doc-preview-pane">
+          <div className="doc-preview-heading">
+            <h3>Live preview</h3>
+            <span>Updates as you type</span>
+          </div>
+          <div className="doc-page-frame">
+            <BiodataPreview fields={fields} photoPreview={photoPreview} />
+          </div>
           <p className="result-status" role="status">
             {notice}
           </p>

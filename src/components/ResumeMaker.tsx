@@ -126,6 +126,137 @@ function EntryEditor({
     </div>
   );
 }
+function bulletLines(text: string) {
+  return text
+    .split("\n")
+    .map((b) => b.trim())
+    .filter(Boolean);
+}
+function ResumePreview({
+  template,
+  fullName,
+  title,
+  email,
+  phone,
+  location,
+  links,
+  summary,
+  experience,
+  education,
+  skills,
+  projects,
+  certifications,
+  languages,
+}: {
+  template: ResumeTemplateId;
+  fullName: string;
+  title: string;
+  email: string;
+  phone: string;
+  location: string;
+  links: string;
+  summary: string;
+  experience: EntryRow[];
+  education: EntryRow[];
+  skills: string;
+  projects: EntryRow[];
+  certifications: string;
+  languages: string;
+}) {
+  const contact = [location, phone, email, links]
+    .filter(Boolean)
+    .join("   ·   ");
+  const exp = experience.filter((r) => r.title.trim());
+  const edu = education.filter((r) => r.title.trim());
+  const proj = projects.filter((r) => r.title.trim());
+  const entryBlock = (row: EntryRow) => (
+    <div className="rp-entry" key={row.id}>
+      <div className="rp-entry-head">
+        <span className="rp-entry-title">{row.title}</span>
+        {row.dates && <span className="rp-entry-dates">{row.dates}</span>}
+      </div>
+      {(row.subtitle || row.location) && (
+        <div className="rp-entry-sub">
+          {[row.subtitle, row.location].filter(Boolean).join(" — ")}
+        </div>
+      )}
+      {bulletLines(row.bulletsText).map((b, i) => (
+        <div className="rp-bullet" key={i}>
+          {b}
+        </div>
+      ))}
+    </div>
+  );
+  const isEmpty =
+    !fullName.trim() && !summary.trim() && exp.length === 0 && edu.length === 0;
+  return (
+    <div className="doc-page resume-preview" data-template={template}>
+      <div className="rp-name">{fullName.trim() || "Your Name"}</div>
+      {title.trim() && <div className="rp-title">{title}</div>}
+      <div className="rp-contact">
+        {contact || (
+          <span className="doc-placeholder">City · phone · email</span>
+        )}
+      </div>
+      <hr className="rp-divider" />
+      {summary.trim() && (
+        <section>
+          <div className="rp-section-title">Summary</div>
+          <p style={{ margin: 0 }}>{summary}</p>
+        </section>
+      )}
+      {exp.length > 0 && (
+        <section>
+          <div className="rp-section-title">Experience</div>
+          {exp.map(entryBlock)}
+        </section>
+      )}
+      {edu.length > 0 && (
+        <section>
+          <div className="rp-section-title">Education</div>
+          {edu.map(entryBlock)}
+        </section>
+      )}
+      {skills.trim() && (
+        <section>
+          <div className="rp-section-title">Skills</div>
+          <div className="rp-skills">{skills}</div>
+        </section>
+      )}
+      {proj.length > 0 && (
+        <section>
+          <div className="rp-section-title">Projects</div>
+          {proj.map(entryBlock)}
+        </section>
+      )}
+      {certifications.trim() && (
+        <section>
+          <div className="rp-section-title">Certifications</div>
+          {certifications
+            .split("\n")
+            .map((l) => l.trim())
+            .filter(Boolean)
+            .map((line, i) => (
+              <div className="rp-skills" key={i}>
+                {line}
+              </div>
+            ))}
+        </section>
+      )}
+      {languages.trim() && (
+        <section>
+          <div className="rp-section-title">Languages</div>
+          <div className="rp-skills">{languages}</div>
+        </section>
+      )}
+      {isEmpty && (
+        <p className="doc-placeholder" style={{ fontSize: "1.8cqw" }}>
+          Fill in the form to see your resume take shape here.
+        </p>
+      )}
+    </div>
+  );
+}
 export default function ResumeMaker() {
   const [template, setTemplate] = useState<ResumeTemplateId>("classic");
   const [fullName, setFullName] = useState("");
@@ -210,7 +341,7 @@ export default function ResumeMaker() {
   ].filter((s): s is { key: string; label: string; onAdd: () => void } => !!s);
   return (
     <UtilityFrame slug="resume-maker">
-      <div className="document-studio">
+      <div className="document-studio document-studio-preview">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -346,6 +477,21 @@ export default function ResumeMaker() {
                 onChange={(e) => setSkills(e.target.value)}
               />
             </label>
+            {addableSections.length > 0 && (
+              <div className="resume-section-chips">
+                {addableSections.map((s) => (
+                  <button
+                    key={s.key}
+                    type="button"
+                    className="chip"
+                    onClick={s.onAdd}
+                  >
+                    <Icon name="Plus" size={14} />
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            )}
             {showProjects && (
               <>
                 <div className="studio-step">
@@ -435,25 +581,29 @@ export default function ResumeMaker() {
             </div>
           </fieldset>
         </form>
-        <aside className="invoice-summary">
-          <h3>Add a section</h3>
-          {addableSections.length ? (
-            <div className="resume-section-chips">
-              {addableSections.map((s) => (
-                <button
-                  key={s.key}
-                  type="button"
-                  className="chip"
-                  onClick={s.onAdd}
-                >
-                  <Icon name="Plus" size={14} />
-                  {s.label}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <p>Every optional section is already on your resume.</p>
-          )}
+        <aside className="doc-preview-pane">
+          <div className="doc-preview-heading">
+            <h3>Live preview</h3>
+            <span>Updates as you type</span>
+          </div>
+          <div className="doc-page-frame">
+            <ResumePreview
+              template={template}
+              fullName={fullName}
+              title={title}
+              email={email}
+              phone={phone}
+              location={location}
+              links={links}
+              summary={summary}
+              experience={experience}
+              education={education}
+              skills={skills}
+              projects={showProjects ? projects : []}
+              certifications={showCertifications ? certifications : ""}
+              languages={showLanguages ? languages : ""}
+            />
+          </div>
           <p className="result-status" role="status">
             {notice}
           </p>

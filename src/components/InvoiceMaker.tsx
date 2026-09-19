@@ -13,6 +13,124 @@ let nextId = 1;
 function emptyRow(): Row {
   return { id: nextId++, description: "", quantity: 1, price: 0 };
 }
+function InvoicePreview({
+  logoPreview,
+  invoiceNumber,
+  invoiceDate,
+  dueDate,
+  businessName,
+  businessDetails,
+  clientName,
+  clientDetails,
+  items,
+  currency,
+  taxRate,
+  notes,
+  totals,
+}: {
+  logoPreview: string;
+  invoiceNumber: string;
+  invoiceDate: string;
+  dueDate: string;
+  businessName: string;
+  businessDetails: string;
+  clientName: string;
+  clientDetails: string;
+  items: Row[];
+  currency: string;
+  taxRate: number;
+  notes: string;
+  totals: { subtotal: number; tax: number; total: number } | null;
+}) {
+  const validItems = items.filter((r) => r.description.trim());
+  const money = (n: number) => `${currency}${n.toFixed(2)}`;
+  return (
+    <div className="doc-page invoice-preview">
+      {logoPreview && <img className="ip-logo" src={logoPreview} alt="" />}
+      <div className="ip-top">
+        <div className="ip-title">INVOICE</div>
+        <div className="ip-meta">
+          <strong>{invoiceNumber.trim() || "INV-0000"}</strong>
+          <div>Date: {invoiceDate || "—"}</div>
+          {dueDate && <div>Due: {dueDate}</div>}
+        </div>
+      </div>
+      <hr className="ip-divider" />
+      <div className="ip-parties">
+        <div>
+          <div className="ip-eyebrow">FROM</div>
+          <div className="ip-party-name">
+            {businessName.trim() || "Your business"}
+          </div>
+          {businessDetails.trim() && (
+            <div className="ip-party-detail">{businessDetails}</div>
+          )}
+        </div>
+        <div>
+          <div className="ip-eyebrow">BILL TO</div>
+          <div className="ip-party-name">
+            {clientName.trim() || "Client name"}
+          </div>
+          {clientDetails.trim() && (
+            <div className="ip-party-detail">{clientDetails}</div>
+          )}
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {validItems.length ? (
+            validItems.map((r) => (
+              <tr key={r.id}>
+                <td>{r.description}</td>
+                <td>{r.quantity}</td>
+                <td>{money(r.price)}</td>
+                <td>{money(r.quantity * r.price)}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4} className="doc-placeholder">
+                Add a line item to see it here.
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      {totals && (
+        <div className="ip-totals">
+          <div className="ip-totals-row">
+            <span>Subtotal</span>
+            <span>{money(totals.subtotal)}</span>
+          </div>
+          {taxRate > 0 && (
+            <div className="ip-totals-row">
+              <span>Tax ({taxRate}%)</span>
+              <span>{money(totals.tax)}</span>
+            </div>
+          )}
+          <div className="ip-totals-row ip-grand">
+            <span>Total</span>
+            <span>{money(totals.total)}</span>
+          </div>
+        </div>
+      )}
+      {notes.trim() && (
+        <div className="ip-notes">
+          <strong>Notes</strong>
+          {notes}
+        </div>
+      )}
+    </div>
+  );
+}
 export default function InvoiceMaker() {
   const [businessName, setBusinessName] = useState("");
   const [businessDetails, setBusinessDetails] = useState("");
@@ -134,7 +252,7 @@ export default function InvoiceMaker() {
   }
   return (
     <UtilityFrame slug="invoice-maker">
-      <div className="document-studio">
+      <div className="document-studio document-studio-preview">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -387,35 +505,28 @@ export default function InvoiceMaker() {
             </div>
           </fieldset>
         </form>
-        <aside className="invoice-summary">
-          <h3>Live total</h3>
-          {totals ? (
-            <dl>
-              <div>
-                <dt>Subtotal</dt>
-                <dd>
-                  {currency}
-                  {totals.subtotal.toFixed(2)}
-                </dd>
-              </div>
-              <div>
-                <dt>Tax ({taxRate || 0}%)</dt>
-                <dd>
-                  {currency}
-                  {totals.tax.toFixed(2)}
-                </dd>
-              </div>
-              <div className="invoice-total-row">
-                <dt>Total</dt>
-                <dd>
-                  {currency}
-                  {totals.total.toFixed(2)}
-                </dd>
-              </div>
-            </dl>
-          ) : (
-            <p>Add at least one line item with a description to see totals.</p>
-          )}
+        <aside className="doc-preview-pane">
+          <div className="doc-preview-heading">
+            <h3>Live preview</h3>
+            <span>Updates as you type</span>
+          </div>
+          <div className="doc-page-frame">
+            <InvoicePreview
+              logoPreview={logoPreview}
+              invoiceNumber={invoiceNumber}
+              invoiceDate={invoiceDate}
+              dueDate={dueDate}
+              businessName={businessName}
+              businessDetails={businessDetails}
+              clientName={clientName}
+              clientDetails={clientDetails}
+              items={items}
+              currency={currency}
+              taxRate={taxRate}
+              notes={notes}
+              totals={totals}
+            />
+          </div>
           <p className="result-status" role="status">
             {notice}
           </p>
