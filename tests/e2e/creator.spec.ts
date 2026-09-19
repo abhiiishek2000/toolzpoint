@@ -119,5 +119,11 @@ test("homepage quick QR and task filters work", async ({ page }) => {
   await page
     .getByRole("textbox", { name: "Find a tool", exact: true })
     .fill("compress");
-  await expect(page.locator(".launchpad .tool-card")).toHaveCount(1);
+  await expect(page.locator(".launchpad .tool-card")).toHaveCount(2);
+  await expect(
+    page.locator('.launchpad a[href="/tools/image-compressor"]'),
+  ).toBeVisible();
+  await expect(
+    page.locator('.launchpad a[href="/tools/passport-photo-maker"]'),
+  ).toBeVisible();
 });

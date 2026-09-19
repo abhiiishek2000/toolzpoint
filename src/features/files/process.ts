@@ -1,5 +1,6 @@
 import {
   imageDimensions,
+  rotationDegrees,
   fitDimensions,
   validateFiles,
   parsePageRange,
@@ -19,12 +20,52 @@ async function bitmap(file: File) {
   return image;
 }
 export async function processFiles(task: FileTask): Promise<FileResult> {
-  const isPdfInput = task.kind === "merge-pdf" || task.kind === "split-pdf";
+  const isPdfInput =
+    task.kind === "merge-pdf" ||
+    task.kind === "split-pdf" ||
+    task.kind === "rotate-pdf" ||
+    task.kind === "add-page-numbers-to-pdf";
   validateFiles(
     task.files,
     isPdfInput ? "pdf" : "image",
     task.kind === "merge-pdf" || task.kind === "images-to-pdf",
   );
+  if (task.kind === "rotate-pdf" || task.kind === "add-page-numbers-to-pdf") {
+    const { PDFDocument, degrees, StandardFonts, rgb } =
+      await import("pdf-lib");
+    const doc = await PDFDocument.load(await task.files[0]!.arrayBuffer());
+    const pages = doc.getPages();
+    if (!pages.length || pages.length > 200)
+      throw new Error("Use a PDF with 1–200 pages.");
+    if (task.kind === "rotate-pdf") {
+      const angle = rotationDegrees(task.rotation ?? 90);
+      for (const page of pages)
+        page.setRotation(degrees((page.getRotation().angle + angle) % 360));
+    } else {
+      const font = await doc.embedFont(StandardFonts.Helvetica);
+      for (const [i, page] of pages.entries()) {
+        const box = page.getCropBox();
+        if (box.width < 100 || box.height < 60)
+          throw new Error(
+            "Pages must be at least 100 × 60 points to add readable numbers.",
+          );
+        const label = `${i + 1} / ${pages.length}`;
+        page.drawText(label, {
+          x: box.x + (box.width - font.widthOfTextAtSize(label, 10)) / 2,
+          y: box.y + 18,
+          size: 10,
+          font,
+          color: rgb(0, 0, 0),
+        });
+      }
+    }
+    return {
+      blob: new Blob([new Uint8Array(await doc.save())], {
+        type: "application/pdf",
+      }),
+      pages: pages.length,
+    };
+  }
   if (task.kind === "merge-pdf") {
     const { PDFDocument } = await import("pdf-lib");
     const out = await PDFDocument.create();
@@ -183,15 +224,35 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       task.maxWidth,
       task.maxHeight,
     );
-    const canvas = new OffscreenCanvas(dims.width, dims.height);
+    const angle =
+      task.kind === "image-rotator-flipper"
+        ? rotationDegrees(task.rotation ?? 90)
+        : 0;
+    const flip =
+      task.kind === "image-rotator-flipper" ? (task.flip ?? "none") : "none";
+    if (!["none", "horizontal", "vertical"].includes(flip))
+      throw new Error("Choose a valid flip direction.");
+    const rotated = angle === 90 || angle === 270;
+    const outputWidth = rotated ? dims.height : dims.width;
+    const outputHeight = rotated ? dims.width : dims.height;
+    const canvas = new OffscreenCanvas(outputWidth, outputHeight);
     const ctx = canvas.getContext("2d");
     if (!ctx)
       throw new Error("Image processing is unavailable in this browser.");
     if (task.format === "image/jpeg") {
       ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, dims.width, dims.height);
+      ctx.fillRect(0, 0, outputWidth, outputHeight);
     }
-    ctx.drawImage(image, 0, 0, dims.width, dims.height);
+    ctx.translate(outputWidth / 2, outputHeight / 2);
+    ctx.rotate((angle * Math.PI) / 180);
+    ctx.scale(flip === "horizontal" ? -1 : 1, flip === "vertical" ? -1 : 1);
+    ctx.drawImage(
+      image,
+      -dims.width / 2,
+      -dims.height / 2,
+      dims.width,
+      dims.height,
+    );
     const blob = await canvas.convertToBlob({
       type: task.format,
       quality: task.quality,
@@ -200,7 +261,7 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       throw new Error(
         "This browser does not support the selected output format.",
       );
-    return { blob, width: dims.width, height: dims.height };
+    return { blob, width: outputWidth, height: outputHeight };
   } finally {
     image.close();
   }

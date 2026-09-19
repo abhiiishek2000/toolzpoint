@@ -16,8 +16,14 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const [files, setFiles] = useState<File[]>([]);
   const [quality, setQuality] = useState(80);
   const [format, setFormat] = useState<FileTask["format"]>("image/webp");
-  const [width, setWidth] = useState(1920);
-  const [height, setHeight] = useState(1920);
+  const defaultSize =
+    slug === "image-format-converter" || slug === "image-rotator-flipper"
+      ? 4096
+      : 1920;
+  const [width, setWidth] = useState(defaultSize);
+  const [height, setHeight] = useState(defaultSize);
+  const [rotation, setRotation] = useState(90);
+  const [flip, setFlip] = useState<"none" | "horizontal" | "vertical">("none");
   const [pageRange, setPageRange] = useState("");
   const [presetId, setPresetId] = useState(PHOTO_ID_PRESETS[0]!.id);
   const [customWidthMm, setCustomWidthMm] = useState(35);
@@ -39,8 +45,16 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const worker = useRef<Worker | null>(null);
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const multiple = slug === "merge-pdf" || slug === "images-to-pdf";
-  const pdf = slug === "merge-pdf" || slug === "split-pdf";
-  const imageOutput = slug === "image-compressor" || slug === "image-resizer";
+  const pdf =
+    slug === "merge-pdf" ||
+    slug === "split-pdf" ||
+    slug === "rotate-pdf" ||
+    slug === "add-page-numbers-to-pdf";
+  const imageOutput =
+    slug === "image-compressor" ||
+    slug === "image-resizer" ||
+    slug === "image-format-converter" ||
+    slug === "image-rotator-flipper";
   const isImageResult = imageOutput || slug === "passport-photo-maker";
   const activePreset = PHOTO_ID_PRESETS.find((p) => p.id === presetId);
   useEffect(
@@ -152,6 +166,8 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
         maxWidth: photoWidth,
         maxHeight: photoHeight,
         format,
+        rotation,
+        flip,
         pageRange,
         zoom,
         verticalBias,
@@ -234,7 +250,7 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 ? "Choose different files"
                 : multiple
                   ? "Choose files"
-                  : slug === "split-pdf"
+                  : pdf
                     ? "Choose a PDF"
                     : slug === "passport-photo-maker"
                       ? "Choose a photo"
@@ -301,6 +317,47 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
             </ol>
           )}
           <fieldset disabled={busy} className="studio-settings">
+            {(slug === "rotate-pdf" || slug === "image-rotator-flipper") && (
+              <label className="field">
+                Clockwise rotation
+                <select
+                  value={rotation}
+                  onChange={(e) => {
+                    setRotation(Number(e.target.value));
+                    changed();
+                  }}
+                >
+                  {[0, 90, 180, 270].map((angle) => (
+                    <option key={angle} value={angle}>
+                      {angle}°
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {slug === "image-rotator-flipper" && (
+              <label className="field">
+                Flip before rotation
+                <select
+                  value={flip}
+                  onChange={(e) => {
+                    setFlip(e.target.value as typeof flip);
+                    changed();
+                  }}
+                >
+                  <option value="none">None</option>
+                  <option value="horizontal">Horizontal</option>
+                  <option value="vertical">Vertical</option>
+                </select>
+              </label>
+            )}
+            {slug === "add-page-numbers-to-pdf" && (
+              <p className="setting-hint">
+                Adds black page numbers near the bottom of each page’s crop box.
+                Existing content may overlap; rotated pages retain their
+                original coordinate orientation. Up to 200 pages.
+              </p>
+            )}
             {imageOutput && (
               <>
                 <div className="studio-step">
@@ -602,22 +659,36 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
               >
                 {busy
                   ? "Processing…"
-                  : slug === "merge-pdf"
-                    ? "Merge PDFs"
-                    : slug === "split-pdf"
-                      ? "Split PDF"
-                      : slug === "images-to-pdf"
-                        ? "Create PDF"
-                        : slug === "image-resizer"
-                          ? "Resize image"
-                          : slug === "passport-photo-maker"
-                            ? "Create ID photo"
-                            : "Compress image"}
+                  : slug === "rotate-pdf"
+                    ? "Rotate PDF"
+                    : slug === "add-page-numbers-to-pdf"
+                      ? "Add page numbers"
+                      : slug === "image-format-converter"
+                        ? "Convert image"
+                        : slug === "image-rotator-flipper"
+                          ? "Transform image"
+                          : slug === "merge-pdf"
+                            ? "Merge PDFs"
+                            : slug === "split-pdf"
+                              ? "Split PDF"
+                              : slug === "images-to-pdf"
+                                ? "Create PDF"
+                                : slug === "image-resizer"
+                                  ? "Resize image"
+                                  : slug === "passport-photo-maker"
+                                    ? "Create ID photo"
+                                    : "Compress image"}
                 <Icon name="ArrowRight" size={17} />
               </button>
               <button
                 className="text-button"
                 onClick={() => {
+                  setRotation(90);
+                  setFlip("none");
+                  setWidth(defaultSize);
+                  setHeight(defaultSize);
+                  setQuality(80);
+                  setFormat("image/webp");
                   setFiles([]);
                   setPreview("");
                   setPageRange("");

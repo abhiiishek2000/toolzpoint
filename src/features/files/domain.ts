@@ -237,6 +237,10 @@ export type FileTask = {
   kind:
     | "image-compressor"
     | "image-resizer"
+    | "image-format-converter"
+    | "image-rotator-flipper"
+    | "rotate-pdf"
+    | "add-page-numbers-to-pdf"
     | "merge-pdf"
     | "images-to-pdf"
     | "split-pdf"
@@ -246,6 +250,8 @@ export type FileTask = {
   maxWidth: number;
   maxHeight: number;
   format: "image/jpeg" | "image/webp" | "image/png";
+  rotation?: number;
+  flip?: "none" | "horizontal" | "vertical";
   pageRange?: string;
   zoom?: number;
   verticalBias?: number;
@@ -337,4 +343,10 @@ export function imageDimensions(bytes: Uint8Array) {
   if (width * height > 12000000)
     throw new Error("Use images with no more than 12 million pixels.");
   return { width, height };
+}
+
+export function rotationDegrees(value: number) {
+  if (![0, 90, 180, 270].includes(value))
+    throw new Error("Choose 0, 90, 180 or 270 degrees.");
+  return value;
 }

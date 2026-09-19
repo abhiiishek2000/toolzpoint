@@ -4,14 +4,40 @@ import { readList, writeList } from "@/lib/storage";
 import { track } from "@/lib/analytics";
 import { useLocalList, useLocalDate } from "@/lib/useLocalList";
 import { Icon } from "./Icon";
-type Field = {
-  key: string;
-  label: string;
-  type?: string;
-  value?: string;
-  options?: [string, string][];
-};
+import {
+  expansionFields,
+  expansionSamples,
+  type WorkspaceField as Field,
+} from "./expansion-fields";
 const definitions: Record<string, Field[]> = {
+  ...expansionFields,
+  "lorem-ipsum-generator": [
+    { key: "count", label: "Paragraphs (1–50)", type: "number", value: "3" },
+  ],
+  "text-sorter": [
+    {
+      key: "order",
+      label: "Sort order",
+      value: "ascending",
+      options: [
+        ["ascending", "Ascending (UTF-16 order)"],
+        ["descending", "Descending (UTF-16 order)"],
+        ["length", "Shortest first"],
+      ],
+    },
+  ],
+  "find-and-replace-text": [
+    { key: "find", label: "Text to find", value: "world" },
+    { key: "replacement", label: "Replacement text", value: "reader" },
+  ],
+  "rot13-caesar-cipher": [
+    {
+      key: "shift",
+      label: "Letter shift (-25 to 25)",
+      type: "number",
+      value: "13",
+    },
+  ],
   "percentage-calculator": [
     {
       key: "mode",
@@ -402,6 +428,17 @@ const definitions: Record<string, Field[]> = {
   ],
 };
 const textTools = [
+  ...Object.keys(expansionSamples),
+  "character-counter",
+  "duplicate-line-remover",
+  "remove-line-breaks",
+  "text-sorter",
+  "find-and-replace-text",
+  "whitespace-remover",
+  "text-reverser",
+  "nato-phonetic-alphabet-converter",
+  "rot13-caesar-cipher",
+
   "word-counter",
   "json-formatter",
   "base64-encoder-decoder",
@@ -412,6 +449,17 @@ const textTools = [
   "jwt-decoder",
 ];
 const samples: Record<string, string> = {
+  ...expansionSamples,
+  "character-counter": "Hello world!",
+  "duplicate-line-remover": "red\nblue\nred",
+  "remove-line-breaks": "Hello\nworld",
+  "text-sorter": "pear\napple\nbanana",
+  "find-and-replace-text": "Hello world!",
+  "whitespace-remover": "  Hello   world!  ",
+  "text-reverser": "Hello world!",
+  "nato-phonetic-alphabet-converter": "Hello world!",
+  "rot13-caesar-cipher": "Hello world!",
+
   "word-counter":
     "Good tools make room for better ideas. Write something worth sharing.",
   "json-formatter":
@@ -535,7 +583,16 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
   function display(value: number | string, key = "") {
     return typeof value === "number"
       ? new Intl.NumberFormat("en-US", {
-          maximumFractionDigits: 2,
+          ...([
+            "weight-converter",
+            "length-converter",
+            "speed-converter",
+            "data-storage-converter",
+          ].includes(slug)
+            ? { maximumSignificantDigits: 15 }
+            : {
+                maximumFractionDigits: slug === "timestamp-converter" ? 3 : 2,
+              }),
           ...(currencyTools.includes(slug)
             ? { style: "currency", currency: values.currency ?? "INR" }
             : {}),
@@ -788,9 +845,9 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   </label>
                 </div>
               )}
-              {isText ? (
+              {isText && (
                 <>
-                  <label htmlFor="tool-input" className="sr-only">
+                  <label htmlFor="tool-input" className="field">
                     Text input
                   </label>
                   <textarea
@@ -818,7 +875,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                     {input.length.toLocaleString()} / 100,000 characters
                   </p>
                 </>
-              ) : (
+              )}
+              {(definitions[slug]?.length ?? 0) > 0 && (
                 <div className="fields-grid">
                   {(definitions[slug] ?? [])
                     .filter(

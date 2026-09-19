@@ -1977,5 +1977,1734 @@
       "age-calculator",
       "date-difference-calculator"
     ]
+  },
+  {
+    "slug": "character-counter",
+    "name": "Character Counter",
+    "category": "Text",
+    "shortDescription": "Count Unicode characters, UTF-16 units, and UTF-8 bytes.",
+    "icon": "Type",
+    "intro": "Count Unicode characters, UTF-16 units, and UTF-8 bytes. Unicode code points are counted individually; whitespace is excluded from the second count. UTF-8 bytes measure encoded size. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Unicode code points are counted individually; whitespace is excluded from the second count. UTF-8 bytes measure encoded size.",
+    "examples": [
+      {
+        "input": "Hi!",
+        "output": "3 code points; 3 UTF-16 units; 3 UTF-8 bytes"
+      },
+      {
+        "input": "😀",
+        "output": "1 code point; 2 UTF-16 units; 4 UTF-8 bytes"
+      }
+    ],
+    "limitations": "Emoji sequences may contain multiple code points. Counts are not platform-specific SMS or social limits. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Unicode code points are counted individually; whitespace is excluded from the second count. UTF-8 bytes measure encoded size."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Emoji sequences may contain multiple code points. Counts are not platform-specific SMS or social limits."
+      }
+    ],
+    "keywords": ["character", "counter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "lorem-ipsum-generator",
+    "name": "Lorem Ipsum Generator",
+    "category": "Text",
+    "shortDescription": "Generate up to 50 paragraphs of placeholder text.",
+    "icon": "Type",
+    "intro": "Generate up to 50 paragraphs of placeholder text. Choose a paragraph count and run the tool. Each paragraph repeats the same fixed 19-word Latin-style sample. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Choose a paragraph count and run the tool. Each paragraph repeats the same fixed 19-word Latin-style sample.",
+    "examples": [
+      {
+        "input": "1 paragraph",
+        "output": "One 19-word paragraph"
+      },
+      {
+        "input": "2 paragraphs",
+        "output": "Two identical paragraphs separated by a blank line"
+      }
+    ],
+    "limitations": "This produces repeated placeholder prose, not original writing or randomized Latin. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Choose a paragraph count and run the tool. Each paragraph repeats the same fixed 19-word Latin-style sample."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "This produces repeated placeholder prose, not original writing or randomized Latin."
+      }
+    ],
+    "keywords": ["lorem", "ipsum", "generator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "duplicate-line-remover",
+    "name": "Duplicate Line Remover",
+    "category": "Text",
+    "shortDescription": "Remove repeated lines while preserving their first occurrence.",
+    "icon": "Type",
+    "intro": "Remove repeated lines while preserving their first occurrence. Lines are compared exactly, including case and spaces. The first occurrence of each distinct line is kept. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Lines are compared exactly, including case and spaces. The first occurrence of each distinct line is kept.",
+    "examples": [
+      {
+        "input": "red\nblue\nred",
+        "output": "red\nblue"
+      },
+      {
+        "input": "A\na\nA",
+        "output": "A\na"
+      }
+    ],
+    "limitations": "Case and leading or trailing spaces matter. CRLF and CR line endings are normalized to LF; empty lines are deduplicated too. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Lines are compared exactly, including case and spaces. The first occurrence of each distinct line is kept."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Case and leading or trailing spaces matter. CRLF and CR line endings are normalized to LF; empty lines are deduplicated too."
+      }
+    ],
+    "keywords": ["duplicate", "line", "remover"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "remove-line-breaks",
+    "name": "Remove Line Breaks",
+    "category": "Text",
+    "shortDescription": "Join wrapped text into one continuous line.",
+    "icon": "Type",
+    "intro": "Join wrapped text into one continuous line. Each consecutive run of line breaks becomes one space. Other spaces and tabs stay unchanged. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Each consecutive run of line breaks becomes one space. Other spaces and tabs stay unchanged.",
+    "examples": [
+      {
+        "input": "Hello\nworld",
+        "output": "Hello world"
+      },
+      {
+        "input": "a\r\n\r\nb",
+        "output": "a b"
+      }
+    ],
+    "limitations": "Paragraph boundaries are lost. This does not repair hyphenated words or collapse existing spaces. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Each consecutive run of line breaks becomes one space. Other spaces and tabs stay unchanged."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Paragraph boundaries are lost. This does not repair hyphenated words or collapse existing spaces."
+      }
+    ],
+    "keywords": ["remove", "line", "breaks"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "text-sorter",
+    "name": "Text Line Sorter",
+    "category": "Text",
+    "shortDescription": "Sort lines ascending, descending, or by length.",
+    "icon": "Type",
+    "intro": "Sort lines ascending, descending, or by length. Ascending and descending use deterministic UTF-16 ordering. Length uses Unicode code points; equal-length lines keep their original order. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Ascending and descending use deterministic UTF-16 ordering. Length uses Unicode code points; equal-length lines keep their original order.",
+    "examples": [
+      {
+        "input": "pear\napple",
+        "output": "apple\npear (ascending)"
+      },
+      {
+        "input": "bbb\na\ncc",
+        "output": "a\ncc\nbbb (shortest first)"
+      }
+    ],
+    "limitations": "Ordering is case-sensitive and not locale-aware or numeric. Empty lines are included and duplicates remain. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Ascending and descending use deterministic UTF-16 ordering. Length uses Unicode code points; equal-length lines keep their original order."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Ordering is case-sensitive and not locale-aware or numeric. Empty lines are included and duplicates remain."
+      }
+    ],
+    "keywords": ["text", "sorter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "find-and-replace-text",
+    "name": "Find & Replace",
+    "category": "Text",
+    "shortDescription": "Replace every exact occurrence of text in a draft.",
+    "icon": "Type",
+    "intro": "Replace every exact occurrence of text in a draft. Enter the text to find and its replacement. Matches are literal, case-sensitive and non-overlapping; leave replacement empty to delete matches. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Enter the text to find and its replacement. Matches are literal, case-sensitive and non-overlapping; leave replacement empty to delete matches.",
+    "examples": [
+      {
+        "input": "Hello world; find world; replace reader",
+        "output": "Hello reader"
+      },
+      {
+        "input": "aaa; find aa; replace b",
+        "output": "ba"
+      }
+    ],
+    "limitations": "Regular expressions are not supported. Find text must be nonempty. Output is limited to 100,000 UTF-16 units. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Enter the text to find and its replacement. Matches are literal, case-sensitive and non-overlapping; leave replacement empty to delete matches."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Regular expressions are not supported. Find text must be nonempty. Output is limited to 100,000 UTF-16 units."
+      }
+    ],
+    "keywords": ["find", "and", "replace", "text"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "whitespace-remover",
+    "name": "Whitespace/Trim Tool",
+    "category": "Text",
+    "shortDescription": "Collapse extra whitespace and trim your text.",
+    "icon": "Type",
+    "intro": "Collapse extra whitespace and trim your text. Consecutive JavaScript whitespace characters become a single ordinary space, then leading and trailing whitespace is removed. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Consecutive JavaScript whitespace characters become a single ordinary space, then leading and trailing whitespace is removed.",
+    "examples": [
+      {
+        "input": "  a   b  ",
+        "output": "a b"
+      },
+      {
+        "input": "a\t\nb",
+        "output": "a b"
+      }
+    ],
+    "limitations": "Line breaks, tabs and nonbreaking spaces are collapsed too. Do not use this to preserve code indentation. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Consecutive JavaScript whitespace characters become a single ordinary space, then leading and trailing whitespace is removed."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Line breaks, tabs and nonbreaking spaces are collapsed too. Do not use this to preserve code indentation."
+      }
+    ],
+    "keywords": ["whitespace", "remover"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "text-reverser",
+    "name": "Text Reverser",
+    "category": "Text",
+    "shortDescription": "Reverse text while keeping visible character clusters together.",
+    "icon": "Type",
+    "intro": "Reverse text while keeping visible character clusters together. The browser segments text into grapheme clusters, then reverses the order of those clusters. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "The browser segments text into grapheme clusters, then reverses the order of those clusters.",
+    "examples": [
+      {
+        "input": "abc",
+        "output": "cba"
+      },
+      {
+        "input": "A😀B",
+        "output": "B😀A"
+      }
+    ],
+    "limitations": "Requires Intl.Segmenter support. Reverses the entire input, including line breaks; right-to-left display can look different from stored order. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "The browser segments text into grapheme clusters, then reverses the order of those clusters."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Requires Intl.Segmenter support. Reverses the entire input, including line breaks; right-to-left display can look different from stored order."
+      }
+    ],
+    "keywords": ["text", "reverser"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "nato-phonetic-alphabet-converter",
+    "name": "NATO Phonetic Alphabet",
+    "category": "Text",
+    "shortDescription": "Spell Latin letters using NATO phonetic words.",
+    "icon": "Type",
+    "intro": "Spell Latin letters using NATO phonetic words. ASCII letters map to phonetic words such as Alfa, Bravo and Charlie. Every whitespace character becomes a slash; other characters remain literal. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "ASCII letters map to phonetic words such as Alfa, Bravo and Charlie. Every whitespace character becomes a slash; other characters remain literal.",
+    "examples": [
+      {
+        "input": "abc",
+        "output": "Alfa Bravo Charlie"
+      },
+      {
+        "input": "A B",
+        "output": "Alfa / Bravo"
+      }
+    ],
+    "limitations": "Digits and punctuation are preserved, not spoken using radio conventions. Accented letters are not transliterated. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "ASCII letters map to phonetic words such as Alfa, Bravo and Charlie. Every whitespace character becomes a slash; other characters remain literal."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "Digits and punctuation are preserved, not spoken using radio conventions. Accented letters are not transliterated."
+      }
+    ],
+    "keywords": ["nato", "phonetic", "alphabet", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "rot13-caesar-cipher",
+    "name": "ROT13 / Caesar Cipher",
+    "category": "Text",
+    "shortDescription": "Shift Latin letters for puzzles and educational ciphers.",
+    "icon": "Type",
+    "intro": "Shift Latin letters for puzzles and educational ciphers. Choose an integer shift between -25 and 25. Letters wrap around the 26-letter alphabet and keep their case. The default is ROT13. Work directly with your own text in this browser without signing in or uploading a document. Review the result before copying it into another application, and use Reset to clear the workspace when you are finished. The examples below show the exact behavior to expect, while the limitations explain cases where another workflow may be more suitable.",
+    "how": "Choose an integer shift between -25 and 25. Letters wrap around the 26-letter alphabet and keep their case. The default is ROT13.",
+    "examples": [
+      {
+        "input": "Hello!; shift 13",
+        "output": "Uryyb!"
+      },
+      {
+        "input": "Zebra; shift 1",
+        "output": "Afcsb"
+      }
+    ],
+    "limitations": "This is not secure encryption. Only ASCII letters shift; all other characters remain unchanged. Maximum text input: 100,000 UTF-16 units.",
+    "faq": [
+      {
+        "question": "How does this tool handle my input?",
+        "answer": "Choose an integer shift between -25 and 25. Letters wrap around the 26-letter alphabet and keep their case. The default is ROT13."
+      },
+      {
+        "question": "Does my text leave this browser?",
+        "answer": "No. Processing runs locally; tool input and results are not uploaded or included in analytics."
+      },
+      {
+        "question": "What should I check before using the result?",
+        "answer": "This is not secure encryption. Only ASCII letters shift; all other characters remain unchanged."
+      }
+    ],
+    "keywords": ["rot13", "caesar", "cipher"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "slug-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "binary-text-converter",
+    "name": "Text / Binary Converter",
+    "category": "Text",
+    "shortDescription": "Encode text as UTF-8 binary bytes or decode binary back to text.",
+    "icon": "Type",
+    "intro": "Encode text as UTF-8 binary bytes or decode binary back to text. Encode converts UTF-8 bytes into eight binary digits each. Decode accepts complete bytes with optional whitespace and rejects invalid UTF-8. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Encode converts UTF-8 bytes into eight binary digits each. Decode accepts complete bytes with optional whitespace and rejects invalid UTF-8.",
+    "examples": [
+      {
+        "input": "A; encode",
+        "output": "01000001"
+      },
+      {
+        "input": "01001000 01101001; decode",
+        "output": "Hi"
+      }
+    ],
+    "limitations": "This is encoding, not encryption. Input is capped at 100,000 UTF-16 units; encoded output can be larger.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Encode converts UTF-8 bytes into eight binary digits each. Decode accepts complete bytes with optional whitespace and rejects invalid UTF-8."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "This is encoding, not encryption. Input is capped at 100,000 UTF-16 units; encoded output can be larger."
+      }
+    ],
+    "keywords": ["binary", "text", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "word-counter",
+      "text-case-converter",
+      "character-counter",
+      "lorem-ipsum-generator"
+    ]
+  },
+  {
+    "slug": "url-parser",
+    "name": "URL Parser",
+    "category": "Developer",
+    "shortDescription": "Inspect the parts of an HTTP or HTTPS URL without visiting it.",
+    "icon": "Code2",
+    "intro": "Inspect the parts of an HTTP or HTTPS URL without visiting it. A URL is parsed locally into scheme, hostname, port, path, query and fragment. The browser URL parser normalizes the address. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "A URL is parsed locally into scheme, hostname, port, path, query and fragment. The browser URL parser normalizes the address.",
+    "examples": [
+      {
+        "input": "https://example.com/a?q=1#top",
+        "output": "Host: example.com; Path: /a; Query: ?q=1; Fragment: #top"
+      },
+      {
+        "input": "http://example.com:8080/",
+        "output": "Scheme: http:; Port: 8080"
+      }
+    ],
+    "limitations": "Only HTTP(S) links up to 2,048 characters are supported. Embedded credentials are rejected. No DNS lookup, request or safety assessment is performed.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "A URL is parsed locally into scheme, hostname, port, path, query and fragment. The browser URL parser normalizes the address."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Only HTTP(S) links up to 2,048 characters are supported. Embedded credentials are rejected. No DNS lookup, request or safety assessment is performed."
+      }
+    ],
+    "keywords": ["url", "parser"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "json-formatter",
+      "base64-encoder-decoder",
+      "url-encoder-decoder",
+      "uuid-generator"
+    ]
+  },
+  {
+    "slug": "timestamp-converter",
+    "name": "Unix Timestamp Converter",
+    "category": "Developer",
+    "shortDescription": "Convert Unix seconds, milliseconds, and explicit UTC timestamps.",
+    "icon": "Code2",
+    "intro": "Convert Unix seconds, milliseconds, and explicit UTC timestamps. Choose the input format. Unix timestamps convert to UTC ISO text; ISO timestamps ending in Z convert to seconds and milliseconds. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Choose the input format. Unix timestamps convert to UTC ISO text; ISO timestamps ending in Z convert to seconds and milliseconds.",
+    "examples": [
+      {
+        "input": "0; seconds",
+        "output": "1970-01-01T00:00:00.000Z"
+      },
+      {
+        "input": "2000-01-01T00:00:00Z; iso",
+        "output": "Unix seconds: 946684800"
+      }
+    ],
+    "limitations": "Use whole-number Unix timestamps or YYYY-MM-DDTHH:mm:ss[.SSS]Z. Local time zones and leap seconds are not supported. Calendar dates and times are validated.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Choose the input format. Unix timestamps convert to UTC ISO text; ISO timestamps ending in Z convert to seconds and milliseconds."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Use whole-number Unix timestamps or YYYY-MM-DDTHH:mm:ss[.SSS]Z. Local time zones and leap seconds are not supported. Calendar dates and times are validated."
+      }
+    ],
+    "keywords": ["timestamp", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "json-formatter",
+      "base64-encoder-decoder",
+      "url-encoder-decoder",
+      "uuid-generator"
+    ]
+  },
+  {
+    "slug": "json-to-csv-converter",
+    "name": "JSON to CSV Converter",
+    "category": "Developer",
+    "shortDescription": "Turn an array of flat JSON objects into quoted CSV.",
+    "icon": "Code2",
+    "intro": "Turn an array of flat JSON objects into quoted CSV. Columns follow the first appearance of each key. Missing and null values become empty cells. All cells are quoted, double quotes are escaped, and rows use CRLF. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Columns follow the first appearance of each key. Missing and null values become empty cells. All cells are quoted, double quotes are escaped, and rows use CRLF.",
+    "examples": [
+      {
+        "input": "[{\"a\":1},{\"a\":2}]",
+        "output": "\"a\"\r\n\"1\"\r\n\"2\""
+      },
+      {
+        "input": "[{\"name\":\"Ada\",\"note\":\"a,b\"}]",
+        "output": "\"name\",\"note\"\r\n\"Ada\",\"a,b\""
+      }
+    ],
+    "limitations": "Use 1–1,000 flat objects with up to 100 distinct columns, 100,000 input characters and 1,000,000 output characters. Formula-like cells are prefixed with an apostrophe, including negative values. Nested data is rejected; JavaScript number precision applies.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Columns follow the first appearance of each key. Missing and null values become empty cells. All cells are quoted, double quotes are escaped, and rows use CRLF."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Use 1–1,000 flat objects with up to 100 distinct columns, 100,000 input characters and 1,000,000 output characters. Formula-like cells are prefixed with an apostrophe, including negative values. Nested data is rejected; JavaScript number precision applies."
+      }
+    ],
+    "keywords": ["json", "to", "csv", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "json-formatter",
+      "base64-encoder-decoder",
+      "url-encoder-decoder",
+      "uuid-generator"
+    ]
+  },
+  {
+    "slug": "tip-calculator",
+    "name": "Tip Calculator",
+    "category": "Calculators",
+    "shortDescription": "Calculate a tip and split the total bill evenly.",
+    "icon": "Calculator",
+    "intro": "Calculate a tip and split the total bill evenly. Tip equals the bill multiplied by the chosen percentage. The bill plus tip is divided by the number of people. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Tip equals the bill multiplied by the chosen percentage. The bill plus tip is divided by the number of people.",
+    "examples": [
+      {
+        "input": "Bill 100; tip 15%; 2 people",
+        "output": "Tip 15; total 115; per person 57.50"
+      },
+      {
+        "input": "Bill 80; tip 0%; 4 people",
+        "output": "Tip 0; total 80; per person 20"
+      }
+    ],
+    "limitations": "Uses one currency throughout; it does not convert currency. Bill up to 1 trillion, tip 0–100%, and 1–1,000 people. Rounded shares may not add up exactly; settle the last few cents separately.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Tip equals the bill multiplied by the chosen percentage. The bill plus tip is divided by the number of people."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Uses one currency throughout; it does not convert currency. Bill up to 1 trillion, tip 0–100%, and 1–1,000 people. Rounded shares may not add up exactly; settle the last few cents separately."
+      }
+    ],
+    "keywords": ["tip", "calculator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "percentage-calculator",
+      "age-calculator",
+      "discount-calculator",
+      "date-difference-calculator"
+    ]
+  },
+  {
+    "slug": "average-calculator",
+    "name": "Average & Median Calculator",
+    "category": "Calculators",
+    "shortDescription": "Find the mean, median, range endpoints, and count of a number list.",
+    "icon": "Calculator",
+    "intro": "Find the mean, median, range endpoints, and count of a number list. Separate numbers with commas or whitespace. The mean is the sum divided by count; the median is the middle value, or the average of the two middle values. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Separate numbers with commas or whitespace. The mean is the sum divided by count; the median is the middle value, or the average of the two middle values.",
+    "examples": [
+      {
+        "input": "2, 4, 6, 8",
+        "output": "Count 4; mean 5; median 5; minimum 2; maximum 8"
+      },
+      {
+        "input": "1 1 7",
+        "output": "Mean 3; median 1"
+      }
+    ],
+    "limitations": "Use 1–10,000 numbers from -1 trillion to 1 trillion. Commas separate values, so enter 1000 rather than 1,000 for one thousand. Floating-point rounding applies; no weighted average or mode.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Separate numbers with commas or whitespace. The mean is the sum divided by count; the median is the middle value, or the average of the two middle values."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Use 1–10,000 numbers from -1 trillion to 1 trillion. Commas separate values, so enter 1000 rather than 1,000 for one thousand. Floating-point rounding applies; no weighted average or mode."
+      }
+    ],
+    "keywords": ["average", "calculator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "percentage-calculator",
+      "age-calculator",
+      "discount-calculator",
+      "date-difference-calculator"
+    ]
+  },
+  {
+    "slug": "ratio-calculator",
+    "name": "Ratio Calculator",
+    "category": "Calculators",
+    "shortDescription": "Reduce a pair of nonnegative integers to its simplest ratio.",
+    "icon": "Calculator",
+    "intro": "Reduce a pair of nonnegative integers to its simplest ratio. The greatest common divisor divides both sides. A zero side is allowed as long as the other side is positive. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "The greatest common divisor divides both sides. A zero side is allowed as long as the other side is positive.",
+    "examples": [
+      {
+        "input": "12 : 18",
+        "output": "2:3"
+      },
+      {
+        "input": "0 : 5",
+        "output": "0:1"
+      }
+    ],
+    "limitations": "Use whole numbers from 0 to 1 billion. This tool simplifies ratios only; it does not solve proportions or accept fractions and negative values.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "The greatest common divisor divides both sides. A zero side is allowed as long as the other side is positive."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Use whole numbers from 0 to 1 billion. This tool simplifies ratios only; it does not solve proportions or accept fractions and negative values."
+      }
+    ],
+    "keywords": ["ratio", "calculator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "percentage-calculator",
+      "age-calculator",
+      "discount-calculator",
+      "date-difference-calculator"
+    ]
+  },
+  {
+    "slug": "simple-interest-calculator",
+    "name": "Simple Interest Calculator",
+    "category": "Finance",
+    "shortDescription": "Estimate non-compounding interest over a chosen period.",
+    "icon": "TrendingUp",
+    "intro": "Estimate non-compounding interest over a chosen period. Interest equals principal multiplied by the annual percentage rate and the number of years. Final amount is principal plus that interest. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Interest equals principal multiplied by the annual percentage rate and the number of years. Final amount is principal plus that interest.",
+    "examples": [
+      {
+        "input": "Principal 1000; rate 5%; 2 years",
+        "output": "Interest 100; final amount 1100"
+      },
+      {
+        "input": "Principal 500; rate 4%; 0.5 years",
+        "output": "Interest 10; final amount 510"
+      }
+    ],
+    "limitations": "Illustrative arithmetic only. Principal up to 1 trillion, rate 0–100%, term 0–100 years. Excludes compounding, fees, taxes, day-count conventions and changes in rate.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Interest equals principal multiplied by the annual percentage rate and the number of years. Final amount is principal plus that interest."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Illustrative arithmetic only. Principal up to 1 trillion, rate 0–100%, term 0–100 years. Excludes compounding, fees, taxes, day-count conventions and changes in rate."
+      }
+    ],
+    "keywords": ["simple", "interest", "calculator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "sip-calculator",
+      "emi-loan-calculator",
+      "compound-interest-calculator",
+      "gst-calculator"
+    ]
+  },
+  {
+    "slug": "roi-calculator",
+    "name": "ROI Calculator",
+    "category": "Finance",
+    "shortDescription": "Compare total proceeds with the total cost of an investment or project.",
+    "icon": "TrendingUp",
+    "intro": "Compare total proceeds with the total cost of an investment or project. Net gain is proceeds minus cost. ROI is net gain divided by cost and multiplied by 100. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Net gain is proceeds minus cost. ROI is net gain divided by cost and multiplied by 100.",
+    "examples": [
+      {
+        "input": "Cost 1000; proceeds 1200",
+        "output": "Net gain 200; ROI 20%"
+      },
+      {
+        "input": "Cost 200; proceeds 150",
+        "output": "Net gain -50; ROI -25%"
+      }
+    ],
+    "limitations": "Cost must be 0.01–1 trillion; proceeds 0–1 trillion. Include relevant fees in your inputs. This is not annualized, does not account for cash-flow timing or risk, and is not investment advice.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Net gain is proceeds minus cost. ROI is net gain divided by cost and multiplied by 100."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Cost must be 0.01–1 trillion; proceeds 0–1 trillion. Include relevant fees in your inputs. This is not annualized, does not account for cash-flow timing or risk, and is not investment advice."
+      }
+    ],
+    "keywords": ["roi", "calculator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "sip-calculator",
+      "emi-loan-calculator",
+      "compound-interest-calculator",
+      "gst-calculator"
+    ]
+  },
+  {
+    "slug": "break-even-calculator",
+    "name": "Break-Even Calculator",
+    "category": "Finance",
+    "shortDescription": "Estimate how many whole units cover fixed and variable costs.",
+    "icon": "TrendingUp",
+    "intro": "Estimate how many whole units cover fixed and variable costs. Contribution per unit is selling price minus variable cost. Divide fixed costs by contribution and round up to whole units. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Contribution per unit is selling price minus variable cost. Divide fixed costs by contribution and round up to whole units.",
+    "examples": [
+      {
+        "input": "Fixed 1000; price 25; variable 15",
+        "output": "100 units; revenue 2500"
+      },
+      {
+        "input": "Fixed 101; price 20; variable 10",
+        "output": "11 units; revenue 220"
+      }
+    ],
+    "limitations": "Use at most two decimal places. Fixed and variable costs are capped at 1 trillion; price must be positive and exceed variable cost. Assumes a constant price and cost per unit, no tax or capacity limits. Not a business forecast.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Contribution per unit is selling price minus variable cost. Divide fixed costs by contribution and round up to whole units."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Use at most two decimal places. Fixed and variable costs are capped at 1 trillion; price must be positive and exceed variable cost. Assumes a constant price and cost per unit, no tax or capacity limits. Not a business forecast."
+      }
+    ],
+    "keywords": ["break", "even", "calculator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "sip-calculator",
+      "emi-loan-calculator",
+      "compound-interest-calculator",
+      "gst-calculator"
+    ]
+  },
+  {
+    "slug": "bmr-calculator",
+    "name": "BMR / Resting Energy Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Estimate adult resting energy using the Mifflin–St Jeor equation.",
+    "icon": "HeartPulse",
+    "intro": "Estimate adult resting energy using the Mifflin–St Jeor equation. Reuses the nutrition calculator: 10 × weight in kg + 6.25 × height in cm − 5 × age, then +5 for male or −161 for female. Source: Mifflin et al., American Journal of Clinical Nutrition (1990), doi:10.1093/ajcn/51.2.241. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Reuses the nutrition calculator: 10 × weight in kg + 6.25 × height in cm − 5 × age, then +5 for male or −161 for female. Source: Mifflin et al., American Journal of Clinical Nutrition (1990), doi:10.1093/ajcn/51.2.241.",
+    "examples": [
+      {
+        "input": "Male; 70 kg; 175 cm; age 30",
+        "output": "1648.75 kcal/day"
+      },
+      {
+        "input": "Female; 60 kg; 160 cm; age 30",
+        "output": "1289 kcal/day"
+      }
+    ],
+    "limitations": "This estimates resting energy, not measured basal metabolism, a calorie target, or total daily needs. Adults only: age 18–100, weight 30–300 kg, height 120–230 cm. Not for pregnancy, lactation or clinical decisions; seek professional guidance.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Reuses the nutrition calculator: 10 × weight in kg + 6.25 × height in cm − 5 × age, then +5 for male or −161 for female. Source: Mifflin et al., American Journal of Clinical Nutrition (1990), doi:10.1093/ajcn/51.2.241."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "This estimates resting energy, not measured basal metabolism, a calorie target, or total daily needs. Adults only: age 18–100, weight 30–300 kg, height 120–230 cm. Not for pregnancy, lactation or clinical decisions; seek professional guidance."
+      }
+    ],
+    "keywords": ["bmr", "calculator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "nutrition-calculator",
+      "bmi-calculator",
+      "ideal-weight-calculator",
+      "pregnancy-due-date-calculator"
+    ]
+  },
+  {
+    "slug": "sitemap-generator",
+    "name": "XML Sitemap Generator",
+    "category": "SEO & social",
+    "shortDescription": "Create sitemap XML from a list of URLs without crawling a website.",
+    "icon": "Globe",
+    "intro": "Create sitemap XML from a list of URLs without crawling a website. Enter one HTTP(S) URL per line, all from the same origin. Exact duplicates are removed after URL normalization and XML characters are escaped. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Enter one HTTP(S) URL per line, all from the same origin. Exact duplicates are removed after URL normalization and XML characters are escaped.",
+    "examples": [
+      {
+        "input": "https://example.com/",
+        "output": "<url><loc>https://example.com/</loc></url> inside a sitemap urlset"
+      },
+      {
+        "input": "https://example.com/?a=1&b=2",
+        "output": "<url><loc>https://example.com/?a=1&amp;b=2</loc></url>"
+      }
+    ],
+    "limitations": "Maximum 1,000 URLs, 2,048 characters per URL and 100,000 input characters. Fragments and credentials are rejected. No crawling, URL existence check, search submission or indexing guarantee.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Enter one HTTP(S) URL per line, all from the same origin. Exact duplicates are removed after URL normalization and XML characters are escaped."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Maximum 1,000 URLs, 2,048 characters per URL and 100,000 input characters. Fragments and credentials are rejected. No crawling, URL existence check, search submission or indexing guarantee."
+      }
+    ],
+    "keywords": ["sitemap", "generator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "slug-generator",
+      "utm-builder",
+      "qr-code-generator",
+      "meta-tag-generator"
+    ]
+  },
+  {
+    "slug": "hashtag-generator",
+    "name": "Hashtag Formatter & Counter",
+    "category": "SEO & social",
+    "shortDescription": "Clean a supplied list of tags, remove exact duplicates, and count them.",
+    "icon": "Globe",
+    "intro": "Clean a supplied list of tags, remove exact duplicates, and count them. Separate tags with commas or whitespace. Leading hash signs and punctuation are removed; letters, numbers and underscores remain. A single hash is then added to each tag. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Separate tags with commas or whitespace. Leading hash signs and punctuation are removed; letters, numbers and underscores remain. A single hash is then added to each tag.",
+    "examples": [
+      {
+        "input": "design, tools, #design",
+        "output": "#design #tools; count 2"
+      },
+      {
+        "input": "Hello-world, #hello_world",
+        "output": "#Helloworld #hello_world; count 2"
+      }
+    ],
+    "limitations": "Formats your words; it does not suggest trending or relevant tags. Deduplication is case-sensitive. Up to 1,000 tags and 100,000 input characters. Platform-specific rules and limits are not checked.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Separate tags with commas or whitespace. Leading hash signs and punctuation are removed; letters, numbers and underscores remain. A single hash is then added to each tag."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Formats your words; it does not suggest trending or relevant tags. Deduplication is case-sensitive. Up to 1,000 tags and 100,000 input characters. Platform-specific rules and limits are not checked."
+      }
+    ],
+    "keywords": ["hashtag", "generator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "slug-generator",
+      "utm-builder",
+      "qr-code-generator",
+      "meta-tag-generator"
+    ]
+  },
+  {
+    "slug": "weight-converter",
+    "name": "Weight Converter",
+    "category": "Converters",
+    "shortDescription": "Convert kilograms, grams, pounds, ounces and stones.",
+    "icon": "Calculator",
+    "intro": "Convert kilograms, grams, pounds, ounces and stones. Values convert through kilograms using international avoirdupois definitions: one pound is exactly 0.45359237 kg, one ounce is one sixteenth of a pound, and one stone is 14 pounds. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Values convert through kilograms using international avoirdupois definitions: one pound is exactly 0.45359237 kg, one ounce is one sixteenth of a pound, and one stone is 14 pounds.",
+    "examples": [
+      {
+        "input": "1 kg → g",
+        "output": "1000 g"
+      },
+      {
+        "input": "1 lb → kg",
+        "output": "0.45359237 kg"
+      }
+    ],
+    "limitations": "Nonnegative values up to 1 trillion. This converts mass; it does not calculate gravitational force. Display uses up to 15 significant digits; floating-point rounding still applies.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Values convert through kilograms using international avoirdupois definitions: one pound is exactly 0.45359237 kg, one ounce is one sixteenth of a pound, and one stone is 14 pounds."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Nonnegative values up to 1 trillion. This converts mass; it does not calculate gravitational force. Display uses up to 15 significant digits; floating-point rounding still applies."
+      }
+    ],
+    "keywords": ["weight", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "temperature-converter",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "length-converter",
+    "name": "Length Converter",
+    "category": "Converters",
+    "shortDescription": "Convert metric lengths, inches, feet and miles.",
+    "icon": "Calculator",
+    "intro": "Convert metric lengths, inches, feet and miles. Values convert through metres. One inch is exactly 0.0254 m; one foot is 12 inches and one mile is 5,280 feet. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Values convert through metres. One inch is exactly 0.0254 m; one foot is 12 inches and one mile is 5,280 feet.",
+    "examples": [
+      {
+        "input": "1 m → cm",
+        "output": "100 cm"
+      },
+      {
+        "input": "1 inch → cm",
+        "output": "2.54 cm"
+      }
+    ],
+    "limitations": "Nonnegative values up to 1 trillion. Uses international feet and statute miles, not survey feet or nautical miles. Display uses up to 15 significant digits; floating-point rounding still applies.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Values convert through metres. One inch is exactly 0.0254 m; one foot is 12 inches and one mile is 5,280 feet."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Nonnegative values up to 1 trillion. Uses international feet and statute miles, not survey feet or nautical miles. Display uses up to 15 significant digits; floating-point rounding still applies."
+      }
+    ],
+    "keywords": ["length", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "temperature-converter",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "speed-converter",
+    "name": "Speed Converter",
+    "category": "Converters",
+    "shortDescription": "Convert metres per second, kilometres per hour, mph and knots.",
+    "icon": "Calculator",
+    "intro": "Convert metres per second, kilometres per hour, mph and knots. Values convert through metres per second. One mph is 0.44704 m/s; one knot is one nautical mile of 1,852 m per hour. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Values convert through metres per second. One mph is 0.44704 m/s; one knot is one nautical mile of 1,852 m per hour.",
+    "examples": [
+      {
+        "input": "10 m/s → km/h",
+        "output": "36 km/h"
+      },
+      {
+        "input": "60 mph → km/h",
+        "output": "96.56064 km/h"
+      }
+    ],
+    "limitations": "Nonnegative values up to 1 trillion. This converts a constant speed, not acceleration or travel duration. Display uses up to 15 significant digits; floating-point rounding still applies.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Values convert through metres per second. One mph is 0.44704 m/s; one knot is one nautical mile of 1,852 m per hour."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Nonnegative values up to 1 trillion. This converts a constant speed, not acceleration or travel duration. Display uses up to 15 significant digits; floating-point rounding still applies."
+      }
+    ],
+    "keywords": ["speed", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "temperature-converter",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "data-storage-converter",
+    "name": "Data Storage Converter",
+    "category": "Converters",
+    "shortDescription": "Compare bits, bytes, decimal storage units and binary storage units.",
+    "icon": "Calculator",
+    "intro": "Compare bits, bytes, decimal storage units and binary storage units. A byte contains eight bits. KB, MB, GB and TB use powers of 1,000; KiB, MiB, GiB and TiB use powers of 1,024. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "A byte contains eight bits. KB, MB, GB and TB use powers of 1,000; KiB, MiB, GiB and TiB use powers of 1,024.",
+    "examples": [
+      {
+        "input": "1 KiB → B",
+        "output": "1024 B"
+      },
+      {
+        "input": "1 GB → MB",
+        "output": "1000 MB"
+      }
+    ],
+    "limitations": "Nonnegative values up to 1 trillion. Unit names are explicit and case-sensitive. Does not account for filesystem overhead, compression or device marketing conventions. Display uses up to 15 significant digits; floating-point rounding still applies.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "A byte contains eight bits. KB, MB, GB and TB use powers of 1,000; KiB, MiB, GiB and TiB use powers of 1,024."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Nonnegative values up to 1 trillion. Unit names are explicit and case-sensitive. Does not account for filesystem overhead, compression or device marketing conventions. Display uses up to 15 significant digits; floating-point rounding still applies."
+      }
+    ],
+    "keywords": ["data", "storage", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "temperature-converter",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "number-base-converter",
+    "name": "Number Base Converter",
+    "category": "Converters",
+    "shortDescription": "Convert signed whole numbers between bases 2 through 36 exactly.",
+    "icon": "Calculator",
+    "intro": "Convert signed whole numbers between bases 2 through 36 exactly. Digits 0–9 and letters A–Z represent values. Arbitrary-precision integer arithmetic avoids loss of large integer digits; output uses uppercase letters. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Digits 0–9 and letters A–Z represent values. Arbitrary-precision integer arithmetic avoids loss of large integer digits; output uses uppercase letters.",
+    "examples": [
+      {
+        "input": "255; base 10 → base 16",
+        "output": "FF"
+      },
+      {
+        "input": "-101; base 2 → base 10",
+        "output": "-5"
+      }
+    ],
+    "limitations": "Up to 256 input digits, optional leading minus sign. No fractions, separators or base prefixes such as 0x. Bases must be whole numbers from 2 to 36.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Digits 0–9 and letters A–Z represent values. Arbitrary-precision integer arithmetic avoids loss of large integer digits; output uses uppercase letters."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Up to 256 input digits, optional leading minus sign. No fractions, separators or base prefixes such as 0x. Bases must be whole numbers from 2 to 36."
+      }
+    ],
+    "keywords": ["number", "base", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "temperature-converter",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "pin-code-generator",
+    "name": "PIN Code Generator",
+    "category": "Security & privacy",
+    "shortDescription": "Generate numeric PINs with browser cryptographic randomness.",
+    "icon": "KeyRound",
+    "intro": "Generate numeric PINs with browser cryptographic randomness. Choose 4–12 digits and 1–20 PINs. Digits use the browser cryptographic random source with rejection sampling to avoid modulo bias. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Choose 4–12 digits and 1–20 PINs. Digits use the browser cryptographic random source with rejection sampling to avoid modulo bias.",
+    "examples": [
+      {
+        "input": "Length 4; count 1",
+        "output": "One four-digit string, such as 0042 (random example)"
+      },
+      {
+        "input": "Length 6; count 2",
+        "output": "Two six-digit strings on separate lines (values vary)"
+      }
+    ],
+    "limitations": "Leading zeros are preserved and duplicate PINs are possible. A short PIN is not a substitute for a strong password. Requires browser cryptographic randomness; copy only into a trusted destination.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Choose 4–12 digits and 1–20 PINs. Digits use the browser cryptographic random source with rejection sampling to avoid modulo bias."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Leading zeros are preserved and duplicate PINs are possible. A short PIN is not a substitute for a strong password. Requires browser cryptographic randomness; copy only into a trusted destination."
+      }
+    ],
+    "keywords": ["pin", "code", "generator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "password-generator",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "dice-roller",
+    "name": "Dice Roller",
+    "category": "Random & fun",
+    "shortDescription": "Roll multiple virtual dice with a configurable number of sides.",
+    "icon": "Coins",
+    "intro": "Roll multiple virtual dice with a configurable number of sides. Choose 1–100 dice with 2–1,000 sides each. Every die uses an unbiased cryptographic draw; the output lists rolls and their sum. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Choose 1–100 dice with 2–1,000 sides each. Every die uses an unbiased cryptographic draw; the output lists rolls and their sum.",
+    "examples": [
+      {
+        "input": "Two six-sided dice; draws 2 and 5",
+        "output": "Rolls 2, 5; total 7"
+      },
+      {
+        "input": "One twenty-sided die; draw 20",
+        "output": "Rolls 20; total 20"
+      }
+    ],
+    "limitations": "Virtual independent draws can repeat. For casual games; not a certified or auditable gambling system. Requires browser cryptographic randomness.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Choose 1–100 dice with 2–1,000 sides each. Every die uses an unbiased cryptographic draw; the output lists rolls and their sum."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Virtual independent draws can repeat. For casual games; not a certified or auditable gambling system. Requires browser cryptographic randomness."
+      }
+    ],
+    "keywords": ["dice", "roller"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "coin-flip",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "random-number-generator",
+    "name": "Random Number Generator",
+    "category": "Random & fun",
+    "shortDescription": "Draw whole numbers from an inclusive minimum and maximum.",
+    "icon": "Coins",
+    "intro": "Draw whole numbers from an inclusive minimum and maximum. Enter integer bounds and generate 1–100 values. Both endpoints can appear; draws use cryptographic randomness with rejection sampling. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Enter integer bounds and generate 1–100 values. Both endpoints can appear; draws use cryptographic randomness with rejection sampling.",
+    "examples": [
+      {
+        "input": "Minimum 7; maximum 7; count 2",
+        "output": "7 and 7"
+      },
+      {
+        "input": "Minimum -2; maximum 2",
+        "output": "Each result is -2, -1, 0, 1 or 2"
+      }
+    ],
+    "limitations": "Bounds are from -1 billion to 1 billion. Sampling is with replacement, so duplicates are possible. Not a certified lottery or auditable draw system.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Enter integer bounds and generate 1–100 values. Both endpoints can appear; draws use cryptographic randomness with rejection sampling."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Bounds are from -1 billion to 1 billion. Sampling is with replacement, so duplicates are possible. Not a certified lottery or auditable draw system."
+      }
+    ],
+    "keywords": ["random", "number", "generator"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "coin-flip",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "random-name-picker",
+    "name": "Random Name Picker",
+    "category": "Random & fun",
+    "shortDescription": "Pick one entry from a private list of names.",
+    "icon": "Coins",
+    "intro": "Pick one entry from a private list of names. Enter one name per line. Empty lines are ignored and surrounding spaces are removed. One line is selected with cryptographic randomness. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Enter one name per line. Empty lines are ignored and surrounding spaces are removed. One line is selected with cryptographic randomness.",
+    "examples": [
+      {
+        "input": "Alex",
+        "output": "Alex"
+      },
+      {
+        "input": "Alex\nSam",
+        "output": "Either Alex or Sam with equal probability"
+      }
+    ],
+    "limitations": "Up to 1,000 names, each at most 200 characters. Duplicate entries increase their selection chance. No draw history, team grouping or certified audit trail.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Enter one name per line. Empty lines are ignored and surrounding spaces are removed. One line is selected with cryptographic randomness."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Up to 1,000 names, each at most 200 characters. Duplicate entries increase their selection chance. No draw history, team grouping or certified audit trail."
+      }
+    ],
+    "keywords": ["random", "name", "picker"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "coin-flip",
+      "word-counter",
+      "percentage-calculator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "receipt-maker",
+    "name": "Payment Receipt Maker",
+    "category": "Documents & design",
+    "shortDescription": "Prepare a plain-text payment receipt draft to copy into a document.",
+    "icon": "LayoutTemplate",
+    "intro": "Prepare a plain-text payment receipt draft to copy into a document. Enter the reference, payment date, payer, recipient, purpose, amount, currency and method. The result is a consistently labelled plain-text draft. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Enter the reference, payment date, payer, recipient, purpose, amount, currency and method. The result is a consistently labelled plain-text draft.",
+    "examples": [
+      {
+        "input": "Amount 100; currency INR",
+        "output": "Amount: INR 100.00"
+      },
+      {
+        "input": "Reference R-002; date 2026-09-19",
+        "output": "Receipt: R-002; Date: 2026-09-19"
+      }
+    ],
+    "limitations": "Does not process or verify payment. Not a tax invoice, digital signature or jurisdiction-specific legal template. Each text field is 1–200 characters; amount is 0.01–1 trillion. Supported labels: INR, USD, EUR and GBP; no currency conversion.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Enter the reference, payment date, payer, recipient, purpose, amount, currency and method. The result is a consistently labelled plain-text draft."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Does not process or verify payment. Not a tax invoice, digital signature or jurisdiction-specific legal template. Each text field is 1–200 characters; amount is 0.01–1 trillion. Supported labels: INR, USD, EUR and GBP; no currency conversion."
+      }
+    ],
+    "keywords": ["receipt", "maker"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "invoice-maker",
+      "biodata-maker",
+      "word-counter",
+      "percentage-calculator"
+    ]
+  },
+  {
+    "slug": "image-format-converter",
+    "name": "Image Format Converter",
+    "category": "Images",
+    "shortDescription": "Convert a local JPG, PNG or WebP to another image format.",
+    "icon": "Image",
+    "intro": "Convert a local JPG, PNG or WebP to another image format. Choose an output format and maximum dimensions, then download the converted image. The image keeps its proportions and is never enlarged. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Choose an output format and maximum dimensions, then download the converted image. The image keeps its proportions and is never enlarged.",
+    "examples": [
+      {
+        "input": "800 × 400 PNG → WebP; bounds 4096 × 4096",
+        "output": "800 × 400 WebP"
+      },
+      {
+        "input": "800 × 400 WebP → PNG; bounds 400 × 400",
+        "output": "400 × 200 PNG"
+      }
+    ],
+    "limitations": "One nonempty file up to 20 MB and 12 million pixels. Maximum output bounds 4,096 × 4,096; default bounds preserve smaller images. Metadata and animation are not preserved. JPEG flattens transparency to white. Conversion may increase size.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Choose an output format and maximum dimensions, then download the converted image. The image keeps its proportions and is never enlarged."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "One nonempty file up to 20 MB and 12 million pixels. Maximum output bounds 4,096 × 4,096; default bounds preserve smaller images. Metadata and animation are not preserved. JPEG flattens transparency to white. Conversion may increase size."
+      }
+    ],
+    "keywords": ["image", "format", "converter"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "image-compressor",
+      "image-resizer",
+      "passport-photo-maker",
+      "word-counter"
+    ]
+  },
+  {
+    "slug": "image-rotator-flipper",
+    "name": "Image Rotate & Flip",
+    "category": "Images",
+    "shortDescription": "Rotate an image by quarter turns and optionally mirror it.",
+    "icon": "Image",
+    "intro": "Rotate an image by quarter turns and optionally mirror it. Choose clockwise rotation and an optional horizontal or vertical flip. Flipping occurs before rotation. The image is fitted within your bounds before the transform. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Choose clockwise rotation and an optional horizontal or vertical flip. Flipping occurs before rotation. The image is fitted within your bounds before the transform.",
+    "examples": [
+      {
+        "input": "800 × 400 image; 90° rotation",
+        "output": "400 × 800 image"
+      },
+      {
+        "input": "800 × 400 image; 180° rotation",
+        "output": "800 × 400 image, upside down"
+      }
+    ],
+    "limitations": "One image up to 20 MB and 12 million pixels. Output bounds up to 4,096 per side before rotation; width and height swap at 90° or 270°. Re-encoding can change quality, strip metadata and discard animation.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Choose clockwise rotation and an optional horizontal or vertical flip. Flipping occurs before rotation. The image is fitted within your bounds before the transform."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "One image up to 20 MB and 12 million pixels. Output bounds up to 4,096 per side before rotation; width and height swap at 90° or 270°. Re-encoding can change quality, strip metadata and discard animation."
+      }
+    ],
+    "keywords": ["image", "rotator", "flipper"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": [
+      "image-compressor",
+      "image-resizer",
+      "passport-photo-maker",
+      "word-counter"
+    ]
+  },
+  {
+    "slug": "rotate-pdf",
+    "name": "Rotate PDF",
+    "category": "PDF tools",
+    "shortDescription": "Rotate all pages of a PDF without uploading the document.",
+    "icon": "Files",
+    "intro": "Rotate all pages of a PDF without uploading the document. Choose 0°, 90°, 180° or 270° clockwise. The selected angle is added to each page’s existing rotation and the PDF is saved as a new file. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Choose 0°, 90°, 180° or 270° clockwise. The selected angle is added to each page’s existing rotation and the PDF is saved as a new file.",
+    "examples": [
+      {
+        "input": "Unrotated page; add 90°",
+        "output": "Page rotation 90°"
+      },
+      {
+        "input": "Page rotation 270°; add 90°",
+        "output": "Page rotation 0°"
+      }
+    ],
+    "limitations": "One nonempty PDF up to 20 MB and 200 pages. Encrypted PDFs are unsupported. Rotation changes display orientation, not the underlying page dimensions. Rewriting invalidates digital signatures; verify the downloaded copy.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Choose 0°, 90°, 180° or 270° clockwise. The selected angle is added to each page’s existing rotation and the PDF is saved as a new file."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "One nonempty PDF up to 20 MB and 200 pages. Encrypted PDFs are unsupported. Rotation changes display orientation, not the underlying page dimensions. Rewriting invalidates digital signatures; verify the downloaded copy."
+      }
+    ],
+    "keywords": ["rotate", "pdf"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": ["merge-pdf", "images-to-pdf", "split-pdf", "word-counter"]
+  },
+  {
+    "slug": "add-page-numbers-to-pdf",
+    "name": "Add Page Numbers to PDF",
+    "category": "PDF tools",
+    "shortDescription": "Add sequential page labels to a local PDF.",
+    "icon": "Files",
+    "intro": "Add sequential page labels to a local PDF. Each page receives a black 10-point label in the format page / total, centered near the bottom of its crop box. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Each page receives a black 10-point label in the format page / total, centered near the bottom of its crop box.",
+    "examples": [
+      {
+        "input": "Two-page PDF",
+        "output": "Labels 1 / 2 and 2 / 2"
+      },
+      {
+        "input": "One-page PDF",
+        "output": "Label 1 / 1"
+      }
+    ],
+    "limitations": "One nonempty PDF up to 20 MB and 200 pages. Crop boxes must be at least 100 × 60 points. Labels can overlap existing content; rotated pages retain their original coordinate orientation. Encrypted PDFs are unsupported and rewriting invalidates signatures.",
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Each page receives a black 10-point label in the format page / total, centered near the bottom of its crop box."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "One nonempty PDF up to 20 MB and 200 pages. Crop boxes must be at least 100 × 60 points. Labels can overlap existing content; rotated pages retain their original coordinate orientation. Encrypted PDFs are unsupported and rewriting invalidates signatures."
+      }
+    ],
+    "keywords": ["add", "page", "numbers", "to", "pdf"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": false,
+    "relatedSlugs": ["merge-pdf", "images-to-pdf", "split-pdf", "word-counter"]
   }
 ]

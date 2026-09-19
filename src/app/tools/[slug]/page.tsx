@@ -2,11 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { tools, getTool, categoryFor } from "@/lib/tool-registry";
 import { metadata, notFoundMetadata, safeJson, siteUrl } from "@/lib/seo";
-import FileStudio from "@/components/FileStudio";
-import QrCreator from "@/components/QrCreator";
-import InvoiceMaker from "@/components/InvoiceMaker";
-import BiodataMaker from "@/components/BiodataMaker";
-import ToolWorkspace from "@/components/ToolWorkspace";
+import ToolRenderer from "@/components/ToolRenderer";
 import { ToolCard } from "@/components/ToolCard";
 import { Icon } from "@/components/Icon";
 export function generateStaticParams() {
@@ -61,22 +57,7 @@ export default async function ToolPage({
           <p>{t.shortDescription}</p>
         </div>
       </div>
-      {slug === "qr-code-generator" ? (
-        <QrCreator />
-      ) : slug === "invoice-maker" ? (
-        <InvoiceMaker />
-      ) : slug === "biodata-maker" ? (
-        <BiodataMaker />
-      ) : slug === "image-compressor" ||
-        slug === "image-resizer" ||
-        slug === "merge-pdf" ||
-        slug === "images-to-pdf" ||
-        slug === "split-pdf" ||
-        slug === "passport-photo-maker" ? (
-        <FileStudio slug={slug} />
-      ) : (
-        <ToolWorkspace slug={slug} />
-      )}
+      <ToolRenderer slug={slug} />
       {t.category === "Health & nutrition" && (
         <p className="health-note">
           General estimates only. This tool is not a diagnosis, treatment, or

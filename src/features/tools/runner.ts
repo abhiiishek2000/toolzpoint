@@ -1,3 +1,5 @@
+import { expansionSlugs, runExpansion } from "./expansion/domain";
+import { runTextUtility, textUtilitySlugs } from "./text-utilities/domain";
 import { ZodError } from "zod";
 import * as domain from "./index";
 type RunOptions = {
@@ -27,6 +29,9 @@ export async function executeTool({
   algorithm,
 }: RunOptions) {
   try {
+    if (textUtilitySlugs.some((tool) => tool === slug))
+      return runTextUtility(slug, input, values);
+    if (expansionSlugs.includes(slug)) return runExpansion(slug, input, values);
     const n = (key: string) => {
       if (!values[key]?.trim()) throw new Error(`Enter ${key}.`);
       return Number(values[key]);

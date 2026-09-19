@@ -12,6 +12,16 @@ inputs to a server. Anything that fundamentally needs a server (AI image
 generation, background removal via ML API, live currency-exchange APIs,
 backlink/rank-tracking data) was excluded rather than listed with an asterisk.
 
+## Implementation progress — 2026-09-19
+
+The catalog now contains 78 tools. The ten text utilities from Character Counter through ROT13 / Caesar Cipher (excluding text diff, speech and binary conversion) are implemented with local processing, bounded inputs, examples and tests. New entries remain `reviewed: false`. The tables below preserve the original research backlog, not a list of outstanding implementations.
+
+### Cross-category additions
+
+Added 27 tools covering every current category: binary text; URL parser, timestamps and JSON to CSV; tips, averages and ratios; simple interest, ROI and break-even; BMR; image conversion and rotation; PDF rotation and numbering; sitemaps and hashtag formatting; weight, length, speed, storage and number-base conversion; PINs; dice, random numbers and name picking; and a plain-text receipt maker. These entries remain unreviewed and noindex. This is a cross-category expansion, not completion of every research candidate.
+
+The BMR tool reuses the existing nutrition domain function. Its equation reference is [Mifflin et al. (1990)](https://pubmed.ncbi.nlm.nih.gov/2305711/); the output is an estimate of resting energy, not a prescribed intake. Product decisions for live exchange rates, tax jurisdictions, browser speech privacy, and advanced PDF/JavaScript processing remain deferred.
+
 ## Research basis
 
 Web search across current (Sept 2026) "most popular free online tools"
