@@ -8,7 +8,11 @@ export function validateFiles(
   if (!files.length) throw new Error("Choose a file to get started.");
   if (files.length > (multiple ? 10 : 1))
     throw new Error(
-      multiple ? "Choose at most 10 files." : "Choose one image at a time.",
+      multiple
+        ? "Choose at most 10 files."
+        : kind === "pdf"
+          ? "Choose one PDF at a time."
+          : "Choose one image at a time.",
     );
   if (files.some((f) => f.size === 0 || f.size > MAX_FILE_BYTES))
     throw new Error("Each file must be non-empty and no larger than 20 MB.");
@@ -49,6 +53,177 @@ export function fitDimensions(
     height: Math.max(1, Math.round(height * scale)),
   };
 }
+export function parsePageRange(spec: string, pageCount: number) {
+  const cleaned = spec.trim();
+  if (!cleaned) throw new Error("Enter a page range, such as 1-3, 5.");
+  const indices = new Set<number>();
+  for (const part of cleaned
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean)) {
+    const range = /^(\d+)(?:-(\d+))?$/.exec(part);
+    if (!range) throw new Error(`"${part}" is not a valid page or range.`);
+    const start = Number(range[1]);
+    const end = range[2] ? Number(range[2]) : start;
+    if (start < 1 || end < start)
+      throw new Error(`"${part}" is not a valid page or range.`);
+    if (end > pageCount)
+      throw new Error(
+        `Page ${end} does not exist in this ${pageCount}-page PDF.`,
+      );
+    for (let p = start; p <= end; p++) indices.add(p - 1);
+  }
+  if (!indices.size) throw new Error("Enter at least one page number.");
+  return [...indices].sort((a, b) => a - b);
+}
+export type PhotoIdPreset = {
+  id: string;
+  label: string;
+  widthMm: number;
+  heightMm: number;
+  maxKB?: number;
+};
+export const PHOTO_ID_PRESETS: PhotoIdPreset[] = [
+  {
+    id: "in-passport",
+    label: "India Passport (3.5 × 4.5 cm)",
+    widthMm: 35,
+    heightMm: 45,
+  },
+  {
+    id: "us-passport",
+    label: "US Passport / Visa (2 × 2 in)",
+    widthMm: 50.8,
+    heightMm: 50.8,
+  },
+  {
+    id: "uk-passport",
+    label: "UK Passport (3.5 × 4.5 cm)",
+    widthMm: 35,
+    heightMm: 45,
+  },
+  {
+    id: "schengen-visa",
+    label: "Schengen Visa (3.5 × 4.5 cm)",
+    widthMm: 35,
+    heightMm: 45,
+  },
+  {
+    id: "pan-card",
+    label: "PAN Card photo (2.5 × 3.5 cm)",
+    widthMm: 25,
+    heightMm: 35,
+  },
+  {
+    id: "exam-photo",
+    label: "Govt. exam photo – SSC / Railway (3.5 × 4.5 cm, ≤50 KB)",
+    widthMm: 35,
+    heightMm: 45,
+    maxKB: 50,
+  },
+];
+export function mmToPx(mm: number, dpi = 300) {
+  if (!Number.isFinite(mm) || mm < 10 || mm > 200)
+    throw new Error("Use a size between 10 mm and 200 mm.");
+  return Math.round((mm / 25.4) * dpi);
+}
+export function coverCropRect(
+  sourceWidth: number,
+  sourceHeight: number,
+  targetWidth: number,
+  targetHeight: number,
+  zoom = 1,
+  verticalBias = 0,
+) {
+  for (const n of [sourceWidth, sourceHeight, targetWidth, targetHeight])
+    if (!Number.isFinite(n) || n <= 0)
+      throw new Error("Dimensions must be positive numbers.");
+  if (zoom < 1 || zoom > 3) throw new Error("Zoom must be between 1 and 3.");
+  if (verticalBias < -1 || verticalBias > 1)
+    throw new Error("Vertical position must be between -1 and 1.");
+  const targetRatio = targetWidth / targetHeight;
+  const sourceRatio = sourceWidth / sourceHeight;
+  const baseWidth =
+    sourceRatio > targetRatio ? sourceHeight * targetRatio : sourceWidth;
+  const baseHeight =
+    sourceRatio > targetRatio ? sourceHeight : sourceWidth / targetRatio;
+  const cropWidth = baseWidth / zoom;
+  const cropHeight = baseHeight / zoom;
+  const maxOffsetY = (sourceHeight - cropHeight) / 2;
+  return {
+    sx: Math.round((sourceWidth - cropWidth) / 2),
+    sy: Math.round((sourceHeight - cropHeight) / 2 + verticalBias * maxOffsetY),
+    sWidth: Math.round(cropWidth),
+    sHeight: Math.round(cropHeight),
+  };
+}
+export function hexToRgb(hex: string): [number, number, number] {
+  const match = /^#([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!match) throw new Error("Choose a valid color.");
+  const value = match[1]!;
+  return [
+    parseInt(value.slice(0, 2), 16),
+    parseInt(value.slice(2, 4), 16),
+    parseInt(value.slice(4, 6), 16),
+  ];
+}
+// Estimates the existing background color from a border sample, then fades
+// pixels near that color toward the chosen replacement, leaving the subject
+// (assumed centered, away from the edges) unchanged. This is a plain color
+// threshold, not subject segmentation, so it works best with a plain,
+// evenly lit original background.
+export function replaceBackground(
+  data: Uint8ClampedArray,
+  width: number,
+  height: number,
+  target: [number, number, number],
+  tolerance = 42,
+) {
+  if (width < 4 || height < 4)
+    throw new Error("Image is too small to process.");
+  const step = Math.max(1, Math.floor(Math.min(width, height) / 40));
+  const samples: number[] = [];
+  const sample = (x: number, y: number) => {
+    const i = (y * width + x) * 4;
+    samples.push(data[i]!, data[i + 1]!, data[i + 2]!);
+  };
+  for (let x = 0; x < width; x += step) {
+    sample(x, 0);
+    sample(x, height - 1);
+  }
+  for (let y = 0; y < height; y += step) {
+    sample(0, y);
+    sample(width - 1, y);
+  }
+  let br = 0,
+    bg = 0,
+    bb = 0;
+  const count = samples.length / 3;
+  for (let i = 0; i < samples.length; i += 3) {
+    br += samples[i]!;
+    bg += samples[i + 1]!;
+    bb += samples[i + 2]!;
+  }
+  br /= count;
+  bg /= count;
+  bb /= count;
+  const low = tolerance * 0.65;
+  const high = tolerance * 1.5;
+  const out = new Uint8ClampedArray(data.length);
+  for (let i = 0; i < data.length; i += 4) {
+    const dr = data[i]! - br,
+      dg = data[i + 1]! - bg,
+      db = data[i + 2]! - bb;
+    const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+    const weight =
+      dist <= low ? 1 : dist >= high ? 0 : 1 - (dist - low) / (high - low);
+    out[i] = data[i]! * (1 - weight) + target[0] * weight;
+    out[i + 1] = data[i + 1]! * (1 - weight) + target[1] * weight;
+    out[i + 2] = data[i + 2]! * (1 - weight) + target[2] * weight;
+    out[i + 3] = 255;
+  }
+  return out;
+}
 export function savings(original: number, output: number) {
   return original > 0 ? Math.round((1 - output / original) * 100) : 0;
 }
@@ -59,12 +234,24 @@ export function prettyBytes(bytes: number) {
 }
 export type FileTask = {
   id: number;
-  kind: "image-compressor" | "image-resizer" | "merge-pdf" | "images-to-pdf";
+  kind:
+    | "image-compressor"
+    | "image-resizer"
+    | "merge-pdf"
+    | "images-to-pdf"
+    | "split-pdf"
+    | "passport-photo-maker";
   files: File[];
   quality: number;
   maxWidth: number;
   maxHeight: number;
   format: "image/jpeg" | "image/webp" | "image/png";
+  pageRange?: string;
+  zoom?: number;
+  verticalBias?: number;
+  maxKB?: number;
+  removeBackground?: boolean;
+  backgroundColor?: string;
 };
 export type FileResult = {
   blob: Blob;

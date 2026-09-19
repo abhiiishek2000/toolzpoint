@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { metadata } from "@/lib/seo";
+import { metadata, notFoundMetadata } from "@/lib/seo";
 const lastUpdated = "December 02, 2025";
 const policies: Record<string, { appName: string; supportEmail: string }> = {
   cashyai: { appName: "CashyAI", supportEmail: "support@cashyai.com" },
@@ -21,7 +21,7 @@ export async function generateMetadata({
         `Privacy Policy for ${p.appName}, last updated ${lastUpdated}.`,
         `/apps/${slug}/privacy`,
       )
-    : {};
+    : notFoundMetadata;
 }
 export default async function AppPrivacyPage({
   params,

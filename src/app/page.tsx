@@ -8,8 +8,8 @@ import { metadata } from "@/lib/seo";
 import { createQr } from "@/features/qr-code-generator/domain";
 export const generateMetadata = () =>
   metadata(
-    "Free image, PDF & everyday tools",
-    "Compress images, resize photos, merge PDFs, turn images into PDFs, and create QR codes. Free browser tools for everyday users and creators.",
+    "Free image, PDF, calculator & everyday tools",
+    "Compress images, merge PDFs, make a passport photo, calculate EMI or GST, check BMI, and more. Free browser tools, no sign-up, nothing uploaded.",
     "/",
   );
 export default async function Home() {

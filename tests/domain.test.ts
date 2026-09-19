@@ -12,6 +12,26 @@ import {
   sip,
   bmi,
   nutrition,
+  generatePasswords,
+  flipCoins,
+  emiLoan,
+  compoundInterest,
+  convertTemperature,
+  discount,
+  idealWeight,
+  convertCase,
+  hashText,
+  decodeJwt,
+  metaTags,
+  dateDifference,
+  pregnancyDueDate,
+  ovulation,
+  gst,
+  waterIntake,
+  bodyFat,
+  waistHipRatio,
+  heartRateZones,
+  savingsGoal,
 } from "../src/features/tools";
 describe("word counter", () => {
   it("counts Unicode and contractions without markup interpretation", () => {
@@ -219,5 +239,399 @@ describe("adult health estimates", () => {
         fat: 35,
       }),
     ).toThrow();
+  });
+});
+describe("password generator", () => {
+  it("builds passwords from only the selected character sets", () => {
+    let i = 0;
+    const cyclic = (max: number) => i++ % max;
+    const out = generatePasswords(
+      {
+        length: 10,
+        count: 3,
+        lower: true,
+        upper: false,
+        numbers: false,
+        symbols: false,
+      },
+      cyclic,
+    );
+    const lines = out.split("\n");
+    expect(lines).toHaveLength(3);
+    for (const line of lines) {
+      expect(line).toHaveLength(10);
+      expect(line).toMatch(/^[a-z]+$/);
+    }
+  });
+  it("requires a character set and bounds length and count", () => {
+    expect(() =>
+      generatePasswords({
+        length: 10,
+        count: 1,
+        lower: false,
+        upper: false,
+        numbers: false,
+        symbols: false,
+      }),
+    ).toThrow();
+    expect(() =>
+      generatePasswords({
+        length: 200,
+        count: 1,
+        lower: true,
+        upper: false,
+        numbers: false,
+        symbols: false,
+      }),
+    ).toThrow();
+    expect(() =>
+      generatePasswords({
+        length: 10,
+        count: 21,
+        lower: true,
+        upper: false,
+        numbers: false,
+        symbols: false,
+      }),
+    ).toThrow();
+  });
+});
+describe("coin flip", () => {
+  it("counts heads and tails from a deterministic sequence", () => {
+    const sequence = [0.1, 0.9, 0.2, 0.8];
+    let i = 0;
+    const result = flipCoins(4, () => sequence[i++]!);
+    expect(result).toEqual({
+      Heads: 2,
+      Tails: 2,
+      Sequence: "Heads, Tails, Heads, Tails",
+    });
+  });
+  it("omits the sequence above twenty flips and bounds the count", () => {
+    const result = flipCoins(21, () => 0.1);
+    expect(result.Sequence).toBeUndefined();
+    expect(result.Heads).toBe(21);
+    expect(() => flipCoins(0)).toThrow();
+    expect(() => flipCoins(1001)).toThrow();
+  });
+});
+describe("EMI loan calculator", () => {
+  it("computes standard reducing-balance EMI", () => {
+    const r = emiLoan(1000000, 8.5, 20);
+    expect(r["Monthly EMI"]).toBeCloseTo(8678.232333655342, 6);
+    expect(r["Total interest"]).toBeCloseTo(1082775.760077282, 3);
+  });
+  it("handles zero interest and rejects invalid input", () => {
+    expect(emiLoan(120000, 0, 1)).toEqual({
+      "Monthly EMI": 10000,
+      "Total interest": 0,
+      "Total payment": 120000,
+    });
+    expect(() => emiLoan(-1, 5, 5)).toThrow();
+    expect(() => emiLoan(1000, 5, 0)).toThrow();
+  });
+});
+describe("compound interest calculator", () => {
+  it("compounds monthly and annually correctly", () => {
+    const monthly = compoundInterest(100000, 8, 5, 12);
+    expect(monthly["Maturity amount"]).toBeCloseTo(148984.5708301605, 3);
+    expect(compoundInterest(1000, 10, 1, 1)).toEqual({
+      "Maturity amount": 1100,
+      "Interest earned": 100,
+    });
+  });
+  it("rejects an unsupported frequency and out-of-range principal", () => {
+    expect(() => compoundInterest(1000, 10, 1, 3 as 1)).toThrow();
+    expect(() => compoundInterest(-5, 10, 1, 1)).toThrow();
+  });
+});
+describe("temperature converter", () => {
+  it("converts across Celsius, Fahrenheit, and Kelvin", () => {
+    expect(convertTemperature(100, "C", "F")["Converted temperature"]).toBe(
+      212,
+    );
+    expect(
+      convertTemperature(98.6, "F", "C")["Converted temperature"],
+    ).toBeCloseTo(37, 5);
+    expect(
+      convertTemperature(0, "C", "K")["Converted temperature"],
+    ).toBeCloseTo(273.15, 5);
+    expect(convertTemperature(25, "C", "C")["Converted temperature"]).toBe(25);
+  });
+  it("rejects temperatures below absolute zero", () => {
+    expect(() => convertTemperature(-1, "K", "C")).toThrow();
+    expect(() => convertTemperature(-300, "C", "F")).toThrow();
+  });
+});
+describe("discount calculator", () => {
+  it("computes sale price and savings", () => {
+    expect(discount(1200, 25)).toEqual({
+      "Sale price": 900,
+      "You save": 300,
+    });
+    const d = discount(49.99, 10);
+    expect(d["Sale price"]).toBeCloseTo(44.991, 3);
+    expect(d["You save"]).toBeCloseTo(4.999, 3);
+  });
+  it("rejects out-of-range percentages and negative prices", () => {
+    expect(() => discount(-1, 10)).toThrow();
+    expect(() => discount(100, 101)).toThrow();
+    expect(() => discount(100, -1)).toThrow();
+  });
+});
+describe("ideal weight calculator", () => {
+  it("applies the Devine formula by sex", () => {
+    const m = idealWeight(180, "male");
+    expect(m["Ideal weight (kg)"]).toBeCloseTo(74.99212598425197, 6);
+    expect(m["Ideal weight (lb)"]).toBeCloseTo(165.3293374054153, 4);
+    const f = idealWeight(165, "female");
+    expect(f["Ideal weight (kg)"]).toBeCloseTo(56.90944881889763, 6);
+  });
+  it("bounds height to a plausible adult range", () => {
+    expect(() => idealWeight(100, "male")).toThrow();
+    expect(() => idealWeight(250, "female")).toThrow();
+  });
+});
+describe("text case converter", () => {
+  const sample = "ToolzPoint Makes Everyday Tasks Simple";
+  it("converts across all seven modes", () => {
+    expect(convertCase(sample, "upper")).toBe(
+      "TOOLZPOINT MAKES EVERYDAY TASKS SIMPLE",
+    );
+    expect(convertCase(sample, "lower")).toBe(
+      "toolzpoint makes everyday tasks simple",
+    );
+    expect(convertCase(sample, "title")).toBe(
+      "Toolzpoint Makes Everyday Tasks Simple",
+    );
+    expect(
+      convertCase("hello world. this is great! are you sure? yes.", "sentence"),
+    ).toBe("Hello world. This is great! Are you sure? Yes.");
+    expect(convertCase(sample, "camel")).toBe(
+      "toolzpointMakesEverydayTasksSimple",
+    );
+    expect(convertCase(sample, "snake")).toBe(
+      "toolzpoint_makes_everyday_tasks_simple",
+    );
+    expect(convertCase(sample, "kebab")).toBe(
+      "toolzpoint-makes-everyday-tasks-simple",
+    );
+  });
+  it("keeps apostrophes in Title Case and rejects unconvertible input", () => {
+    expect(convertCase("don't stop believing", "title")).toBe(
+      "Don't Stop Believing",
+    );
+    expect(() => convertCase("", "upper")).toThrow();
+    expect(() => convertCase("!!!", "camel")).toThrow();
+  });
+});
+describe("hash generator", () => {
+  it("computes known SHA digests", async () => {
+    const text = "The quick brown fox jumps over the lazy dog";
+    expect(await hashText(text, "SHA-256")).toBe(
+      "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592",
+    );
+    expect(await hashText(text, "SHA-1")).toBe(
+      "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12",
+    );
+  });
+  it("rejects empty input", async () => {
+    await expect(hashText("", "SHA-256")).rejects.toThrow();
+  });
+});
+describe("JWT decoder", () => {
+  it("decodes header and payload as pretty JSON without verifying the signature", () => {
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    const out = decodeJwt(token);
+    expect(out).toContain('"alg": "HS256"');
+    expect(out).toContain('"name": "John Doe"');
+    expect(out).toContain("SIGNATURE (not verified)");
+  });
+  it("rejects malformed tokens", () => {
+    expect(() => decodeJwt("not.a.jwt")).toThrow();
+    expect(() => decodeJwt("only.two")).toThrow();
+  });
+});
+describe("meta tag generator", () => {
+  it("builds escaped meta, Open Graph, and Twitter tags", () => {
+    const out = metaTags({
+      title: "ToolzPoint & Friends",
+      description: "Free browser tools",
+      url: "https://www.toolzpointt.com/",
+      image: "https://www.toolzpointt.com/og.png",
+      siteName: "ToolzPoint",
+    });
+    expect(out).toContain("<title>ToolzPoint &amp; Friends</title>");
+    expect(out).toContain(
+      '<meta property="og:image" content="https://www.toolzpointt.com/og.png" />',
+    );
+    expect(out).toContain(
+      '<meta name="twitter:card" content="summary_large_image" />',
+    );
+  });
+  it("omits optional tags and falls back to a summary card without an image", () => {
+    const out = metaTags({
+      title: "Title",
+      description: "Description",
+      url: "https://example.com/",
+    });
+    expect(out).not.toContain("og:image");
+    expect(out).toContain('<meta name="twitter:card" content="summary" />');
+  });
+  it("rejects an invalid URL and an over-length title", () => {
+    expect(() =>
+      metaTags({
+        title: "Title",
+        description: "Description",
+        url: "not-a-url",
+      }),
+    ).toThrow();
+    expect(() =>
+      metaTags({
+        title: "x".repeat(71),
+        description: "Description",
+        url: "https://example.com/",
+      }),
+    ).toThrow();
+  });
+});
+describe("date difference calculator", () => {
+  it("matches the age calculator's calendar-diff algorithm", () => {
+    expect(dateDifference("2026-01-01", "2026-09-19")).toEqual({
+      Years: 0,
+      Months: 8,
+      Days: 18,
+      "Total days": 261,
+      "Total weeks": 37,
+    });
+    expect(dateDifference("2024-01-01", "2025-06-15")).toEqual({
+      Years: 1,
+      Months: 5,
+      Days: 14,
+      "Total days": 531,
+      "Total weeks": 75,
+    });
+    expect(dateDifference("2026-03-15", "2026-03-15")).toEqual({
+      Years: 0,
+      Months: 0,
+      Days: 0,
+      "Total days": 0,
+      "Total weeks": 0,
+    });
+  });
+  it("rejects a start date after the end date", () => {
+    expect(() => dateDifference("2026-05-01", "2026-01-01")).toThrow();
+  });
+});
+describe("pregnancy due date calculator", () => {
+  it("applies Naegele's rule adjusted for cycle length", () => {
+    const r28 = pregnancyDueDate("2026-01-01", 28, "2026-01-01");
+    expect(r28["Estimated due date"]).toBe("2026-10-08");
+    const r30 = pregnancyDueDate("2026-01-01", 30, "2026-01-01");
+    expect(r30["Estimated due date"]).toBe("2026-10-10");
+  });
+  it("reports weeks pregnant and trimester as of a later date", () => {
+    const r = pregnancyDueDate("2026-01-01", 28, "2026-09-19");
+    expect(r["Weeks pregnant"]).toBe(37);
+    expect(r["Days into that week"]).toBe(2);
+    expect(r.Trimester).toBe("3rd trimester");
+  });
+  it("rejects a last period after the comparison date", () => {
+    expect(() => pregnancyDueDate("2026-09-19", 28, "2026-01-01")).toThrow();
+  });
+});
+describe("ovulation calculator", () => {
+  it("estimates ovulation day, fertile window, and next period", () => {
+    const r = ovulation("2026-01-01", 28);
+    expect(r["Estimated ovulation day"]).toBe("2026-01-15");
+    expect(r["Fertile window start"]).toBe("2026-01-10");
+    expect(r["Fertile window end"]).toBe("2026-01-16");
+    expect(r["Next expected period"]).toBe("2026-01-29");
+  });
+});
+describe("GST calculator", () => {
+  it("adds and extracts GST consistently", () => {
+    expect(gst(1000, 18, "exclusive")).toEqual({
+      "Base price": 1000,
+      "GST amount": 180,
+      "CGST + SGST (each)": 90,
+      "Total price": 1180,
+    });
+    const inclusive = gst(1180, 18, "inclusive");
+    expect(inclusive["Base price"]).toBeCloseTo(1000, 6);
+    expect(inclusive["GST amount"]).toBeCloseTo(180, 6);
+  });
+  it("rejects a negative rate or amount", () => {
+    expect(() => gst(-1, 18, "exclusive")).toThrow();
+    expect(() => gst(1000, -1, "exclusive")).toThrow();
+  });
+});
+describe("water intake calculator", () => {
+  it("scales the baseline by activity level", () => {
+    const moderate = waterIntake(70, "moderate");
+    expect(moderate["Daily water (liters)"]).toBeCloseTo(2.695, 3);
+    expect(moderate["Daily water (250ml glasses)"]).toBeCloseTo(10.78, 2);
+    const sedentary = waterIntake(60, "sedentary");
+    expect(sedentary["Daily water (liters)"]).toBeCloseTo(2.1, 3);
+  });
+});
+describe("body fat calculator", () => {
+  it("applies the US Navy method by sex", () => {
+    const male = bodyFat({ sex: "male", height: 175, waist: 85, neck: 38 });
+    expect(male["Body fat (%)"]).toBeCloseTo(16.938, 2);
+    expect(male.Category).toBe("Fitness");
+    const female = bodyFat({
+      sex: "female",
+      height: 165,
+      waist: 75,
+      neck: 32,
+      hip: 100,
+    });
+    expect(female["Body fat (%)"]).toBeCloseTo(29.93, 1);
+    expect(female.Category).toBe("Average");
+  });
+  it("requires a hip measurement for women and a valid waist/neck gap", () => {
+    expect(() =>
+      bodyFat({ sex: "female", height: 165, waist: 75, neck: 32 }),
+    ).toThrow();
+    expect(() =>
+      bodyFat({ sex: "male", height: 175, waist: 30, neck: 38 }),
+    ).toThrow();
+  });
+});
+describe("waist-to-hip ratio calculator", () => {
+  it("classifies risk by sex-specific WHO thresholds", () => {
+    expect(waistHipRatio("male", 80, 100)).toEqual({
+      "Waist-to-hip ratio": 0.8,
+      "WHO risk category": "Low risk",
+    });
+    expect(waistHipRatio("female", 90, 100)).toEqual({
+      "Waist-to-hip ratio": 0.9,
+      "WHO risk category": "High risk",
+    });
+  });
+});
+describe("heart rate zone calculator", () => {
+  it("derives max heart rate and five percentage-based zones", () => {
+    const r = heartRateZones(30);
+    expect(r["Maximum heart rate (bpm)"]).toBe(190);
+    expect(r["Zone 3 · Cardio (70–80%)"]).toBe("133–152 bpm");
+    expect(r["Zone 5 · Peak (90–100%)"]).toBe("171–190 bpm");
+  });
+});
+describe("savings goal calculator", () => {
+  it("solves for the monthly deposit that reaches a target", () => {
+    expect(
+      savingsGoal(500000, 50000, 24, 6)["Monthly deposit needed"],
+    ).toBeCloseTo(17444.27, 1);
+    expect(savingsGoal(120000, 0, 12, 0)).toEqual({
+      "Monthly deposit needed": 10000,
+    });
+  });
+  it("reports zero deposit needed when already funded", () => {
+    const r = savingsGoal(100000, 150000, 12, 5);
+    expect(r["Monthly deposit needed"]).toBe(0);
+    expect(r["Already funded by"]).toBe(50000);
   });
 });

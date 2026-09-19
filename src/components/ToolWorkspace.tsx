@@ -143,6 +143,263 @@ const definitions: Record<string, Field[]> = {
       value: "30",
     },
   ],
+  "password-generator": [
+    {
+      key: "length",
+      label: "Password length (6–128)",
+      type: "number",
+      value: "16",
+    },
+    {
+      key: "count",
+      label: "Number of passwords (1–20)",
+      type: "number",
+      value: "5",
+    },
+  ],
+  "coin-flip": [
+    {
+      key: "count",
+      label: "Number of flips (1–1000)",
+      type: "number",
+      value: "1",
+    },
+  ],
+  "emi-loan-calculator": [
+    {
+      key: "principal",
+      label: "Loan amount",
+      type: "number",
+      value: "1000000",
+    },
+    {
+      key: "rate",
+      label: "Annual interest rate (%)",
+      type: "number",
+      value: "8.5",
+    },
+    { key: "years", label: "Loan tenure (years)", type: "number", value: "20" },
+    {
+      key: "currency",
+      label: "Display currency",
+      value: "INR",
+      options: [
+        ["INR", "INR — Indian rupee"],
+        ["USD", "USD — US dollar"],
+        ["EUR", "EUR — Euro"],
+        ["GBP", "GBP — British pound"],
+      ],
+    },
+  ],
+  "compound-interest-calculator": [
+    {
+      key: "principal",
+      label: "Principal amount",
+      type: "number",
+      value: "100000",
+    },
+    {
+      key: "rate",
+      label: "Annual interest rate (%)",
+      type: "number",
+      value: "8",
+    },
+    { key: "years", label: "Time period (years)", type: "number", value: "5" },
+    {
+      key: "frequency",
+      label: "Compounding frequency",
+      value: "12",
+      options: [
+        ["1", "Annually"],
+        ["2", "Semi-annually"],
+        ["4", "Quarterly"],
+        ["12", "Monthly"],
+        ["365", "Daily"],
+      ],
+    },
+    {
+      key: "currency",
+      label: "Display currency",
+      value: "INR",
+      options: [
+        ["INR", "INR — Indian rupee"],
+        ["USD", "USD — US dollar"],
+        ["EUR", "EUR — Euro"],
+        ["GBP", "GBP — British pound"],
+      ],
+    },
+  ],
+  "temperature-converter": [
+    { key: "value", label: "Value", type: "number", value: "100" },
+    {
+      key: "from",
+      label: "From",
+      value: "C",
+      options: [
+        ["C", "Celsius (°C)"],
+        ["F", "Fahrenheit (°F)"],
+        ["K", "Kelvin (K)"],
+      ],
+    },
+    {
+      key: "to",
+      label: "To",
+      value: "F",
+      options: [
+        ["C", "Celsius (°C)"],
+        ["F", "Fahrenheit (°F)"],
+        ["K", "Kelvin (K)"],
+      ],
+    },
+  ],
+  "discount-calculator": [
+    { key: "price", label: "Original price", type: "number", value: "1200" },
+    { key: "percentOff", label: "Discount (%)", type: "number", value: "25" },
+  ],
+  "ideal-weight-calculator": [
+    { key: "height", label: "Height (cm)", type: "number", value: "170" },
+    {
+      key: "sex",
+      label: "Sex",
+      value: "male",
+      options: [
+        ["male", "Male"],
+        ["female", "Female"],
+      ],
+    },
+  ],
+  "meta-tag-generator": [
+    { key: "title", label: "Page title (max 70 characters)", value: "" },
+    {
+      key: "description",
+      label: "Meta description (max 200 characters)",
+      value: "",
+    },
+    { key: "url", label: "Page URL", type: "url", value: "" },
+    {
+      key: "image",
+      label: "Share image URL (optional)",
+      type: "url",
+      value: "",
+    },
+    { key: "siteName", label: "Site name (optional)", value: "" },
+  ],
+  "date-difference-calculator": [
+    { key: "start", label: "Start date", type: "date", value: "2026-01-01" },
+    { key: "end", label: "End date", type: "date" },
+  ],
+  "pregnancy-due-date-calculator": [
+    {
+      key: "lastPeriod",
+      label: "First day of last period",
+      type: "date",
+      value: "2026-07-01",
+    },
+    {
+      key: "cycleLength",
+      label: "Average cycle length (days)",
+      type: "number",
+      value: "28",
+    },
+    { key: "asOf", label: "Calculate as of", type: "date" },
+  ],
+  "ovulation-calculator": [
+    {
+      key: "lastPeriod",
+      label: "First day of last period",
+      type: "date",
+      value: "2026-09-01",
+    },
+    {
+      key: "cycleLength",
+      label: "Average cycle length (days)",
+      type: "number",
+      value: "28",
+    },
+  ],
+  "gst-calculator": [
+    {
+      key: "mode",
+      label: "Calculation",
+      value: "exclusive",
+      options: [
+        ["exclusive", "Add GST to a base price"],
+        ["inclusive", "Extract GST from a total price"],
+      ],
+    },
+    { key: "amount", label: "Amount", type: "number", value: "1000" },
+    { key: "rate", label: "GST rate (%)", type: "number", value: "18" },
+  ],
+  "water-intake-calculator": [
+    { key: "weight", label: "Weight (kg)", type: "number", value: "70" },
+    {
+      key: "activity",
+      label: "Activity level",
+      value: "moderate",
+      options: [
+        ["sedentary", "Sedentary"],
+        ["moderate", "Moderate"],
+        ["active", "Active"],
+      ],
+    },
+  ],
+  "body-fat-calculator": [
+    {
+      key: "sex",
+      label: "Sex",
+      value: "male",
+      options: [
+        ["male", "Male"],
+        ["female", "Female"],
+      ],
+    },
+    { key: "height", label: "Height (cm)", type: "number", value: "175" },
+    { key: "waist", label: "Waist (cm)", type: "number", value: "85" },
+    { key: "neck", label: "Neck (cm)", type: "number", value: "38" },
+    {
+      key: "hip",
+      label: "Hip (cm, females only)",
+      type: "number",
+      value: "100",
+    },
+  ],
+  "waist-hip-ratio-calculator": [
+    {
+      key: "sex",
+      label: "Sex",
+      value: "male",
+      options: [
+        ["male", "Male"],
+        ["female", "Female"],
+      ],
+    },
+    { key: "waist", label: "Waist (cm)", type: "number", value: "85" },
+    { key: "hip", label: "Hip (cm)", type: "number", value: "100" },
+  ],
+  "heart-rate-zone-calculator": [
+    { key: "age", label: "Age", type: "number", value: "30" },
+  ],
+  "savings-goal-calculator": [
+    { key: "goal", label: "Savings goal", type: "number", value: "500000" },
+    {
+      key: "current",
+      label: "Current savings",
+      type: "number",
+      value: "50000",
+    },
+    {
+      key: "months",
+      label: "Months to reach goal",
+      type: "number",
+      value: "24",
+    },
+    {
+      key: "rate",
+      label: "Assumed annual return (%)",
+      type: "number",
+      value: "6",
+    },
+  ],
 };
 const textTools = [
   "word-counter",
@@ -150,6 +407,9 @@ const textTools = [
   "base64-encoder-decoder",
   "url-encoder-decoder",
   "slug-generator",
+  "text-case-converter",
+  "hash-generator",
+  "jwt-decoder",
 ];
 const samples: Record<string, string> = {
   "word-counter":
@@ -159,11 +419,24 @@ const samples: Record<string, string> = {
   "base64-encoder-decoder": "Hello, world! 👋",
   "url-encoder-decoder": "hello world & good ideas",
   "slug-generator": "A Little Less Busy, A Lot More Done",
+  "text-case-converter": "ToolzPoint makes everyday tasks simple",
+  "hash-generator": "The quick brown fox jumps over the lazy dog",
+  "jwt-decoder":
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
 };
 function initialValues(slug: string) {
-  return Object.fromEntries(
+  const base = Object.fromEntries(
     (definitions[slug] ?? []).map((f) => [f.key, f.value ?? ""]),
   );
+  return slug === "password-generator"
+    ? {
+        ...base,
+        lower: "true",
+        upper: "true",
+        numbers: "true",
+        symbols: "false",
+      }
+    : base;
 }
 export default function ToolWorkspace({ slug }: { slug: string }) {
   const [values, setValues] = useState<Record<string, string>>(() =>
@@ -175,6 +448,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
   const [separator, setSeparator] = useState("-");
   const [unicode, setUnicode] = useState(false);
   const [minify, setMinify] = useState(false);
+  const [caseMode, setCaseMode] = useState("upper");
+  const [algorithm, setAlgorithm] = useState("SHA-256");
   const [result, setResult] = useState<
     string | Record<string, number | string> | null
   >(null);
@@ -219,7 +494,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
     track("tool_run_attempt", { toolSlug: slug, executionMode: "client" });
     try {
       const { executeTool } = await import("@/features/tools/runner");
-      const output = executeTool({
+      const output = await executeTool({
         slug,
         values,
         input,
@@ -229,6 +504,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
         unicode,
         minify,
         localDate,
+        caseMode,
+        algorithm,
       });
       setResult(output);
       writeList(
@@ -250,11 +527,16 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
       setBusy(false);
     }
   }
+  const currencyTools = [
+    "sip-calculator",
+    "emi-loan-calculator",
+    "compound-interest-calculator",
+  ];
   function display(value: number | string, key = "") {
     return typeof value === "number"
       ? new Intl.NumberFormat("en-US", {
           maximumFractionDigits: 2,
-          ...(slug === "sip-calculator"
+          ...(currencyTools.includes(slug)
             ? { style: "currency", currency: values.currency ?? "INR" }
             : {}),
         }).format(value) +
@@ -288,6 +570,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
     setSeparator("-");
     setUnicode(false);
     setMinify(false);
+    setCaseMode("upper");
+    setAlgorithm("SHA-256");
     setInput("");
     setValues(initialValues(slug));
     setResult(null);
@@ -423,6 +707,87 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   </label>
                 </div>
               )}
+              {slug === "text-case-converter" && (
+                <label className="field">
+                  Convert to
+                  <select
+                    value={caseMode}
+                    onChange={(e) => {
+                      setCaseMode(e.target.value);
+                      setResult(null);
+                    }}
+                  >
+                    <option value="upper">UPPERCASE</option>
+                    <option value="lower">lowercase</option>
+                    <option value="title">Title Case</option>
+                    <option value="sentence">Sentence case</option>
+                    <option value="camel">camelCase</option>
+                    <option value="snake">snake_case</option>
+                    <option value="kebab">kebab-case</option>
+                  </select>
+                </label>
+              )}
+              {slug === "hash-generator" && (
+                <label className="field">
+                  Algorithm
+                  <select
+                    value={algorithm}
+                    onChange={(e) => {
+                      setAlgorithm(e.target.value);
+                      setResult(null);
+                    }}
+                  >
+                    <option value="SHA-1">SHA-1</option>
+                    <option value="SHA-256">SHA-256</option>
+                    <option value="SHA-384">SHA-384</option>
+                    <option value="SHA-512">SHA-512</option>
+                  </select>
+                </label>
+              )}
+              {slug === "password-generator" && (
+                <div className="slug-options">
+                  <label className="check-label">
+                    <input
+                      type="checkbox"
+                      checked={values.upper === "true"}
+                      onChange={(e) =>
+                        update("upper", e.target.checked ? "true" : "false")
+                      }
+                    />
+                    Uppercase letters (A–Z)
+                  </label>
+                  <label className="check-label">
+                    <input
+                      type="checkbox"
+                      checked={values.lower === "true"}
+                      onChange={(e) =>
+                        update("lower", e.target.checked ? "true" : "false")
+                      }
+                    />
+                    Lowercase letters (a–z)
+                  </label>
+                  <label className="check-label">
+                    <input
+                      type="checkbox"
+                      checked={values.numbers === "true"}
+                      onChange={(e) =>
+                        update("numbers", e.target.checked ? "true" : "false")
+                      }
+                    />
+                    Numbers (0–9)
+                  </label>
+                  <label className="check-label">
+                    <input
+                      type="checkbox"
+                      checked={values.symbols === "true"}
+                      onChange={(e) =>
+                        update("symbols", e.target.checked ? "true" : "false")
+                      }
+                    />
+                    Symbols (!@#$…)
+                  </label>
+                </div>
+              )}
               {isText ? (
                 <>
                   <label htmlFor="tool-input" className="sr-only">
@@ -443,7 +808,9 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                     placeholder={
                       slug === "json-formatter"
                         ? "Paste your JSON here…"
-                        : "Type or paste your text here…"
+                        : slug === "jwt-decoder"
+                          ? "Paste your JWT here…"
+                          : "Type or paste your text here…"
                     }
                     spellCheck={false}
                   />
@@ -453,46 +820,57 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                 </>
               ) : (
                 <div className="fields-grid">
-                  {(definitions[slug] ?? []).map((f) => (
-                    <label
-                      key={f.key}
-                      className={`field ${f.key === "url" || f.key === "activity" ? "full-width" : ""}`}
-                      htmlFor={f.key}
-                    >
-                      {f.label}
-                      {slug === "bmi-calculator" &&
-                      (f.key === "height" || f.key === "weight")
-                        ? ` (${f.key === "height" ? (values.units === "imperial" ? "inches" : "cm") : values.units === "imperial" ? "lb" : "kg"})`
-                        : ""}
-                      {f.options ? (
-                        <select
-                          id={f.key}
-                          value={values[f.key] ?? ""}
-                          onChange={(e) => update(f.key, e.target.value)}
-                        >
-                          {f.options.map(([v, l]) => (
-                            <option key={v} value={v}>
-                              {l}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        <input
-                          id={f.key}
-                          type={f.type ?? "text"}
-                          step="any"
-                          value={
-                            (f.key === "asOf"
-                              ? values.asOf || localDate
-                              : values[f.key]) ?? ""
-                          }
-                          aria-describedby={error ? "tool-error" : undefined}
-                          onChange={(e) => update(f.key, e.target.value)}
-                          maxLength={f.key === "url" ? 8192 : 200}
-                        />
-                      )}
-                    </label>
-                  ))}
+                  {(definitions[slug] ?? [])
+                    .filter(
+                      (f) =>
+                        !(
+                          slug === "body-fat-calculator" &&
+                          f.key === "hip" &&
+                          values.sex !== "female"
+                        ),
+                    )
+                    .map((f) => (
+                      <label
+                        key={f.key}
+                        className={`field ${f.key === "url" || f.key === "activity" ? "full-width" : ""}`}
+                        htmlFor={f.key}
+                      >
+                        {f.label}
+                        {slug === "bmi-calculator" &&
+                        (f.key === "height" || f.key === "weight")
+                          ? ` (${f.key === "height" ? (values.units === "imperial" ? "inches" : "cm") : values.units === "imperial" ? "lb" : "kg"})`
+                          : ""}
+                        {f.options ? (
+                          <select
+                            id={f.key}
+                            value={values[f.key] ?? ""}
+                            onChange={(e) => update(f.key, e.target.value)}
+                          >
+                            {f.options.map(([v, l]) => (
+                              <option key={v} value={v}>
+                                {l}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <input
+                            id={f.key}
+                            type={f.type ?? "text"}
+                            step="any"
+                            value={
+                              (f.key === "asOf" ||
+                              (slug === "date-difference-calculator" &&
+                                f.key === "end")
+                                ? values[f.key] || localDate
+                                : values[f.key]) ?? ""
+                            }
+                            aria-describedby={error ? "tool-error" : undefined}
+                            onChange={(e) => update(f.key, e.target.value)}
+                            maxLength={f.key === "url" ? 8192 : 200}
+                          />
+                        )}
+                      </label>
+                    ))}
                 </div>
               )}
               {error && (
@@ -510,9 +888,13 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                     ? "Working…"
                     : slug === "uuid-generator"
                       ? "Generate UUIDs"
-                      : isText
-                        ? "Run tool"
-                        : "Calculate result"}
+                      : slug === "password-generator"
+                        ? "Generate passwords"
+                        : slug === "coin-flip"
+                          ? "Flip"
+                          : isText
+                            ? "Run tool"
+                            : "Calculate result"}
                   <Icon name="ArrowRight" size={17} />
                 </button>
                 <button className="button quiet" type="button" onClick={reset}>

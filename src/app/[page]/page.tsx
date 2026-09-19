@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { metadata } from "@/lib/seo";
-const pages: Record<
+import { metadata, notFoundMetadata } from "@/lib/seo";
+export const pages: Record<
   string,
   { title: string; lead: string; sections: [string, string][] }
 > = {
@@ -121,12 +121,24 @@ const pages: Record<
     lead: "New tools and meaningful changes, in one place.",
     sections: [
       [
+        "September 19, 2026 — Invoice Maker and Biodata Maker",
+        "A new Documents & design category: fill in a form and download a clean PDF. Invoice Maker builds an itemized invoice with automatic tax and totals; Biodata Maker builds a matrimonial biodata with an optional photo, where every field but your name is left off the page unless you fill it in.",
+      ],
+      [
+        "September 19, 2026 — Passport & ID photo maker",
+        "Crop, resize, and compress a photo to exact passport, visa, PAN card, or government-exam dimensions, with an optional background color replacement (white, sky blue, light gray, red, or a custom color) for forms that require one.",
+      ],
+      [
+        "September 19, 2026 — 24 new tools",
+        "EMI, compound interest, GST, and savings goal calculators; pregnancy due date, ovulation, water intake, body fat, waist-to-hip ratio, and heart rate zone calculators; date difference, discount, temperature, and ideal weight calculators; a text case converter, hash generator, JWT decoder, meta tag generator, password generator, coin flip, and a split-PDF tool.",
+      ],
+      [
         "September 12, 2026 — Initial local release",
         "The original twelve browser tools: Word Counter, JSON Formatter, Percentage Calculator, Age Calculator, Base64 Encoder / Decoder, URL Encoder / Decoder, UUID Generator, Slug Generator, UTM Link Builder, SIP Calculator, Nutrition Calculator, and BMI Calculator.",
       ],
       [
         "A foundation for everyday use",
-        "Search and category browsing, local favorites and recents, light and dark themes, copy controls, clear input validation, original explanations, and worked examples. This build is not indexed while source content and production settings await review.",
+        "Search and category browsing, local favorites and recents, light and dark themes, copy controls, clear input validation, original explanations, and worked examples.",
       ],
     ],
   },
@@ -141,7 +153,7 @@ export async function generateMetadata({
 }) {
   const { page } = await params;
   const p = pages[page];
-  return p ? metadata(p.title, p.lead, `/${page}`) : {};
+  return p ? metadata(p.title, p.lead, `/${page}`) : notFoundMetadata;
 }
 export default async function ContentPage({
   params,

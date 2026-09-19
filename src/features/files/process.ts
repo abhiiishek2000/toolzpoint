@@ -2,6 +2,10 @@ import {
   imageDimensions,
   fitDimensions,
   validateFiles,
+  parsePageRange,
+  coverCropRect,
+  replaceBackground,
+  hexToRgb,
   type FileTask,
   type FileResult,
 } from "./domain";
@@ -15,13 +19,13 @@ async function bitmap(file: File) {
   return image;
 }
 export async function processFiles(task: FileTask): Promise<FileResult> {
-  const isPDF = task.kind === "merge-pdf";
+  const isPdfInput = task.kind === "merge-pdf" || task.kind === "split-pdf";
   validateFiles(
     task.files,
-    isPDF ? "pdf" : "image",
-    isPDF || task.kind === "images-to-pdf",
+    isPdfInput ? "pdf" : "image",
+    task.kind === "merge-pdf" || task.kind === "images-to-pdf",
   );
-  if (isPDF) {
+  if (task.kind === "merge-pdf") {
     const { PDFDocument } = await import("pdf-lib");
     const out = await PDFDocument.create();
     let total = 0;
@@ -41,6 +45,22 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
         type: "application/pdf",
       }),
       pages: total,
+    };
+  }
+  if (task.kind === "split-pdf") {
+    const { PDFDocument } = await import("pdf-lib");
+    const file = task.files[0];
+    if (!file) throw new Error("Choose a PDF.");
+    const src = await PDFDocument.load(await file.arrayBuffer());
+    const indices = parsePageRange(task.pageRange ?? "", src.getPageCount());
+    const out = await PDFDocument.create();
+    const pages = await out.copyPages(src, indices);
+    for (const page of pages) out.addPage(page);
+    return {
+      blob: new Blob([new Uint8Array(await out.save())], {
+        type: "application/pdf",
+      }),
+      pages: indices.length,
     };
   }
   if (task.kind === "images-to-pdf") {
@@ -82,6 +102,74 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       }),
       pages: task.files.length,
     };
+  }
+  if (task.kind === "passport-photo-maker") {
+    const file = task.files[0];
+    if (!file) throw new Error("Choose a photo.");
+    const image = await bitmap(file);
+    try {
+      const { sx, sy, sWidth, sHeight } = coverCropRect(
+        image.width,
+        image.height,
+        task.maxWidth,
+        task.maxHeight,
+        task.zoom ?? 1,
+        task.verticalBias ?? 0,
+      );
+      const canvas = new OffscreenCanvas(task.maxWidth, task.maxHeight);
+      const ctx = canvas.getContext("2d");
+      if (!ctx)
+        throw new Error("Image processing is unavailable in this browser.");
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, task.maxWidth, task.maxHeight);
+      ctx.drawImage(
+        image,
+        sx,
+        sy,
+        sWidth,
+        sHeight,
+        0,
+        0,
+        task.maxWidth,
+        task.maxHeight,
+      );
+      if (task.removeBackground) {
+        const target = hexToRgb(task.backgroundColor ?? "#ffffff");
+        const imageData = ctx.getImageData(0, 0, task.maxWidth, task.maxHeight);
+        const replaced = replaceBackground(
+          imageData.data,
+          task.maxWidth,
+          task.maxHeight,
+          target,
+        );
+        ctx.putImageData(
+          new ImageData(replaced, task.maxWidth, task.maxHeight),
+          0,
+          0,
+        );
+      }
+      let quality = 0.92;
+      let blob = await canvas.convertToBlob({ type: "image/jpeg", quality });
+      if (task.maxKB) {
+        let attempts = 0;
+        while (
+          blob.size > task.maxKB * 1024 &&
+          quality > 0.15 &&
+          attempts < 12
+        ) {
+          quality -= 0.07;
+          blob = await canvas.convertToBlob({ type: "image/jpeg", quality });
+          attempts++;
+        }
+        if (blob.size > task.maxKB * 1024)
+          throw new Error(
+            `Could not compress under ${task.maxKB} KB. Try a smaller source photo.`,
+          );
+      }
+      return { blob, width: task.maxWidth, height: task.maxHeight };
+    } finally {
+      image.close();
+    }
   }
   if (!Number.isFinite(task.quality) || task.quality < 0.1 || task.quality > 1)
     throw new Error("Quality must be between 10 and 100.");

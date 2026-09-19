@@ -51,7 +51,7 @@
     "privacyPolicyPath": "/apps/cashyai/privacy",
     "termsPath": "/apps/cashyai/terms",
     "status": "published",
-    "reviewed": false,
+    "reviewed": true,
     "publishedAt": "2026-09-19",
     "updatedAt": "2026-09-19"
   }

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { metadata } from "@/lib/seo";
+import { metadata, notFoundMetadata } from "@/lib/seo";
 const lastUpdated = "December 02, 2025";
 const docs: Record<string, { appName: string; supportEmail: string }> = {
   cashyai: { appName: "CashyAI", supportEmail: "support@cashyai.com" },
@@ -21,7 +21,7 @@ export async function generateMetadata({
         `Terms and Conditions for ${d.appName}, last updated ${lastUpdated}.`,
         `/apps/${slug}/terms`,
       )
-    : {};
+    : notFoundMetadata;
 }
 export default async function AppTermsPage({
   params,

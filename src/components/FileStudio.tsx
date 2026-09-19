@@ -7,6 +7,8 @@ import {
   validateFiles,
   prettyBytes,
   savings,
+  PHOTO_ID_PRESETS,
+  mmToPx,
   type FileTask,
   type FileResult,
 } from "@/features/files/domain";
@@ -16,6 +18,14 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const [format, setFormat] = useState<FileTask["format"]>("image/webp");
   const [width, setWidth] = useState(1920);
   const [height, setHeight] = useState(1920);
+  const [pageRange, setPageRange] = useState("");
+  const [presetId, setPresetId] = useState(PHOTO_ID_PRESETS[0]!.id);
+  const [customWidthMm, setCustomWidthMm] = useState(35);
+  const [customHeightMm, setCustomHeightMm] = useState(45);
+  const [zoom, setZoom] = useState(1);
+  const [verticalBias, setVerticalBias] = useState(0);
+  const [removeBg, setRemoveBg] = useState(false);
+  const [bgColor, setBgColor] = useState("#ffffff");
   const [result, setResult] = useState<FileResult | null>(null);
   const [url, setUrl] = useState("");
   const [preview, setPreview] = useState("");
@@ -29,8 +39,10 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const worker = useRef<Worker | null>(null);
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const multiple = slug === "merge-pdf" || slug === "images-to-pdf";
-  const pdf = slug === "merge-pdf";
-  const imageOutput = !multiple;
+  const pdf = slug === "merge-pdf" || slug === "split-pdf";
+  const imageOutput = slug === "image-compressor" || slug === "image-resizer";
+  const isImageResult = imageOutput || slug === "passport-photo-maker";
+  const activePreset = PHOTO_ID_PRESETS.find((p) => p.id === presetId);
   useEffect(
     () => () => {
       worker.current?.terminate();
@@ -57,6 +69,11 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
       inputUrl.current =
         selected[0] && !pdf ? URL.createObjectURL(selected[0]) : "";
       setPreview(inputUrl.current);
+      setPageRange("");
+      setZoom(1);
+      setVerticalBias(0);
+      setRemoveBg(false);
+      setBgColor("#ffffff");
       changed();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Choose a supported file.");
@@ -74,8 +91,20 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
     changed();
     try {
       validateFiles(files, pdf ? "pdf" : "image", multiple);
-      if (pdf && files.length < 2)
+      if (slug === "merge-pdf" && files.length < 2)
         throw new Error("Choose at least two PDFs to merge.");
+      if (slug === "split-pdf" && !pageRange.trim())
+        throw new Error("Enter a page range, such as 1-3, 5.");
+      let photoWidth = width,
+        photoHeight = height;
+      if (slug === "passport-photo-maker") {
+        const widthMm =
+          presetId === "custom" ? customWidthMm : activePreset!.widthMm;
+        const heightMm =
+          presetId === "custom" ? customHeightMm : activePreset!.heightMm;
+        photoWidth = mmToPx(widthMm);
+        photoHeight = mmToPx(heightMm);
+      }
       if (!window.Worker)
         throw new Error("This tool needs a browser with Web Worker support.");
       setBusy(true);
@@ -120,9 +149,17 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
         kind: slug,
         files,
         quality: quality / 100,
-        maxWidth: width,
-        maxHeight: height,
+        maxWidth: photoWidth,
+        maxHeight: photoHeight,
         format,
+        pageRange,
+        zoom,
+        verticalBias,
+        maxKB:
+          slug === "passport-photo-maker" ? activePreset?.maxKB : undefined,
+        removeBackground:
+          slug === "passport-photo-maker" ? removeBg : undefined,
+        backgroundColor: bgColor,
       } satisfies FileTask);
     } catch (e) {
       setBusy(false);
@@ -155,7 +192,15 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
         <div className="file-input-side">
           <div className="studio-step">
             <span>01</span>
-            <h2>{multiple ? "Add your files" : "Start with an image"}</h2>
+            <h2>
+              {multiple
+                ? "Add your files"
+                : slug === "split-pdf"
+                  ? "Start with a PDF"
+                  : slug === "passport-photo-maker"
+                    ? "Start with a photo"
+                    : "Start with an image"}
+            </h2>
           </div>
           <div
             className={`drop-zone ${dragging ? "is-dragging" : ""}`}
@@ -189,7 +234,11 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 ? "Choose different files"
                 : multiple
                   ? "Choose files"
-                  : "Choose an image"}
+                  : slug === "split-pdf"
+                    ? "Choose a PDF"
+                    : slug === "passport-photo-maker"
+                      ? "Choose a photo"
+                      : "Choose an image"}
             </button>
             <input
               ref={input}
@@ -354,11 +403,191 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 areas become white.
               </p>
             )}
-            {pdf && (
+            {slug === "merge-pdf" && (
               <p className="setting-hint">
                 Pages follow the file order above. Up to 10 files, 30 MB total,
                 and 200 pages. Encrypted files aren’t supported.
               </p>
+            )}
+            {slug === "split-pdf" && (
+              <>
+                <div className="studio-step">
+                  <span>02</span>
+                  <h2>Choose pages to keep</h2>
+                </div>
+                <label className="field">
+                  Pages
+                  <input
+                    type="text"
+                    value={pageRange}
+                    placeholder="e.g. 1-3, 5, 8-10"
+                    maxLength={200}
+                    onChange={(e) => {
+                      setPageRange(e.target.value);
+                      changed();
+                    }}
+                  />
+                </label>
+                <p className="setting-hint">
+                  Use single pages and ranges separated by commas, such as “1-3,
+                  5, 8-10”. Extracted pages keep their original order. Encrypted
+                  files aren’t supported.
+                </p>
+              </>
+            )}
+            {slug === "passport-photo-maker" && (
+              <>
+                <div className="studio-step">
+                  <span>02</span>
+                  <h2>Choose a document type</h2>
+                </div>
+                <label className="field">
+                  Document type
+                  <select
+                    value={presetId}
+                    onChange={(e) => {
+                      setPresetId(e.target.value);
+                      changed();
+                    }}
+                  >
+                    {PHOTO_ID_PRESETS.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.label}
+                      </option>
+                    ))}
+                    <option value="custom">Custom size (mm)</option>
+                  </select>
+                </label>
+                {presetId === "custom" && (
+                  <div className="fields-grid">
+                    <label className="field">
+                      Width (mm)
+                      <input
+                        type="number"
+                        min="10"
+                        max="200"
+                        value={customWidthMm}
+                        onChange={(e) => {
+                          setCustomWidthMm(Number(e.target.value));
+                          changed();
+                        }}
+                      />
+                    </label>
+                    <label className="field">
+                      Height (mm)
+                      <input
+                        type="number"
+                        min="10"
+                        max="200"
+                        value={customHeightMm}
+                        onChange={(e) => {
+                          setCustomHeightMm(Number(e.target.value));
+                          changed();
+                        }}
+                      />
+                    </label>
+                  </div>
+                )}
+                <div className="quality-row">
+                  <label htmlFor="zoom">Zoom</label>
+                  <strong>{zoom.toFixed(2)}×</strong>
+                </div>
+                <input
+                  id="zoom"
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.05"
+                  value={zoom}
+                  onChange={(e) => {
+                    setZoom(Number(e.target.value));
+                    changed();
+                  }}
+                />
+                <div className="quality-row">
+                  <label htmlFor="vbias">Vertical position</label>
+                  <strong>
+                    {verticalBias < 0
+                      ? "Higher"
+                      : verticalBias > 0
+                        ? "Lower"
+                        : "Centered"}
+                  </strong>
+                </div>
+                <input
+                  id="vbias"
+                  type="range"
+                  min="-1"
+                  max="1"
+                  step="0.05"
+                  value={verticalBias}
+                  onChange={(e) => {
+                    setVerticalBias(Number(e.target.value));
+                    changed();
+                  }}
+                />
+                <p className="setting-hint">
+                  Use a plain, evenly lit background and face the camera
+                  directly, then zoom and nudge the crop until your face fills
+                  the frame.
+                  {activePreset?.maxKB
+                    ? ` Compressed to ${activePreset.maxKB} KB or less.`
+                    : ""}
+                </p>
+                <label className="check-label">
+                  <input
+                    type="checkbox"
+                    checked={removeBg}
+                    onChange={(e) => {
+                      setRemoveBg(e.target.checked);
+                      changed();
+                    }}
+                  />
+                  Replace the background color
+                </label>
+                {removeBg && (
+                  <>
+                    <div className="preset-row">
+                      {[
+                        ["White", "#ffffff"],
+                        ["Sky blue", "#4f86c6"],
+                        ["Light gray", "#d9d9d9"],
+                        ["Red", "#c1272d"],
+                      ].map(([label, value]) => (
+                        <button
+                          key={value}
+                          type="button"
+                          className={`chip ${bgColor === value ? "active" : ""}`}
+                          onClick={() => {
+                            setBgColor(value!);
+                            changed();
+                          }}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    <label className="field">
+                      Custom color
+                      <input
+                        type="color"
+                        value={bgColor}
+                        onChange={(e) => {
+                          setBgColor(e.target.value);
+                          changed();
+                        }}
+                      />
+                    </label>
+                    <p className="setting-hint">
+                      This estimates your existing background from the
+                      photo&apos;s edges and fades matching areas to the chosen
+                      color. It works best with a plain, evenly lit original
+                      background; it is not AI subject detection, so a busy or
+                      shadowed background may leave halos or partial edges.
+                    </p>
+                  </>
+                )}
+              </>
             )}
             {error && (
               <p className="error-message" role="alert">
@@ -373,13 +602,17 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
               >
                 {busy
                   ? "Processing…"
-                  : pdf
+                  : slug === "merge-pdf"
                     ? "Merge PDFs"
-                    : slug === "images-to-pdf"
-                      ? "Create PDF"
-                      : slug === "image-resizer"
-                        ? "Resize image"
-                        : "Compress image"}
+                    : slug === "split-pdf"
+                      ? "Split PDF"
+                      : slug === "images-to-pdf"
+                        ? "Create PDF"
+                        : slug === "image-resizer"
+                          ? "Resize image"
+                          : slug === "passport-photo-maker"
+                            ? "Create ID photo"
+                            : "Compress image"}
                 <Icon name="ArrowRight" size={17} />
               </button>
               <button
@@ -387,6 +620,11 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 onClick={() => {
                   setFiles([]);
                   setPreview("");
+                  setPageRange("");
+                  setZoom(1);
+                  setVerticalBias(0);
+                  setRemoveBg(false);
+                  setBgColor("#ffffff");
                   changed();
                 }}
               >
@@ -410,7 +648,9 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
             </h2>
           </div>
           <div className="image-preview">
-            {imageOutput && files.length > 0 && ((result && url) || preview) ? (
+            {isImageResult &&
+            files.length > 0 &&
+            ((result && url) || preview) ? (
               <img
                 src={result && url ? url : preview}
                 alt={
@@ -419,7 +659,16 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
               />
             ) : (
               <div className="preview-empty">
-                <Icon name={multiple ? "Files" : "Image"} size={62} />
+                <Icon
+                  name={
+                    slug === "split-pdf"
+                      ? "Scissors"
+                      : multiple || pdf
+                        ? "Files"
+                        : "Image"
+                  }
+                  size={62}
+                />
                 <strong>
                   {result
                     ? `${result.pages} pages. One neat PDF.`
@@ -428,7 +677,11 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 <p>
                   {multiple
                     ? "Add your files, put them in order, and create your PDF."
-                    : "Choose an image to see it here."}
+                    : slug === "split-pdf"
+                      ? "Choose a PDF and the pages you want to keep."
+                      : slug === "passport-photo-maker"
+                        ? "Choose a photo to see it here."
+                        : "Choose an image to see it here."}
                 </p>
               </div>
             )}
@@ -441,13 +694,13 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                   <dd>{prettyBytes(originalSize)}</dd>
                 </div>
                 <div>
-                  <dt>{imageOutput ? "New size" : "PDF size"}</dt>
+                  <dt>{isImageResult ? "New size" : "PDF size"}</dt>
                   <dd>{prettyBytes(result.blob.size)}</dd>
                 </div>
                 <div>
-                  <dt>{imageOutput ? "Size change" : "Pages"}</dt>
+                  <dt>{isImageResult ? "Size change" : "Pages"}</dt>
                   <dd>
-                    {imageOutput
+                    {isImageResult
                       ? `${saved >= 0 ? "−" : "+"}${Math.abs(saved)}%`
                       : result.pages}
                   </dd>

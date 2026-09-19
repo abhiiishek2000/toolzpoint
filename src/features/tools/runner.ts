@@ -10,8 +10,10 @@ type RunOptions = {
   unicode: boolean;
   minify: boolean;
   localDate: string;
+  caseMode: string;
+  algorithm: string;
 };
-export function executeTool({
+export async function executeTool({
   slug,
   values,
   input,
@@ -21,11 +23,17 @@ export function executeTool({
   unicode,
   minify,
   localDate,
+  caseMode,
+  algorithm,
 }: RunOptions) {
   try {
     const n = (key: string) => {
       if (!values[key]?.trim()) throw new Error(`Enter ${key}.`);
       return Number(values[key]);
+    };
+    const d = (key: string) => {
+      if (!values[key]?.trim()) throw new Error(`Enter ${key}.`);
+      return values[key]!;
     };
     let output: string | Record<string, string | number>;
     switch (slug) {
@@ -96,6 +104,130 @@ export function executeTool({
           protein: n("protein"),
           fat: n("fat"),
         });
+        break;
+      case "password-generator":
+        output = domain.generatePasswords({
+          length: n("length"),
+          count: n("count"),
+          lower: values.lower === "true",
+          upper: values.upper === "true",
+          numbers: values.numbers === "true",
+          symbols: values.symbols === "true",
+        });
+        break;
+      case "coin-flip":
+        output = domain.flipCoins(n("count"));
+        break;
+      case "emi-loan-calculator":
+        output = domain.emiLoan(n("principal"), n("rate"), n("years"));
+        break;
+      case "compound-interest-calculator":
+        output = domain.compoundInterest(
+          n("principal"),
+          n("rate"),
+          n("years"),
+          n("frequency") as 1 | 2 | 4 | 12 | 365,
+        );
+        break;
+      case "temperature-converter":
+        output = domain.convertTemperature(
+          n("value"),
+          values.from as "C" | "F" | "K",
+          values.to as "C" | "F" | "K",
+        );
+        break;
+      case "discount-calculator":
+        output = domain.discount(n("price"), n("percentOff"));
+        break;
+      case "ideal-weight-calculator":
+        output = domain.idealWeight(
+          n("height"),
+          values.sex as "male" | "female",
+        );
+        break;
+      case "text-case-converter":
+        output = domain.convertCase(
+          input,
+          caseMode as
+            | "upper"
+            | "lower"
+            | "title"
+            | "sentence"
+            | "camel"
+            | "snake"
+            | "kebab",
+        );
+        break;
+      case "hash-generator":
+        output = await domain.hashText(
+          input,
+          algorithm as "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512",
+        );
+        break;
+      case "jwt-decoder":
+        output = domain.decodeJwt(input);
+        break;
+      case "meta-tag-generator":
+        output = domain.metaTags({
+          title: values.title ?? "",
+          description: values.description ?? "",
+          url: values.url ?? "",
+          image: values.image,
+          siteName: values.siteName,
+        });
+        break;
+      case "date-difference-calculator":
+        output = domain.dateDifference(d("start"), d("end"));
+        break;
+      case "pregnancy-due-date-calculator":
+        output = domain.pregnancyDueDate(
+          d("lastPeriod"),
+          n("cycleLength"),
+          values.asOf || localDate,
+        );
+        break;
+      case "ovulation-calculator":
+        output = domain.ovulation(d("lastPeriod"), n("cycleLength"));
+        break;
+      case "gst-calculator":
+        output = domain.gst(
+          n("amount"),
+          n("rate"),
+          values.mode as "exclusive" | "inclusive",
+        );
+        break;
+      case "water-intake-calculator":
+        output = domain.waterIntake(
+          n("weight"),
+          values.activity as "sedentary" | "moderate" | "active",
+        );
+        break;
+      case "body-fat-calculator":
+        output = domain.bodyFat({
+          sex: values.sex as "male" | "female",
+          height: n("height"),
+          waist: n("waist"),
+          neck: n("neck"),
+          hip: values.hip?.trim() ? n("hip") : undefined,
+        });
+        break;
+      case "waist-hip-ratio-calculator":
+        output = domain.waistHipRatio(
+          values.sex as "male" | "female",
+          n("waist"),
+          n("hip"),
+        );
+        break;
+      case "heart-rate-zone-calculator":
+        output = domain.heartRateZones(n("age"));
+        break;
+      case "savings-goal-calculator":
+        output = domain.savingsGoal(
+          n("goal"),
+          n("current"),
+          n("months"),
+          n("rate"),
+        );
         break;
       default:
         throw new Error("This tool is unavailable.");

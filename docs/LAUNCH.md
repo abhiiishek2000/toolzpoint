@@ -3,8 +3,8 @@
 ## Required owner decisions
 
 1. Confirm the public canonical domain and apex/www preference.
-2. Confirm the public contact channel, hosting provider/log retention, applicable legal details and final policy wording.
-3. Have each tool's content/examples reviewed by a human. Health formulas and categories need qualified review. Set individual `reviewed` flags only after that review.
+2. Confirm the public contact channel, hosting provider/log retention, applicable legal details and final policy wording. The Contact page still states no public contact endpoint is configured — this needs a real address before launch.
+3. All tools are currently marked `reviewed: true` on the owner's direct instruction (2026-09-19), so every tool page is indexable. Every formula shipped was independently verified against hand-computed examples and unit tests at build time, but that is not the same as the qualified, individual human review this checklist originally called for — health and finance categories in particular (BMI, nutrition, pregnancy, body fat, GST, EMI, and similar) carry real accuracy and liability exposure and are worth a second, qualified look before or shortly after launch. A tool added later starts `reviewed: false`; flip it only once its content has actually been checked.
 4. Choose whether to connect analytics, ads and error monitoring. No provider is currently active. Document consent handling by target region and scrub technical logs before activation.
 
 ## Deployment procedure

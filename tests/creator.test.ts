@@ -5,6 +5,11 @@ import {
   fitDimensions,
   validateFiles,
   savings,
+  parsePageRange,
+  mmToPx,
+  coverCropRect,
+  hexToRgb,
+  replaceBackground,
 } from "../src/features/files/domain";
 import { processFiles } from "../src/features/files/process";
 import { validateQr, createQr } from "../src/features/qr-code-generator/domain";
@@ -83,6 +88,99 @@ it("merges page order and preserves distinct page geometry", async () => {
   expect(merged.getPages().map((p) => p.getWidth())).toEqual([100, 120, 300]);
 });
 
+it("parses page ranges into sorted, deduplicated zero-based indices", () => {
+  expect(parsePageRange("1-3, 5, 8-10", 12)).toEqual([0, 1, 2, 4, 7, 8, 9]);
+  expect(parsePageRange("2", 5)).toEqual([1]);
+  expect(parsePageRange("3,1,2", 5)).toEqual([0, 1, 2]);
+  expect(() => parsePageRange("", 5)).toThrow();
+  expect(() => parsePageRange("0", 5)).toThrow();
+  expect(() => parsePageRange("6", 5)).toThrow(/does not exist/);
+  expect(() => parsePageRange("abc", 5)).toThrow();
+});
+it("splits a PDF into a new document containing only the chosen pages", async () => {
+  const doc = await PDFDocument.create();
+  for (const size of [100, 200, 300, 400]) doc.addPage([size, size]);
+  const file = new File([new Uint8Array(await doc.save())], "a.pdf", {
+    type: "application/pdf",
+  });
+  const out = await processFiles({
+    id: 1,
+    kind: "split-pdf",
+    files: [file],
+    quality: 0.8,
+    maxWidth: 1920,
+    maxHeight: 1920,
+    format: "image/webp",
+    pageRange: "1,3",
+  });
+  const split = await PDFDocument.load(await out.blob.arrayBuffer());
+  expect(split.getPageCount()).toBe(2);
+  expect(split.getPages().map((p) => p.getWidth())).toEqual([100, 300]);
+  expect(out.pages).toBe(2);
+});
+it("converts millimeters to pixels at 300 DPI and bounds the range", () => {
+  expect(mmToPx(35)).toBe(413);
+  expect(mmToPx(45)).toBe(531);
+  expect(mmToPx(50.8)).toBe(600);
+  expect(mmToPx(25)).toBe(295);
+  expect(() => mmToPx(5)).toThrow();
+  expect(() => mmToPx(500)).toThrow();
+});
+it("crops centered to a target aspect ratio and applies zoom and vertical bias", () => {
+  expect(coverCropRect(800, 1200, 413, 531)).toEqual({
+    sx: 0,
+    sy: 86,
+    sWidth: 800,
+    sHeight: 1029,
+  });
+  expect(coverCropRect(800, 1200, 413, 531, 1, -1)).toEqual({
+    sx: 0,
+    sy: 0,
+    sWidth: 800,
+    sHeight: 1029,
+  });
+  expect(coverCropRect(800, 1200, 413, 531, 1, 1)).toEqual({
+    sx: 0,
+    sy: 171,
+    sWidth: 800,
+    sHeight: 1029,
+  });
+  expect(coverCropRect(800, 1200, 413, 531, 2, 0)).toEqual({
+    sx: 200,
+    sy: 343,
+    sWidth: 400,
+    sHeight: 514,
+  });
+  expect(() => coverCropRect(800, 1200, 413, 531, 5)).toThrow();
+  expect(() => coverCropRect(0, 1200, 413, 531)).toThrow();
+});
+it("parses a hex color and rejects malformed input", () => {
+  expect(hexToRgb("#ff0080")).toEqual([255, 0, 128]);
+  expect(hexToRgb("#FFFFFF")).toEqual([255, 255, 255]);
+  expect(() => hexToRgb("blue")).toThrow();
+  expect(() => hexToRgb("#fff")).toThrow();
+});
+it("fades a sampled border color toward a target while leaving the subject alone", () => {
+  const w = 6,
+    h = 6;
+  const data = new Uint8ClampedArray(w * h * 4);
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      const isCenter = x >= 2 && x <= 3 && y >= 2 && y <= 3;
+      const v = isCenter ? 20 : 250;
+      data[i] = v;
+      data[i + 1] = v;
+      data[i + 2] = v;
+      data[i + 3] = 255;
+    }
+  const out = replaceBackground(data, w, h, [0, 0, 255]);
+  const border = (0 * w + 0) * 4;
+  const center = (2 * w + 2) * 4;
+  expect([out[border], out[border + 1], out[border + 2]]).toEqual([0, 0, 255]);
+  expect([out[center], out[center + 1], out[center + 2]]).toEqual([20, 20, 20]);
+  expect(() => replaceBackground(data, 2, 2, [0, 0, 0])).toThrow("too small");
+});
 it("checks declared image dimensions before allocating a bitmap", () => {
   const header = new Uint8Array(24);
   header.set([137, 80, 78, 71]);

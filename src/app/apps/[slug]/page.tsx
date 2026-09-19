@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { apps, getApp } from "@/lib/app-registry";
-import { metadata, safeJson, siteUrl } from "@/lib/seo";
+import { metadata, notFoundMetadata, safeJson, siteUrl } from "@/lib/seo";
 import { Icon } from "@/components/Icon";
 export function generateStaticParams() {
   return apps.map((a) => ({ slug: a.slug }));
@@ -16,7 +16,7 @@ export async function generateMetadata({
   const a = getApp(slug);
   return a
     ? metadata(a.name, a.shortDescription, `/apps/${slug}`, a.reviewed)
-    : {};
+    : notFoundMetadata;
 }
 export default async function AppPage({
   params,

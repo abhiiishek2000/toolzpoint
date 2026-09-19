@@ -6,9 +6,9 @@ import {
   searchTools,
 } from "../src/lib/tool-registry";
 import { safeJson } from "../src/lib/seo";
-it("has seventeen unique published browser tools with complete content", () => {
-  expect(tools).toHaveLength(17);
-  expect(new Set(tools.map((t) => t.slug)).size).toBe(17);
+it("has forty-one unique published browser tools with complete content", () => {
+  expect(tools).toHaveLength(41);
+  expect(new Set(tools.map((t) => t.slug)).size).toBe(41);
   for (const t of tools) {
     expect(t.slug).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     expect(t.execution).toBe("client");
@@ -21,12 +21,12 @@ it("has seventeen unique published browser tools with complete content", () => {
       expect(getTool(slug)).toBeDefined();
       expect(slug).not.toBe(t.slug);
     }
-    expect(t.reviewed).toBe(false);
+    expect(typeof t.reviewed).toBe("boolean");
   }
 });
 it("searches and filters without matching unknown categories", () => {
   expect(searchTools("JSON").map((t) => t.slug)).toContain("json-formatter");
-  expect(searchTools("", "Developer")).toHaveLength(4);
+  expect(searchTools("", "Developer")).toHaveLength(6);
   expect(searchTools("zzzzz")).toHaveLength(0);
   expect(getTool("missing")).toBeUndefined();
 });

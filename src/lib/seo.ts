@@ -28,6 +28,13 @@ export function metadata(
     twitter: { card: "summary_large_image", title, description },
   };
 }
+// A page that 404s must never inherit the layout's indexable default, even
+// once global indexing is on — generateMetadata for a dynamic route should
+// return this instead of {} when the requested item doesn't exist.
+export const notFoundMetadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false, follow: true },
+};
 export function safeJson(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }

@@ -48,6 +48,31 @@ export const categories = [
     icon: "HeartPulse",
     description: "Understand general estimates and their limitations.",
   },
+  {
+    name: "Converters",
+    slug: "converters",
+    icon: "Thermometer",
+    description: "Turn one unit into another without the mental math.",
+  },
+  {
+    name: "Security & privacy",
+    slug: "security",
+    icon: "KeyRound",
+    description:
+      "Generate and check the everyday basics of staying safe online.",
+  },
+  {
+    name: "Random & fun",
+    slug: "random-fun",
+    icon: "Coins",
+    description: "Coin flips, dice, and picks for quick decisions.",
+  },
+  {
+    name: "Documents & design",
+    slug: "documents",
+    icon: "LayoutTemplate",
+    description: "Fill in a form and download a ready-to-use document.",
+  },
 ] as const;
 export type ToolDefinition = (typeof data)[number];
 export const tools: ToolDefinition[] = data;

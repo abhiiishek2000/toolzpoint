@@ -1,10 +1,4 @@
-function dateValue(s: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) throw new Error("Enter a complete date.");
-  const date = new Date(s + "T00:00:00Z");
-  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== s)
-    throw new Error("Enter a valid calendar date.");
-  return date;
-}
+import { parseDate } from "../shared";
 function anniversary(birth: Date, year: number) {
   const month = birth.getUTCMonth();
   const day = Math.min(
@@ -14,8 +8,8 @@ function anniversary(birth: Date, year: number) {
   return new Date(Date.UTC(year, month, day));
 }
 export function age(birth: string, asOf: string) {
-  const b = dateValue(birth),
-    d = dateValue(asOf);
+  const b = parseDate(birth),
+    d = parseDate(asOf);
   if (b > d)
     throw new Error("Birth date must be on or before the comparison date.");
   if (b.getUTCFullYear() < 1900)

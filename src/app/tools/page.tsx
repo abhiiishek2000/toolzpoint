@@ -3,7 +3,7 @@ import { metadata } from "@/lib/seo";
 export const generateMetadata = () =>
   metadata(
     "All tools",
-    "Explore twelve free browser tools for text, development, calculations, finance, health and campaign URLs.",
+    "Free browser tools for images, PDFs, calculators, finance, health, documents, converters, and more. No sign-up, and your input never leaves your device.",
     "/tools",
   );
 export default async function Tools({

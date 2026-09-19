@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { tools, getTool, categoryFor } from "@/lib/tool-registry";
-import { metadata, safeJson, siteUrl } from "@/lib/seo";
+import { metadata, notFoundMetadata, safeJson, siteUrl } from "@/lib/seo";
 import FileStudio from "@/components/FileStudio";
 import QrCreator from "@/components/QrCreator";
+import InvoiceMaker from "@/components/InvoiceMaker";
+import BiodataMaker from "@/components/BiodataMaker";
 import ToolWorkspace from "@/components/ToolWorkspace";
 import { ToolCard } from "@/components/ToolCard";
 import { Icon } from "@/components/Icon";
@@ -19,7 +21,15 @@ export async function generateMetadata({
   const t = getTool(slug);
   return t
     ? metadata(t.name, t.shortDescription, `/tools/${slug}`, t.reviewed)
-    : {};
+    : notFoundMetadata;
+}
+function formatUpdated(date: string) {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
 }
 export default async function ToolPage({
   params,
@@ -30,6 +40,7 @@ export default async function ToolPage({
   const t = getTool(slug);
   if (!t) notFound();
   const category = categoryFor(t.category);
+  const toolUrl = new URL(`/tools/${slug}`, siteUrl).href;
   return (
     <main id="main" className="page-container tool-page">
       <nav className="breadcrumbs" aria-label="Breadcrumb">
@@ -52,10 +63,16 @@ export default async function ToolPage({
       </div>
       {slug === "qr-code-generator" ? (
         <QrCreator />
+      ) : slug === "invoice-maker" ? (
+        <InvoiceMaker />
+      ) : slug === "biodata-maker" ? (
+        <BiodataMaker />
       ) : slug === "image-compressor" ||
         slug === "image-resizer" ||
         slug === "merge-pdf" ||
-        slug === "images-to-pdf" ? (
+        slug === "images-to-pdf" ||
+        slug === "split-pdf" ||
+        slug === "passport-photo-maker" ? (
         <FileStudio slug={slug} />
       ) : (
         <ToolWorkspace slug={slug} />
@@ -133,7 +150,7 @@ export default async function ToolPage({
               </details>
             ))}
           </section>
-          <p className="updated">Updated September 12, 2026</p>
+          <p className="updated">Updated {formatUpdated(t.updatedAt)}</p>
         </article>
         <aside className="tool-sidebar">
           <Icon name="ShieldCheck" size={29} />
@@ -179,11 +196,54 @@ export default async function ToolPage({
             "@type": "WebApplication",
             name: t.name,
             description: t.shortDescription,
-            url: new URL(`/tools/${slug}`, siteUrl).href,
+            url: toolUrl,
             applicationCategory: "UtilitiesApplication",
             operatingSystem: "Any",
             browserRequirements: "Requires JavaScript and a modern browser",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJson({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: t.faq.map((f) => ({
+              "@type": "Question",
+              name: f.question,
+              acceptedAnswer: { "@type": "Answer", text: f.answer },
+            })),
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJson({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "All tools",
+                item: new URL("/tools", siteUrl).href,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: t.category,
+                item: new URL(`/category/${category?.slug}`, siteUrl).href,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: t.name,
+                item: toolUrl,
+              },
+            ],
           }),
         }}
       />

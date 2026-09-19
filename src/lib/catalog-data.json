@@ -38,7 +38,7 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "slug-generator",
       "utm-builder",
@@ -85,7 +85,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "base64-encoder-decoder",
       "url-encoder-decoder",
@@ -132,7 +132,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "sip-calculator",
       "age-calculator",
@@ -179,7 +179,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "bmi-calculator",
       "nutrition-calculator",
@@ -226,7 +226,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "url-encoder-decoder",
       "json-formatter",
@@ -273,7 +273,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "utm-builder",
       "slug-generator",
@@ -320,7 +320,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "json-formatter",
       "base64-encoder-decoder",
@@ -367,7 +367,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "url-encoder-decoder",
       "utm-builder",
@@ -414,7 +414,7 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "url-encoder-decoder",
       "slug-generator",
@@ -461,7 +461,7 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "percentage-calculator",
       "age-calculator",
@@ -508,7 +508,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "bmi-calculator",
       "age-calculator",
@@ -555,7 +555,7 @@
     "featured": false,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "nutrition-calculator",
       "age-calculator",
@@ -614,7 +614,7 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "image-resizer",
       "merge-pdf",
@@ -673,7 +673,7 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "image-compressor",
       "merge-pdf",
@@ -720,7 +720,7 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "image-compressor",
       "image-resizer",
@@ -767,7 +767,7 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "image-compressor",
       "image-resizer",
@@ -814,12 +814,1168 @@
     "featured": true,
     "publishedAt": "2026-09-12",
     "updatedAt": "2026-09-12",
-    "reviewed": false,
+    "reviewed": true,
     "relatedSlugs": [
       "image-compressor",
       "image-resizer",
       "merge-pdf",
       "images-to-pdf"
+    ]
+  },
+  {
+    "slug": "password-generator",
+    "name": "Password Generator",
+    "category": "Security & privacy",
+    "shortDescription": "Create strong, random passwords you control.",
+    "icon": "KeyRound",
+    "intro": "Generate one or several random passwords of a length and character mix you choose. Pick any combination of uppercase letters, lowercase letters, numbers, and symbols, then set how many characters and how many passwords you want at once. Every character is chosen using your browser's cryptographic random number generator, the same source used for security-sensitive code, rather than an ordinary pseudo-random function. Nothing you generate here is transmitted anywhere or stored; if you close the tab without copying a password, it is gone for good, so copy it into your password manager right away.",
+    "how": "Each character is picked uniformly from the character sets you enable, using the Web Crypto API's getRandomValues with rejection sampling to avoid bias toward any character. Length ranges from 6 to 128, and you can generate up to 20 passwords in one run.",
+    "examples": [
+      {
+        "input": "Length 16, uppercase + lowercase + numbers",
+        "output": "A random 16-character password such as aK9pXq2mZt7RbN4c"
+      },
+      {
+        "input": "Length 24, all character types, 3 passwords",
+        "output": "Three independent 24-character passwords, one per line"
+      }
+    ],
+    "limitations": "At least one character type must be selected. Very short lengths combined with every character type enabled do not guarantee every type appears in a single password, since each character is chosen independently. This tool cannot check whether a site accepts the symbols it generates.",
+    "faq": [
+      {
+        "question": "Is this as secure as a password manager's generator?",
+        "answer": "The randomness source is the same browser API most password managers use. Unlike a manager, ToolzPoint does not store or sync the result, so save it yourself right away."
+      },
+      {
+        "question": "Why avoid similar-looking characters?",
+        "answer": "This generator does not filter look-alike characters like 1, l, and I. If a site requires manual re-entry, double-check ambiguous characters before saving."
+      },
+      {
+        "question": "How long should my password be?",
+        "answer": "Longer is stronger. Twelve characters with mixed types is a reasonable minimum; sixteen or more is better where the site allows it."
+      }
+    ],
+    "keywords": ["password", "generator", "security", "random"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "uuid-generator",
+      "hash-generator",
+      "coin-flip",
+      "base64-encoder-decoder"
+    ]
+  },
+  {
+    "slug": "coin-flip",
+    "name": "Coin Flip",
+    "category": "Random & fun",
+    "shortDescription": "Flip one coin or a thousand, instantly.",
+    "icon": "Coins",
+    "intro": "Flip a virtual coin when you need a quick, unbiased decision, or flip many at once to see how heads and tails balance out over a larger sample. Enter how many times to flip, from a single toss up to a thousand, and the tool reports how many landed heads, how many landed tails, and the order they fell in for smaller runs. Each flip uses an independent fifty-fifty random draw in your browser, so results are not influenced by previous flips or by anything on this page.",
+    "how": "Each flip draws a random number and treats it as heads below 0.5 and tails otherwise. Requesting twenty flips or fewer also lists the full sequence in order; larger runs report only the totals to keep the result readable.",
+    "examples": [
+      {
+        "input": "1 flip",
+        "output": "Heads: 1 · Tails: 0 · Sequence: Heads"
+      },
+      {
+        "input": "100 flips",
+        "output": "Heads: about 50 · Tails: about 50 (exact split varies by run)"
+      }
+    ],
+    "limitations": "Maximum 1,000 flips per run. Results are pseudo-random, suitable for casual decisions and demonstrations, not for cryptography or regulated gambling. The sequence list is only shown for 20 flips or fewer.",
+    "faq": [
+      {
+        "question": "Is the coin actually fair?",
+        "answer": "Each flip has an independent 50% chance of either outcome, the same as an ideal fair coin, using your browser's random number generator."
+      },
+      {
+        "question": "Can I flip more than one coin at a time?",
+        "answer": "Yes. Set any number from 1 to 1,000 to flip that many coins and see the combined heads and tails count."
+      },
+      {
+        "question": "Why don't I see every result for 500 flips?",
+        "answer": "The full sequence is only listed for 20 flips or fewer so the result stays readable. Larger runs show totals instead."
+      }
+    ],
+    "keywords": ["coin", "flip", "random", "heads", "tails"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "password-generator",
+      "uuid-generator",
+      "age-calculator",
+      "percentage-calculator"
+    ]
+  },
+  {
+    "slug": "emi-loan-calculator",
+    "name": "EMI / Loan Calculator",
+    "category": "Finance",
+    "shortDescription": "See your monthly payment on a loan before you sign.",
+    "icon": "Landmark",
+    "intro": "Estimate the equal monthly installment on a home, car, or personal loan from the amount borrowed, the annual interest rate, and the repayment period in years. The result breaks the loan down into the monthly payment, the total interest paid over its full term, and the total amount repaid altogether. This uses the standard reducing-balance EMI formula that most lenders use for fixed-rate loans, so you can sanity-check a lender's quote or compare two different rates or terms before committing to either one.",
+    "how": "Monthly EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1), where P is the loan amount, r is the monthly interest rate (annual rate ÷ 12 ÷ 100), and n is the number of monthly installments. A zero interest rate simplifies to the loan amount divided evenly by the number of months.",
+    "examples": [
+      {
+        "input": "₹10,00,000 at 8.5% for 20 years",
+        "output": "Monthly EMI ₹8,678.23 · Total interest ₹10,82,775.76"
+      },
+      {
+        "input": "₹1,20,000 at 0% for 1 year",
+        "output": "Monthly EMI ₹10,000.00 · Total interest ₹0.00"
+      }
+    ],
+    "limitations": "Assumes a fixed interest rate for the full term with no prepayments, fees, or insurance added. Real loans may compound or apply charges differently; treat this as an estimate to compare scenarios, not a binding repayment schedule from a lender.",
+    "faq": [
+      {
+        "question": "What does EMI stand for?",
+        "answer": "Equal Monthly Installment: the fixed payment you make each month that covers both interest and principal over the loan term."
+      },
+      {
+        "question": "Does this include processing fees or insurance?",
+        "answer": "No. It calculates the pure interest-and-principal payment. Add any fees your lender charges separately when budgeting."
+      },
+      {
+        "question": "How does a shorter term change the EMI?",
+        "answer": "A shorter term raises the monthly EMI but lowers the total interest paid, since less time is spent accruing interest on the remaining balance."
+      }
+    ],
+    "keywords": ["emi", "loan", "calculator", "interest", "finance"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "sip-calculator",
+      "compound-interest-calculator",
+      "discount-calculator",
+      "percentage-calculator"
+    ]
+  },
+  {
+    "slug": "compound-interest-calculator",
+    "name": "Compound Interest Calculator",
+    "category": "Finance",
+    "shortDescription": "Watch a principal grow with compounding interest.",
+    "icon": "PiggyBank",
+    "intro": "Project how a lump sum grows over time when interest compounds at a chosen frequency instead of being paid out as simple interest. Enter the principal, the annual interest rate, the number of years, and how often interest compounds, from annually down to daily, to see the final maturity amount and the interest earned on top of what you put in. Compounding more frequently at the same stated rate produces a slightly larger result, because each period's interest starts earning its own interest sooner.",
+    "how": "Maturity amount = P × (1 + r ÷ n)^(n × t), where P is the principal, r is the annual rate as a decimal, n is the number of compounding periods per year, and t is the time in years. Interest earned is the maturity amount minus the principal.",
+    "examples": [
+      {
+        "input": "₹1,00,000 at 8% for 5 years, compounded monthly",
+        "output": "Maturity amount ₹1,48,984.57 · Interest earned ₹48,984.57"
+      },
+      {
+        "input": "₹1,000 at 10% for 1 year, compounded annually",
+        "output": "Maturity amount ₹1,100.00 · Interest earned ₹100.00"
+      }
+    ],
+    "limitations": "Assumes a fixed rate and no additional deposits or withdrawals during the period. Real accounts may compound on slightly different schedules or apply fees and taxes that reduce the effective return.",
+    "faq": [
+      {
+        "question": "Why does compounding frequency matter?",
+        "answer": "More frequent compounding lets interest start earning its own interest sooner, so daily compounding yields marginally more than annual compounding at the same stated rate."
+      },
+      {
+        "question": "How is this different from the SIP calculator?",
+        "answer": "This tool projects a single lump-sum deposit. The SIP calculator instead projects regular monthly contributions added over time."
+      },
+      {
+        "question": "Can I use this for a savings account?",
+        "answer": "Yes, as a general estimate. Confirm your bank's actual compounding frequency and any fees, which can differ from the assumptions here."
+      }
+    ],
+    "keywords": ["compound", "interest", "calculator", "finance", "investment"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "sip-calculator",
+      "emi-loan-calculator",
+      "percentage-calculator",
+      "discount-calculator"
+    ]
+  },
+  {
+    "slug": "temperature-converter",
+    "name": "Temperature Converter",
+    "category": "Converters",
+    "shortDescription": "Switch between Celsius, Fahrenheit, and Kelvin.",
+    "icon": "Thermometer",
+    "intro": "Convert a temperature between Celsius, Fahrenheit, and Kelvin by entering a value and choosing the units to convert from and to. This covers everyday conversions like checking a weather forecast reported in an unfamiliar scale, following a recipe from another country, or converting a scientific reading to Kelvin. The tool validates that a Kelvin or converted value never falls below absolute zero, the coldest physically possible temperature, and reports a clear error if the input would require it.",
+    "how": "Every conversion passes through Celsius as an intermediate step: Fahrenheit to Celsius is (F − 32) × 5⁄9, and Celsius to Kelvin adds 273.15. The reverse formulas convert back out to the requested unit.",
+    "examples": [
+      {
+        "input": "100 °C to °F",
+        "output": "212"
+      },
+      {
+        "input": "0 °C to K",
+        "output": "273.15"
+      }
+    ],
+    "limitations": "Rejects any value that would fall below absolute zero (−273.15 °C, −459.67 °F, or 0 K). Results are shown to two decimal places, which may round very precise scientific values.",
+    "faq": [
+      {
+        "question": "What is absolute zero?",
+        "answer": "Absolute zero is 0 Kelvin, −273.15 °C, or −459.67 °F: the coldest temperature theoretically possible, where this tool stops accepting a colder input."
+      },
+      {
+        "question": "Can I convert Fahrenheit directly to Kelvin?",
+        "answer": "Yes. Choose Fahrenheit as the source and Kelvin as the target; the tool converts through Celsius internally and returns the Kelvin value."
+      },
+      {
+        "question": "Why does my result have decimals?",
+        "answer": "Fahrenheit and Celsius conversions rarely land on whole numbers because of the 5⁄9 scaling factor. Results are rounded to two decimal places for readability."
+      }
+    ],
+    "keywords": ["temperature", "converter", "celsius", "fahrenheit", "kelvin"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "ideal-weight-calculator",
+      "bmi-calculator",
+      "percentage-calculator",
+      "age-calculator"
+    ]
+  },
+  {
+    "slug": "discount-calculator",
+    "name": "Discount Calculator",
+    "category": "Calculators",
+    "shortDescription": "Find the sale price and how much you save.",
+    "icon": "BadgePercent",
+    "intro": "Work out the final price of an item after a percentage discount, along with exactly how much money the discount saves. Enter the original price and the discount percentage to see both figures at once, which is useful for comparing sale offers, checking a cashier's math, or planning a budget around seasonal discounts. The calculation is ordinary arithmetic performed entirely in your browser, so you can check several offers in a row without any of the amounts leaving your device.",
+    "how": "The amount saved is the original price multiplied by the discount percentage divided by 100. The sale price is the original price minus that saved amount.",
+    "examples": [
+      {
+        "input": "₹1,200 at 25% off",
+        "output": "Sale price ₹900 · You save ₹300"
+      },
+      {
+        "input": "$49.99 at 10% off",
+        "output": "Sale price $44.99 · You save $5.00"
+      }
+    ],
+    "limitations": "Accepts a discount between 0% and 100%. Does not account for taxes, additional fees, or stacked discounts applied one after another, which can produce a different final price than a single combined percentage.",
+    "faq": [
+      {
+        "question": "Does this handle two discounts applied one after another?",
+        "answer": "No. Enter the first discount, note the sale price, then run the calculator again on that new price for a second discount, since stacked percentages do not simply add together."
+      },
+      {
+        "question": "Can the discount be more than 100%?",
+        "answer": "No. A discount above 100% would mean a negative price, so the tool caps the input at 100%."
+      },
+      {
+        "question": "Does this include sales tax?",
+        "answer": "No. It calculates the discount on the original price only. Add tax separately based on your local rate and whether it applies before or after the discount."
+      }
+    ],
+    "keywords": ["discount", "calculator", "sale", "percent off"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "percentage-calculator",
+      "emi-loan-calculator",
+      "compound-interest-calculator",
+      "age-calculator"
+    ]
+  },
+  {
+    "slug": "ideal-weight-calculator",
+    "name": "Ideal Weight Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "A general reference weight range based on height.",
+    "icon": "Scale",
+    "intro": "Estimate a general reference body weight from height using the Devine formula, a method originally published in 1974 and still widely cited for drug-dosing and clinical reference calculations. Enter a height and select male or female, since the formula uses a different starting point for each, and see the estimated ideal weight in both kilograms and pounds. This is a population-level reference point, not a personal target: healthy weight depends on frame size, muscle mass, age, and many other factors this simple formula does not consider.",
+    "how": "Devine formula: for men, 50 kg plus 2.3 kg for each inch of height over 5 feet; for women, 45.5 kg plus 2.3 kg for each inch over 5 feet. Height is converted from centimeters to inches above the 5-foot mark before applying the multiplier.",
+    "examples": [
+      {
+        "input": "180 cm, male",
+        "output": "Ideal weight 74.99 kg (165.33 lb)"
+      },
+      {
+        "input": "165 cm, female",
+        "output": "Ideal weight 56.91 kg (125.46 lb)"
+      }
+    ],
+    "limitations": "Valid for heights between 140 cm and 230 cm. The Devine formula was designed as a clinical dosing reference, not a fitness or beauty target, and does not account for muscle mass, bone density, or body frame. It is not medical advice.",
+    "faq": [
+      {
+        "question": "Is this the same as a healthy BMI range?",
+        "answer": "No. This uses the height-based Devine formula, while the BMI calculator uses weight divided by height squared. The two methods can give different reference numbers."
+      },
+      {
+        "question": "Why does the formula differ by sex?",
+        "answer": "The Devine formula uses separate baseline constants for men and women, reflecting average differences in body composition observed in the original clinical population it was derived from."
+      },
+      {
+        "question": "Should I use this number as a personal goal?",
+        "answer": "Treat it as a general reference point only. A qualified healthcare professional can account for your frame, muscle mass, and health history far better than a single formula."
+      }
+    ],
+    "keywords": ["ideal", "weight", "calculator", "health", "devine"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "bmi-calculator",
+      "nutrition-calculator",
+      "percentage-calculator",
+      "age-calculator"
+    ]
+  },
+  {
+    "slug": "text-case-converter",
+    "name": "Case Converter",
+    "category": "Text",
+    "shortDescription": "Switch text between UPPER, lower, Title, and more.",
+    "icon": "CaseSensitive",
+    "intro": "Paste any text and convert it to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, snake_case, or kebab-case in one click. This is useful for tidying up headlines, preparing variable names while coding, or fixing text that was typed with the caps lock key stuck on. Word boundaries for camelCase, snake_case, and kebab-case are detected from spaces and punctuation, so a normal sentence converts cleanly into a single compact identifier. Everything runs in your browser, so drafts stay private until you choose to copy them elsewhere.",
+    "how": "UPPERCASE and lowercase apply directly. Title Case capitalizes the first letter of each word. Sentence case capitalizes the first letter of the text and after each sentence-ending punctuation mark. camelCase, snake_case, and kebab-case split the text into words at non-letter, non-number boundaries and rejoin them with the chosen style.",
+    "examples": [
+      {
+        "input": "\"toolzpoint makes everyday tasks simple\" → UPPERCASE",
+        "output": "TOOLZPOINT MAKES EVERYDAY TASKS SIMPLE"
+      },
+      {
+        "input": "\"hello world. this is great!\" → Sentence case",
+        "output": "Hello world. This is great!"
+      }
+    ],
+    "limitations": "Maximum input: 100,000 characters. Sentence case relies on periods, question marks, and exclamation points to find sentence boundaries, so abbreviations such as “Dr.” may create an unwanted capital letter afterward. camelCase, snake_case, and kebab-case discard punctuation from the original text.",
+    "faq": [
+      {
+        "question": "Will this preserve my line breaks?",
+        "answer": "UPPERCASE, lowercase, Title Case, and Sentence case preserve line breaks and spacing. camelCase, snake_case, and kebab-case join everything into a single continuous identifier."
+      },
+      {
+        "question": "How are contractions like \"don't\" handled in Title Case?",
+        "answer": "The apostrophe and the letters after it are kept with the word, so “don't stop” becomes “Don't Stop” rather than splitting at the apostrophe."
+      },
+      {
+        "question": "Can I convert code identifiers back to plain words?",
+        "answer": "Not directly. This tool converts plain text into a case style; splitting an existing camelCase or snake_case identifier back into words is not supported."
+      }
+    ],
+    "keywords": ["case", "converter", "text", "uppercase", "camelcase"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "word-counter",
+      "slug-generator",
+      "base64-encoder-decoder",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "hash-generator",
+    "name": "Hash Generator",
+    "category": "Developer",
+    "shortDescription": "Compute SHA-1, SHA-256, SHA-384, and SHA-512 digests.",
+    "icon": "Hash",
+    "intro": "Compute a cryptographic hash digest of any text using SHA-1, SHA-256, SHA-384, or SHA-512, the algorithm families most commonly required for checksums, commit identifiers, and integrity checks. Paste or type text, choose an algorithm, and get the resulting digest as a lowercase hexadecimal string ready to compare or paste elsewhere. Hashing runs through your browser's built-in Web Crypto API, the same implementation browsers use for secure connections, so the text never leaves this page during the calculation.",
+    "how": "The text is encoded as UTF-8 bytes and passed to the Web Crypto API's digest function for the selected algorithm. The resulting byte array is converted to a lowercase hexadecimal string, two characters per byte.",
+    "examples": [
+      {
+        "input": "\"The quick brown fox jumps over the lazy dog\" (SHA-256)",
+        "output": "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592"
+      },
+      {
+        "input": "\"The quick brown fox jumps over the lazy dog\" (SHA-1)",
+        "output": "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12"
+      }
+    ],
+    "limitations": "Maximum input: 100,000 characters. SHA-1 is no longer considered collision-resistant for adversarial security use, though it remains fine for checksums and non-adversarial comparisons. MD5 is not offered because it is not implemented by the browser's cryptographic API.",
+    "faq": [
+      {
+        "question": "Which algorithm should I use?",
+        "answer": "SHA-256 is the most common general-purpose choice today. Use SHA-1 only for compatibility with older systems, and SHA-384 or SHA-512 where a longer digest is required."
+      },
+      {
+        "question": "Can I hash a file instead of text?",
+        "answer": "Not with this tool. It hashes the text you paste or type; hashing a file's binary contents needs a dedicated file-hashing tool."
+      },
+      {
+        "question": "Is hashing the same as encryption?",
+        "answer": "No. Hashing is one-way and cannot be reversed to recover the original text. Encryption is reversible with the correct key."
+      }
+    ],
+    "keywords": ["hash", "sha256", "sha1", "generator", "checksum"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "base64-encoder-decoder",
+      "jwt-decoder",
+      "uuid-generator",
+      "json-formatter"
+    ]
+  },
+  {
+    "slug": "jwt-decoder",
+    "name": "JWT Decoder",
+    "category": "Developer",
+    "shortDescription": "Read the header and payload inside a JWT.",
+    "icon": "KeySquare",
+    "intro": "Paste a JSON Web Token to see its header and payload decoded into readable, indented JSON, without needing a backend or command-line tool. A JWT is three Base64URL-encoded sections separated by dots: a header describing the signing algorithm, a payload carrying the claims, and a signature. This tool decodes the first two sections so you can inspect claims like expiry and subject while debugging an authentication flow, and displays the signature as-is since verifying it correctly requires the issuer's secret or public key, which this tool never asks for or receives.",
+    "how": "Each of the header and payload sections is Base64URL-decoded, padded as needed, and parsed as JSON, then re-serialized with two-space indentation. The signature section is shown unmodified and is explicitly labeled as not verified.",
+    "examples": [
+      {
+        "input": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature",
+        "output": "HEADER {\"alg\":\"HS256\",\"typ\":\"JWT\"} · PAYLOAD {\"sub\":\"1234567890\"}"
+      },
+      {
+        "input": "not.a.jwt",
+        "output": "Error: the header is not valid Base64URL-encoded JSON"
+      }
+    ],
+    "limitations": "This tool decodes only; it does not verify the signature, so a decoded payload should never be treated as authenticated without separately checking the signature against the issuer's key. Maximum input: 100,000 characters.",
+    "faq": [
+      {
+        "question": "Does this verify that the token is genuine?",
+        "answer": "No. Verifying a JWT signature requires the issuer's secret or public key, which this tool never requests. It only decodes the readable header and payload."
+      },
+      {
+        "question": "Why does my token fail to decode?",
+        "answer": "A JWT needs exactly three dot-separated parts. Check that you copied the complete token, including all three sections, without extra whitespace."
+      },
+      {
+        "question": "Is my token uploaded anywhere?",
+        "answer": "No. Decoding happens entirely in your browser using standard Base64 and JSON parsing; the token is never sent to a server."
+      }
+    ],
+    "keywords": ["jwt", "decoder", "token", "json", "developer"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "hash-generator",
+      "base64-encoder-decoder",
+      "json-formatter",
+      "uuid-generator"
+    ]
+  },
+  {
+    "slug": "meta-tag-generator",
+    "name": "Meta Tag Generator",
+    "category": "SEO & social",
+    "shortDescription": "Build title, description, and Open Graph tags.",
+    "icon": "Tags",
+    "intro": "Generate a ready-to-paste block of HTML meta tags from a page title, description, canonical URL, and optional share image and site name. The output covers the basics search engines read, plus Open Graph and Twitter Card tags that control how the page's link preview looks when shared on social platforms and messaging apps. Filling in one form instead of hand-writing a dozen tags reduces the chance of a typo breaking a preview image or leaving a description blank on a shared link.",
+    "how": "Each field is validated for length and, where relevant, as a proper URL, then HTML-escaped and inserted into a title tag, a meta description, a canonical link, and the corresponding Open Graph and Twitter Card meta tags. The Twitter card type switches to a large-image layout automatically when a share image is provided.",
+    "examples": [
+      {
+        "input": "Title \"ToolzPoint\", description \"Free browser tools\", URL https://www.toolzpointt.com/",
+        "output": "<title>ToolzPoint</title> plus matching description, canonical, Open Graph, and Twitter tags"
+      },
+      {
+        "input": "Same fields, with a share image URL added",
+        "output": "Adds og:image and twitter:image, and switches twitter:card to summary_large_image"
+      }
+    ],
+    "limitations": "Title is capped at 70 characters and description at 200 characters to match common search-result truncation points; longer text is rejected rather than silently cut. This tool does not verify that the image URL actually resolves to an image.",
+    "faq": [
+      {
+        "question": "Where do these tags go on my page?",
+        "answer": "Paste the generated block inside your HTML document's <head> section, before the closing </head> tag."
+      },
+      {
+        "question": "Is a share image required?",
+        "answer": "No, it's optional. Without one, links typically preview with just the title and description and no image."
+      },
+      {
+        "question": "Will this guarantee my exact description shows in search results?",
+        "answer": "No. Search engines may rewrite the displayed snippet based on the query. The meta description is a strong hint, not a guarantee."
+      }
+    ],
+    "keywords": ["meta", "tag", "generator", "seo", "open graph"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "utm-builder",
+      "slug-generator",
+      "qr-code-generator",
+      "word-counter"
+    ]
+  },
+  {
+    "slug": "split-pdf",
+    "name": "Split PDF",
+    "category": "PDF tools",
+    "shortDescription": "Pull specific pages out of a PDF into a new file.",
+    "icon": "Scissors",
+    "intro": "Choose one PDF and a list of page numbers or ranges to extract into a brand-new PDF, leaving the original file untouched. This is the reverse of combining files with Merge PDF: instead of joining documents together, it pulls out just the pages you need, such as a single chapter, a signed page, or an appendix, without opening a full desktop PDF editor. Processing happens with a PDF library running in your browser, so the file is read, split, and rebuilt entirely on your device.",
+    "how": "The PDF is parsed to count its pages, then your page list, such as “1-3, 5, 8-10”, is expanded into individual page numbers and validated against that count. The matching pages are copied in ascending order into a new PDF document, which is then offered as a download.",
+    "examples": [
+      {
+        "input": "A 12-page PDF, pages \"1-3, 5, 8-10\"",
+        "output": "A new 7-page PDF containing pages 1, 2, 3, 5, 8, 9, and 10"
+      },
+      {
+        "input": "A 12-page PDF, page \"15\"",
+        "output": "Error: page 15 does not exist in this 12-page PDF"
+      }
+    ],
+    "limitations": "One PDF at a time, up to 20 MB. Encrypted or password-protected PDFs are not supported. Extracted pages always come out in ascending page order, regardless of the order typed in the range list.",
+    "faq": [
+      {
+        "question": "How do I write a page range?",
+        "answer": "Separate individual pages and ranges with commas, such as “1-3, 5, 8-10”. Ranges use a hyphen between the first and last page to keep."
+      },
+      {
+        "question": "Does this change the original PDF?",
+        "answer": "No. The original file stays on your device unchanged; a new PDF containing only the pages you chose is created for download."
+      },
+      {
+        "question": "Can I split an encrypted PDF?",
+        "answer": "No. Remove the password using the PDF's original source application first, then split the unprotected file here."
+      }
+    ],
+    "keywords": ["split", "pdf", "extract", "pages"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "merge-pdf",
+      "images-to-pdf",
+      "image-compressor",
+      "image-resizer"
+    ]
+  },
+  {
+    "slug": "passport-photo-maker",
+    "name": "Passport & ID Photo Maker",
+    "category": "Images",
+    "shortDescription": "Crop, resize, recolor the background, and compress a photo for passports, visas, and forms.",
+    "icon": "IdCard",
+    "intro": "Turn an ordinary photo into a correctly sized passport, visa, PAN card, or government-exam photo. Choose a document type and this tool crops your photo to the exact required aspect ratio, resizes it to the precise pixel dimensions those documents need, and compresses it to fit any stated file-size limit. Use the zoom and vertical-position controls to frame your face the way most application forms require. An optional background step estimates your existing background color from the photo's edges and fades it to white, sky blue, light gray, red, or any custom color you pick, which suits forms that specify a particular background color.",
+    "how": "Standard document sizes are stored in millimeters and converted to pixels at 300 DPI. The photo is cropped to the target aspect ratio around its center, shifted by your zoom and vertical-position settings, then drawn onto a canvas at the exact target pixel size. If background replacement is on, the average color along the image's edges is sampled and pixels close to that color are faded toward your chosen color, with a soft-edged threshold rather than a hard cutout. When a preset specifies a maximum file size, JPEG quality is reduced step by step until the output fits.",
+    "examples": [
+      {
+        "input": "A selfie, preset: India Passport (3.5 × 4.5 cm)",
+        "output": "A 413 × 531 pixel JPEG cropped to your face and shoulders"
+      },
+      {
+        "input": "A selfie against a light wall, background replacement on, color white",
+        "output": "The same crop with its background faded to solid white"
+      }
+    ],
+    "limitations": "Background replacement estimates a single background color from the photo's edges and is not AI subject segmentation, so it works best with a plain, evenly lit original background; a patterned, shadowed, or cluttered background can leave halos or incomplete edges around hair and shoulders. This tool cannot correct poor lighting or verify that a photo meets every rule of a specific passport or visa authority. Always confirm current requirements with the issuing authority before submitting. Maximum one photo, 20 MB.",
+    "faq": [
+      {
+        "question": "Can this remove any background like an AI photo editor?",
+        "answer": "Not quite. It estimates one background color from the photo's edges and fades matching areas to your chosen color. A plain, evenly lit original background gives the cleanest result; a busy or shadowed one may leave visible edges."
+      },
+      {
+        "question": "Can I use this for a country not in the preset list?",
+        "answer": "Yes. Choose Custom size and enter the required width and height in millimeters."
+      },
+      {
+        "question": "Why would I need a colored background instead of white?",
+        "answer": "Some visa and ID photo rules specify a particular background color, such as light blue or red, rather than white. Pick a preset swatch or enter a custom color to match what's required."
+      }
+    ],
+    "keywords": [
+      "passport",
+      "photo",
+      "id",
+      "size",
+      "maker",
+      "resizer",
+      "visa",
+      "pan card"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "image-compressor",
+      "image-resizer",
+      "images-to-pdf",
+      "merge-pdf"
+    ]
+  },
+  {
+    "slug": "date-difference-calculator",
+    "name": "Date Difference Calculator",
+    "category": "Calculators",
+    "shortDescription": "Find the exact time between any two dates.",
+    "icon": "CalendarRange",
+    "intro": "Find out exactly how much time separates two dates, in calendar years, months, and days, as well as the total number of days and weeks. This is useful for measuring a project timeline, a contract term, time served, or the gap until a deadline or anniversary, without counting on a calendar by hand. Unlike the age calculator, which always measures from a birth date to today, this tool accepts any two dates you choose, in either order of entry as long as the start is not after the end.",
+    "how": "The calendar breakdown counts whole years and months using anniversary dates, then reports the remaining days, mirroring how the age calculator counts a birthday. Total days and total weeks are a straight count of days between the two calendar dates.",
+    "examples": [
+      {
+        "input": "2026-01-01 to 2026-09-19",
+        "output": "0 years, 8 months, 18 days · 261 total days · 37 total weeks"
+      },
+      {
+        "input": "2024-01-01 to 2025-06-15",
+        "output": "1 year, 5 months, 14 days · 531 total days · 75 total weeks"
+      }
+    ],
+    "limitations": "The start date must be on or before the end date. Maximum span is bounded by JavaScript's native date range, and dates before 1900 are not specifically validated for calendar accuracy.",
+    "faq": [
+      {
+        "question": "How is this different from the age calculator?",
+        "answer": "The age calculator always measures from a birth date to today or another chosen date. This tool measures between any two dates you enter, for tasks unrelated to age."
+      },
+      {
+        "question": "Does it count the start and end day both?",
+        "answer": "Total days is the count of days between the two calendar dates, so the start date itself is day zero, matching how most deadline and duration calculations work."
+      },
+      {
+        "question": "Can I get just the answer in weeks?",
+        "answer": "Yes, the total weeks figure is the total days divided by seven and rounded down to a whole week."
+      }
+    ],
+    "keywords": [
+      "date",
+      "difference",
+      "calculator",
+      "days between",
+      "duration"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "age-calculator",
+      "discount-calculator",
+      "percentage-calculator",
+      "savings-goal-calculator"
+    ]
+  },
+  {
+    "slug": "pregnancy-due-date-calculator",
+    "name": "Pregnancy Due Date Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Estimate a due date from your last period.",
+    "icon": "Baby",
+    "intro": "Estimate a pregnancy due date from the first day of your last menstrual period, adjusted for your average cycle length, using Naegele's rule, the standard method taught in obstetric care. Enter the date and your typical cycle length to see the estimated due date, how many weeks and days into the pregnancy you are as of today or another date, and which trimester that falls in. This is a widely used population estimate; only around one in twenty births happen exactly on the calculated due date, so an ultrasound dating scan from a healthcare provider is more precise for any individual pregnancy.",
+    "how": "Naegele's rule adds 280 days (40 weeks) to the first day of the last menstrual period, then adjusts by the difference between your cycle length and the textbook 28-day cycle. Weeks and days pregnant are counted from that same start date to the comparison date.",
+    "examples": [
+      {
+        "input": "Last period 2026-01-01, 28-day cycle",
+        "output": "Estimated due date 2026-10-08"
+      },
+      {
+        "input": "Last period 2026-01-01, 30-day cycle",
+        "output": "Estimated due date 2026-10-10"
+      }
+    ],
+    "limitations": "Naegele's rule assumes regular cycles and is a population-level estimate, not a diagnosis. It does not account for irregular cycles, assisted conception dating, or ultrasound measurements. This tool is not a substitute for prenatal care; confirm dating with a healthcare provider.",
+    "faq": [
+      {
+        "question": "How accurate is this estimate?",
+        "answer": "It is a widely used starting estimate. Only a small share of babies arrive on the exact calculated date; a full-term birth any time from about three weeks before to two weeks after is considered normal."
+      },
+      {
+        "question": "What if my cycle isn't 28 days?",
+        "answer": "Enter your typical average cycle length and the calculation shifts the due date to account for it, since ovulation timing shifts with cycle length."
+      },
+      {
+        "question": "Which trimester does each week fall into?",
+        "answer": "This tool reports weeks under 13 as the first trimester, 13 through 26 as the second, and 27 onward as the third, a common convention."
+      }
+    ],
+    "keywords": ["pregnancy", "due date", "calculator", "naegele", "trimester"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "ovulation-calculator",
+      "age-calculator",
+      "date-difference-calculator",
+      "bmi-calculator"
+    ]
+  },
+  {
+    "slug": "ovulation-calculator",
+    "name": "Ovulation Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Estimate your fertile window from your last period.",
+    "icon": "Flower2",
+    "intro": "Estimate your likely ovulation day, fertile window, and next expected period from the first day of your last period and your average cycle length. This is commonly used when trying to conceive or simply to understand your own cycle better. The estimate relies on the observation that ovulation typically occurs about fourteen days before the next period starts, regardless of how long the overall cycle runs, so a longer or shorter cycle shifts the ovulation day earlier or later without changing that fourteen-day gap at the end.",
+    "how": "Ovulation day is estimated as your cycle length minus fourteen days after the start of your last period. The fertile window covers the five days before ovulation through one day after, reflecting typical sperm and egg survival times. The next period is estimated one full cycle length after the last one.",
+    "examples": [
+      {
+        "input": "Last period 2026-01-01, 28-day cycle",
+        "output": "Estimated ovulation 2026-01-15 · Fertile window 2026-01-10 to 2026-01-16"
+      },
+      {
+        "input": "Last period 2026-01-01, 28-day cycle",
+        "output": "Next expected period 2026-01-29"
+      }
+    ],
+    "limitations": "This estimate assumes a consistent luteal (post-ovulation) phase of about fourteen days, which varies between individuals. It is not a contraceptive method and not a substitute for a fertility monitor, ovulation test, or medical advice.",
+    "faq": [
+      {
+        "question": "Is this a reliable form of birth control?",
+        "answer": "No. This is a general estimate, not a validated contraceptive method. Speak with a healthcare provider about reliable contraception options."
+      },
+      {
+        "question": "Why does a longer cycle push ovulation later?",
+        "answer": "The days after ovulation are relatively constant at about fourteen, so a longer cycle means more days occur before ovulation, pushing the estimated day later."
+      },
+      {
+        "question": "How wide is the fertile window?",
+        "answer": "This tool estimates a six-day window: five days before ovulation, when sperm can survive to meet an egg, through one day after ovulation."
+      }
+    ],
+    "keywords": [
+      "ovulation",
+      "calculator",
+      "fertile window",
+      "cycle",
+      "period"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "pregnancy-due-date-calculator",
+      "age-calculator",
+      "date-difference-calculator",
+      "water-intake-calculator"
+    ]
+  },
+  {
+    "slug": "gst-calculator",
+    "name": "GST Calculator",
+    "category": "Finance",
+    "shortDescription": "Add or extract GST from a price in seconds.",
+    "icon": "ReceiptText",
+    "intro": "Calculate Goods and Services Tax the way Indian invoices need it, either by adding GST on top of a base price or by extracting how much of a GST-inclusive total is tax. Choose your direction, enter the amount and the applicable rate, such as the common 5%, 12%, 18%, or 28% slabs, and see the base price, GST amount, an even CGST and SGST split, and the total. This suits shopkeepers, freelancers, and shoppers who want to check an invoice or quote without doing the arithmetic by hand.",
+    "how": "Adding GST: GST amount equals the base price multiplied by the rate divided by 100, and the total is the base price plus that GST amount. Extracting GST: the base price equals the total divided by one plus the rate divided by 100, and the GST amount is the total minus that base price. For an intra-state sale, CGST and SGST each take half of the GST amount.",
+    "examples": [
+      {
+        "input": "Add 18% GST to ₹1,000",
+        "output": "GST ₹180 · Total ₹1,180"
+      },
+      {
+        "input": "Extract 18% GST from a ₹1,180 total",
+        "output": "Base price ₹1,000 · GST ₹180"
+      }
+    ],
+    "limitations": "This calculates standard single-rate GST only; it does not handle mixed-rate invoices, GST composition scheme rules, reverse charge, or exemptions. Confirm the applicable rate and scheme for your specific goods or services.",
+    "faq": [
+      {
+        "question": "What's the difference between CGST and SGST?",
+        "answer": "For a sale within the same state, GST splits evenly into Central GST and State GST. For an inter-state sale, the full amount is instead charged as Integrated GST (IGST), which this tool reports as the combined GST amount."
+      },
+      {
+        "question": "Which mode should I use for a shop receipt?",
+        "answer": "If the listed price already includes tax, use \"Extract GST from a total price.\" If you're building a quote from a pre-tax price, use \"Add GST to a base price.\""
+      },
+      {
+        "question": "Can I use a custom GST rate?",
+        "answer": "Yes, enter any percentage; the common slabs of 5, 12, 18, and 28 are just typical starting points."
+      }
+    ],
+    "keywords": ["gst", "calculator", "tax", "cgst", "sgst", "india"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "emi-loan-calculator",
+      "discount-calculator",
+      "compound-interest-calculator",
+      "savings-goal-calculator"
+    ]
+  },
+  {
+    "slug": "water-intake-calculator",
+    "name": "Water Intake Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "A daily water target based on your weight and activity.",
+    "icon": "Droplets",
+    "intro": "Get a general daily water intake target based on your body weight and activity level. Enter your weight and choose sedentary, moderate, or active, and see a suggested daily total in liters and in 250 milliliter glasses. This uses a commonly cited baseline of about 35 milliliters per kilogram of body weight, scaled up slightly for more active days, as a simple starting point rather than a precise medical prescription, since actual needs vary with climate, health conditions, and diet.",
+    "how": "Baseline intake is 35 mL multiplied by your body weight in kilograms. That baseline is then scaled by 1.0 for sedentary, 1.1 for moderate, or 1.2 for active, and converted to liters and to a count of 250 mL glasses.",
+    "examples": [
+      {
+        "input": "70 kg, moderate activity",
+        "output": "2.70 liters · about 10.8 glasses"
+      },
+      {
+        "input": "60 kg, sedentary",
+        "output": "2.10 liters · about 8.4 glasses"
+      }
+    ],
+    "limitations": "This is a general estimate, not medical advice. It does not account for climate, pregnancy, breastfeeding, illness, or medical conditions that change fluid needs. People with kidney, heart, or liver conditions should follow a clinician's specific guidance instead.",
+    "faq": [
+      {
+        "question": "Does this count water from food and other drinks?",
+        "answer": "No, this estimates total water-equivalent intake as a target; roughly a fifth of daily fluid typically comes from food, so plain drinking water needs may be somewhat lower in practice."
+      },
+      {
+        "question": "Why does activity level matter?",
+        "answer": "More physical activity increases fluid loss through sweat, so the multiplier raises the daily target for moderate and active lifestyles."
+      },
+      {
+        "question": "Is more water always better?",
+        "answer": "No. Drinking far beyond your body's needs can dilute blood sodium levels. This estimate is a reasonable target, not a floor to exceed aggressively."
+      }
+    ],
+    "keywords": ["water", "intake", "calculator", "hydration", "daily"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "bmi-calculator",
+      "nutrition-calculator",
+      "body-fat-calculator",
+      "heart-rate-zone-calculator"
+    ]
+  },
+  {
+    "slug": "body-fat-calculator",
+    "name": "Body Fat Percentage Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Estimate body fat from a few tape measurements.",
+    "icon": "BicepsFlexed",
+    "intro": "Estimate body fat percentage using the U.S. Navy circumference method, which uses neck, waist, and, for women, hip measurements alongside height, rather than a scale that can't distinguish fat from muscle. Enter your measurements in centimeters, taken with a flexible tape at the points that method specifies, to see an estimated body fat percentage and a general category from essential fat through above average. This method is a widely used field estimate, not a laboratory-grade measurement like a DEXA scan.",
+    "how": "For men: %BF = 495 ÷ (1.0324 − 0.19077 × log₁₀(waist − neck) + 0.15456 × log₁₀(height)) − 450. For women: %BF = 495 ÷ (1.29579 − 0.35004 × log₁₀(waist + hip − neck) + 0.22100 × log₁₀(height)) − 450. All measurements are in centimeters.",
+    "examples": [
+      {
+        "input": "Male: height 175 cm, waist 85 cm, neck 38 cm",
+        "output": "Body fat 16.94% · Fitness"
+      },
+      {
+        "input": "Female: height 165 cm, waist 75 cm, hip 100 cm, neck 32 cm",
+        "output": "Body fat 29.93% · Average"
+      }
+    ],
+    "limitations": "Accuracy depends heavily on precise, consistent tape placement and is generally less accurate for very lean or very heavy individuals than lab methods like DEXA or hydrostatic weighing. This is an estimate for general awareness, not a medical or athletic-grade measurement.",
+    "faq": [
+      {
+        "question": "Where exactly do I measure my waist and neck?",
+        "answer": "Measure the neck just below the larynx, and the waist at the navel for men or at the narrowest point for women, keeping the tape snug but not compressing the skin."
+      },
+      {
+        "question": "Why does the formula need a hip measurement for women only?",
+        "answer": "The U.S. Navy method uses separate validated formulas for each sex; the women's version was derived using hip circumference as an additional predictor, while the men's version was not."
+      },
+      {
+        "question": "How does this compare to a DEXA scan?",
+        "answer": "DEXA scans directly measure fat, lean, and bone mass and are considered a gold standard. Tape-based estimates like this one are a convenient approximation, typically within a few percentage points for most body types."
+      }
+    ],
+    "keywords": ["body fat", "percentage", "calculator", "navy method"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "bmi-calculator",
+      "waist-hip-ratio-calculator",
+      "ideal-weight-calculator",
+      "nutrition-calculator"
+    ]
+  },
+  {
+    "slug": "waist-hip-ratio-calculator",
+    "name": "Waist-to-Hip Ratio Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "A quick check on body-fat distribution and risk.",
+    "icon": "Ruler",
+    "intro": "Calculate your waist-to-hip ratio, a simple measurement the World Health Organization uses as an indicator of how body fat is distributed, which relates to health risk independently of overall weight. Enter your waist and hip measurements in centimeters to get the ratio and a general low, moderate, or high risk category based on WHO reference thresholds, which differ for men and women. Carrying more fat around the waist rather than the hips is associated with higher risk for the same overall body weight.",
+    "how": "Waist-to-hip ratio is simply the waist measurement divided by the hip measurement. WHO reference thresholds classify men below 0.90 and women below 0.80 as low risk, men from 0.90 to 0.99 and women from 0.80 to 0.85 as moderate risk, and higher ratios as high risk.",
+    "examples": [
+      {
+        "input": "Male: waist 80 cm, hip 100 cm",
+        "output": "Ratio 0.80 · Low risk"
+      },
+      {
+        "input": "Female: waist 90 cm, hip 100 cm",
+        "output": "Ratio 0.90 · High risk"
+      }
+    ],
+    "limitations": "This is a screening indicator, not a diagnosis. It does not account for muscle mass, frame size, ethnicity-specific thresholds, or other individual health factors. Measure both waist and hip at their widest natural points for consistent results.",
+    "faq": [
+      {
+        "question": "Where do I measure my hips?",
+        "answer": "Measure around the widest part of your hips and buttocks, keeping the tape level and snug but not compressing the skin."
+      },
+      {
+        "question": "Why do men and women have different thresholds?",
+        "answer": "WHO reference ranges account for typical differences in body fat distribution between sexes, so the same ratio can carry different risk implications."
+      },
+      {
+        "question": "Is this the same as BMI?",
+        "answer": "No. BMI reflects overall weight relative to height, while waist-to-hip ratio reflects where fat is distributed, and the two provide different, complementary information."
+      }
+    ],
+    "keywords": ["waist", "hip", "ratio", "calculator", "who"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "bmi-calculator",
+      "body-fat-calculator",
+      "ideal-weight-calculator",
+      "heart-rate-zone-calculator"
+    ]
+  },
+  {
+    "slug": "heart-rate-zone-calculator",
+    "name": "Heart Rate Zone Calculator",
+    "category": "Health & nutrition",
+    "shortDescription": "Find your training zones from your age.",
+    "icon": "Gauge",
+    "intro": "Find your estimated maximum heart rate and the five common training zones used in fitness plans, from an easy warm-up pace through your peak effort. Enter your age and see beats-per-minute ranges for warm up, fat burn, cardio, hard, and peak zones, which are useful for pacing workouts on a treadmill, bike, or heart-rate monitor. This uses the classic 220-minus-age formula, the version most fitness trackers and gym charts use, rather than a personally tested maximum from a supervised exercise test.",
+    "how": "Estimated maximum heart rate is 220 minus your age in years. Each training zone is a percentage band of that maximum: Zone 1 (warm up) 50–60%, Zone 2 (fat burn) 60–70%, Zone 3 (cardio) 70–80%, Zone 4 (hard) 80–90%, and Zone 5 (peak) 90–100%.",
+    "examples": [
+      {
+        "input": "Age 30",
+        "output": "Max 190 bpm · Zone 3 (cardio) 133–152 bpm"
+      },
+      {
+        "input": "Age 45",
+        "output": "Max 175 bpm · Zone 2 (fat burn) 105–123 bpm"
+      }
+    ],
+    "limitations": "The 220-minus-age formula is a population average with a fairly wide margin of error for any individual. Athletes, people on heart-rate-affecting medication, or anyone with a cardiac condition should get a personally tested maximum from a healthcare provider rather than relying on this estimate.",
+    "faq": [
+      {
+        "question": "Which zone should I train in to lose weight?",
+        "answer": "Zone 2, often called the fat-burn zone, uses a higher proportion of fat for fuel, but total calories burned across a longer, harder session can matter more for weight goals than the zone alone."
+      },
+      {
+        "question": "Is 220 minus age the most accurate formula?",
+        "answer": "No single formula is exact for everyone. It's a widely used estimate; a supervised fitness test gives a more personally accurate maximum heart rate."
+      },
+      {
+        "question": "Can medication affect these zones?",
+        "answer": "Yes. Some medications, such as beta blockers, lower your achievable heart rate, making these estimated zones inaccurate. Ask a healthcare provider for guidance if you take heart-rate-affecting medication."
+      }
+    ],
+    "keywords": ["heart rate", "zone", "calculator", "training", "fitness"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "bmi-calculator",
+      "body-fat-calculator",
+      "water-intake-calculator",
+      "waist-hip-ratio-calculator"
+    ]
+  },
+  {
+    "slug": "savings-goal-calculator",
+    "name": "Savings Goal Calculator",
+    "category": "Finance",
+    "shortDescription": "Find the monthly deposit that gets you to a goal.",
+    "icon": "HandCoins",
+    "intro": "Work out how much to set aside each month to reach a savings goal by a certain time, given what you've already saved and an assumed annual return. Enter your target amount, current savings, the number of months you have, and an expected annual return rate, and see the required monthly deposit. This mirrors the math behind the SIP calculator in reverse: instead of projecting where a monthly amount leads, it solves for the monthly amount a target requires.",
+    "how": "With a monthly rate r derived from the annual rate, the required monthly deposit equals the shortfall between the goal and your current savings grown at that rate, divided by the future-value-of-annuity factor for the remaining months. At a 0% return, this simplifies to the shortfall divided evenly across the months.",
+    "examples": [
+      {
+        "input": "Goal ₹5,00,000, current ₹50,000, 24 months, 6% return",
+        "output": "Monthly deposit needed ≈ ₹17,444"
+      },
+      {
+        "input": "Goal ₹1,20,000, current ₹0, 12 months, 0% return",
+        "output": "Monthly deposit needed ₹10,000"
+      }
+    ],
+    "limitations": "Assumes a constant monthly return and deposits made at the end of each month, with no withdrawals. Real investments fluctuate, so treat the assumed return as an illustrative estimate rather than a guarantee.",
+    "faq": [
+      {
+        "question": "What if my current savings already exceed my goal?",
+        "answer": "The tool reports a required monthly deposit of zero and shows how far your current savings already exceed the target, before accounting for further growth."
+      },
+      {
+        "question": "Should I use my bank's savings rate or an investment return?",
+        "answer": "Use whatever rate reasonably reflects where the money will actually sit. A savings account and an equity investment carry very different assumptions and risk."
+      },
+      {
+        "question": "How is this different from the SIP calculator?",
+        "answer": "The SIP calculator projects the future value of a chosen monthly contribution. This tool works backward from a target future value to find the monthly contribution required."
+      }
+    ],
+    "keywords": ["savings", "goal", "calculator", "finance", "monthly deposit"],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "sip-calculator",
+      "compound-interest-calculator",
+      "emi-loan-calculator",
+      "gst-calculator"
+    ]
+  },
+  {
+    "slug": "invoice-maker",
+    "name": "Invoice Maker",
+    "category": "Documents & design",
+    "shortDescription": "Fill in a form and download a clean PDF invoice.",
+    "icon": "Receipt",
+    "intro": "Create a professional-looking invoice without a spreadsheet template or design software. Enter your business details, your client's details, an invoice number and dates, and as many line items as the job needs, and this tool lays them out on a clean single page with automatic subtotal, tax, and total calculations. Add a currency symbol that matches your market and any notes your client should see, such as payment terms or bank details, then download a ready-to-send PDF. Everything is generated in your browser; no invoice data is uploaded anywhere.",
+    "how": "Each line item's quantity multiplied by its price is summed into a subtotal, tax is calculated as a percentage of that subtotal, and the total is their sum. Business and client details, the item table, and the totals are laid out directly onto an A4 PDF page using precise text positioning, with automatic wrapping for longer text and a new page added if the item list runs long.",
+    "examples": [
+      {
+        "input": "3 line items, 8% tax, from Acme Studio to Globex Corp",
+        "output": "A one-page PDF: itemized table, subtotal, 8% tax, and total"
+      },
+      {
+        "input": "30 line items on one invoice",
+        "output": "The table continues automatically onto a second page"
+      }
+    ],
+    "limitations": "Supports one tax rate applied to the whole invoice, not per-item tax rates or multiple taxes. Only standard Latin-alphabet text renders; a handful of common symbols are substituted (for example, the rupee sign becomes \"Rs.\") and any other unsupported character is dropped rather than breaking the document. Maximum 30 line items.",
+    "faq": [
+      {
+        "question": "Can I reopen and edit an invoice later?",
+        "answer": "Not directly. This tool doesn't save your data between visits, so keep your entries in a note or spreadsheet if you'll need to recreate a similar invoice, or download and keep the PDF itself as your record."
+      },
+      {
+        "question": "Does this send the invoice to my client?",
+        "answer": "No. It only generates a PDF file for you to download and send yourself, by email or any method you choose."
+      },
+      {
+        "question": "Can I show multiple tax lines, like separate state and federal tax?",
+        "answer": "Not currently. Only a single combined tax rate is supported; calculate a combined rate first if your invoice needs to show more than one tax."
+      }
+    ],
+    "keywords": ["invoice", "maker", "generator", "pdf", "billing", "business"],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "biodata-maker",
+      "gst-calculator",
+      "savings-goal-calculator",
+      "emi-loan-calculator"
+    ]
+  },
+  {
+    "slug": "biodata-maker",
+    "name": "Biodata Maker",
+    "category": "Documents & design",
+    "shortDescription": "Fill in a form and download a clean matrimonial biodata PDF.",
+    "icon": "UserSquare2",
+    "intro": "Create a marriage biodata document in the familiar personal-details, family-details, and contact-details format, without wrestling with a word processor template. Enter your name and any of the optional fields you want to include, such as date of birth, height, education, occupation, family details, and contact information, and this tool lays them out as a clean, readable PDF with an optional photo in the corner. Every field beyond your name is optional and left off the page entirely if you leave it blank, so sensitive fields like religion, caste, or income are entirely your choice to include.",
+    "how": "Filled-in fields are grouped into Personal Details, Family Details, and Contact Details sections, each rendered as a label-and-value list with automatic text wrapping for longer entries. Blank optional fields are skipped rather than shown empty. An uploaded photo, if provided, is scaled to fit a fixed box in the top-right corner while keeping its original proportions.",
+    "examples": [
+      {
+        "input": "Full name plus a dozen personal, family, and contact fields",
+        "output": "A one-page PDF with three labeled sections and a photo"
+      },
+      {
+        "input": "Just a full name, everything else left blank",
+        "output": "A one-page PDF showing only the name and a \"Biodata\" heading"
+      }
+    ],
+    "limitations": "Only standard Latin-alphabet text renders; a handful of common symbols are substituted (for example, the rupee sign becomes \"Rs.\") and any other unsupported character, including other scripts, is dropped rather than breaking the document. Photo upload accepts JPG, PNG, or WebP up to 20 MB. Very long combined entries can extend the document to a second page.",
+    "faq": [
+      {
+        "question": "Do I have to fill in every field?",
+        "answer": "No. Only your full name is required. Leave any other field blank and it simply won't appear on the page, including sensitive fields like religion, caste, or income."
+      },
+      {
+        "question": "Is my photo uploaded anywhere?",
+        "answer": "No. The photo is embedded into the PDF entirely in your browser and is never sent to a server."
+      },
+      {
+        "question": "Can I write fields in Hindi or another script?",
+        "answer": "Not currently. The underlying PDF font only supports standard Latin-alphabet text, so other scripts won't render correctly; stick to English or transliterated text for now."
+      }
+    ],
+    "keywords": [
+      "biodata",
+      "maker",
+      "marriage",
+      "matrimonial",
+      "generator",
+      "pdf"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": true,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true,
+    "relatedSlugs": [
+      "passport-photo-maker",
+      "invoice-maker",
+      "age-calculator",
+      "date-difference-calculator"
     ]
   }
 ]
