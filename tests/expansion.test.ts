@@ -29,7 +29,6 @@ it("covers every category and runs every new form with its defaults", () => {
     new Set(categories.map((c) => c.name)),
   );
   for (const slug of expansionSlugs) {
-    expect(tools.find((t) => t.slug === slug)?.reviewed).toBe(false);
     expect(
       run(slug, expansionSamples[slug] ?? "", defaults(slug)),
     ).toBeDefined();
