@@ -5,19 +5,28 @@ afterEach(() => {
   setAnalyticsAdapter(undefined);
   vi.unstubAllGlobals();
 });
-it("keeps telemetry off without consent and allows only known properties", () => {
+it("sends telemetry by default and allows only known properties", () => {
   const sent = vi.fn();
   setAnalyticsAdapter({ track: sent });
   vi.stubGlobal("localStorage", { getItem: () => null });
-  track("tool_run_success", { toolSlug: "word-counter" });
-  expect(sent).not.toHaveBeenCalled();
-  vi.stubGlobal("localStorage", { getItem: () => "accepted" });
   const incoming = { toolSlug: "word-counter", rawInput: "secret input" };
   track("tool_run_success", incoming);
   expect(sent).toHaveBeenCalledWith("tool_run_success", {
     toolSlug: "word-counter",
   });
   expect(JSON.stringify(sent.mock.calls)).not.toContain("secret");
+});
+it("stops telemetry once analytics is explicitly rejected", () => {
+  const sent = vi.fn();
+  setAnalyticsAdapter({ track: sent });
+  vi.stubGlobal("localStorage", { getItem: () => "rejected" });
+  track("tool_run_success", { toolSlug: "word-counter" });
+  expect(sent).not.toHaveBeenCalled();
+  vi.stubGlobal("localStorage", { getItem: () => "accepted" });
+  track("tool_run_success", { toolSlug: "word-counter" });
+  expect(sent).toHaveBeenCalledWith("tool_run_success", {
+    toolSlug: "word-counter",
+  });
 });
 it("contains adapter failures and blocked storage", () => {
   vi.stubGlobal("localStorage", {

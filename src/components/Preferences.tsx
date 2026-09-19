@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { Icon } from "./Icon";
+import { isAnalyticsAllowed } from "@/lib/analytics";
+function consentSubscribe(notify: () => void) {
+  window.addEventListener("toolzpoint:consent-changed", notify);
+  return () => window.removeEventListener("toolzpoint:consent-changed", notify);
+}
 function themeSubscribe(notify: () => void) {
   window.addEventListener("toolzpoint:theme", notify);
   return () => window.removeEventListener("toolzpoint:theme", notify);
@@ -39,6 +44,11 @@ export function ThemeToggle() {
 export function Consent() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const allowed = useSyncExternalStore(
+    consentSubscribe,
+    isAnalyticsAllowed,
+    () => true,
+  );
   useEffect(() => {
     const show = () => setOpen(true);
     window.addEventListener("toolzpoint:consent", show);
@@ -63,18 +73,28 @@ export function Consent() {
         <section className="consent" aria-label="Cookie preferences">
           <strong>Your privacy choices</strong>
           <p>
-            Favorites and settings use local storage. Optional analytics are off
-            by default; choosing to allow them loads Google Analytics for
-            anonymous usage statistics. No advertising provider is connected.
+            Favorites and settings use local storage. Optional analytics are on
+            by default, loading Google Analytics for anonymous usage statistics;
+            choose “Essential only” to turn it off for this browser. No
+            advertising provider is connected.
+          </p>
+          <p className="setting-hint">
+            Currently:{" "}
+            {allowed ? "Optional analytics allowed" : "Essential only"}
           </p>
           <div className="button-row">
             <button
-              className="button primary"
+              className="button"
+              aria-pressed={!allowed}
               onClick={() => choose("rejected")}
             >
               Essential only
             </button>
-            <button className="button" onClick={() => choose("accepted")}>
+            <button
+              className="button primary"
+              aria-pressed={allowed}
+              onClick={() => choose("accepted")}
+            >
               Allow optional analytics
             </button>
             <button

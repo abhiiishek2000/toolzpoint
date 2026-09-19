@@ -2,7 +2,7 @@
 import Script from "next/script";
 import { Suspense, useEffect, useSyncExternalStore } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { setAnalyticsAdapter } from "@/lib/analytics";
+import { isAnalyticsAllowed, setAnalyticsAdapter } from "@/lib/analytics";
 declare global {
   interface Window {
     dataLayer?: unknown[];
@@ -13,13 +13,6 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 function consentSubscribe(notify: () => void) {
   window.addEventListener("toolzpoint:consent-changed", notify);
   return () => window.removeEventListener("toolzpoint:consent-changed", notify);
-}
-function readConsent() {
-  try {
-    return localStorage.getItem("toolzpoint:v1:consent") === "accepted";
-  } catch {
-    return false;
-  }
 }
 // Next's App Router doesn't reload the page on navigation, so gtag's
 // automatic pageview (tied to a full page load) never fires again after the
@@ -39,9 +32,18 @@ function Pageviews() {
   return null;
 }
 export function GoogleAnalytics() {
+  // The server can never see localStorage, so the snapshot used for the
+  // very first paint must default to "not allowed" even though the real
+  // policy is on-by-default — otherwise a visitor who explicitly rejected
+  // analytics would still get Script's afterInteractive load kicked off
+  // during the hydration pass that matches this snapshot, before the
+  // corrective re-render (using the real, client-only check) has a chance
+  // to stop it. Once mounted, next/script has already fired; there's no
+  // taking it back. A visitor who is allowed just loads GA one render tick
+  // later, which is imperceptible.
   const consented = useSyncExternalStore(
     consentSubscribe,
-    readConsent,
+    isAnalyticsAllowed,
     () => false,
   );
   useEffect(() => {

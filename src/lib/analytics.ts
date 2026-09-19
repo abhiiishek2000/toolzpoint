@@ -22,9 +22,20 @@ let adapter: AnalyticsAdapter | undefined;
 export function setAnalyticsAdapter(value: AnalyticsAdapter | undefined) {
   adapter = value;
 }
+// Optional analytics are on by default; only an explicit "Essential only"
+// choice (stored as "rejected") turns them off. Unset — and any storage
+// failure, such as a blocked or unavailable localStorage — falls back to
+// allowed, matching the default-on policy rather than silently disabling it.
+export function isAnalyticsAllowed() {
+  try {
+    return localStorage.getItem("toolzpoint:v1:consent") !== "rejected";
+  } catch {
+    return true;
+  }
+}
 export function track(name: EventName, properties: Properties) {
   try {
-    if (localStorage.getItem("toolzpoint:v1:consent") !== "accepted") return;
+    if (!isAnalyticsAllowed()) return;
     const safe: Properties = {};
     if (properties.toolSlug) safe.toolSlug = properties.toolSlug;
     if (properties.executionMode) safe.executionMode = properties.executionMode;
