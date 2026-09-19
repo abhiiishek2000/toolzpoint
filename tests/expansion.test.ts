@@ -24,7 +24,7 @@ it("covers every category and runs every new form with its defaults", () => {
         "add-page-numbers-to-pdf",
       ].includes(t.slug),
   );
-  expect(added).toHaveLength(30);
+  expect(added).toHaveLength(44);
   expect(new Set(added.map((t) => t.category))).toEqual(
     new Set(categories.map((c) => c.name)),
   );
@@ -285,6 +285,259 @@ it.each([
     ).toEqual(expected);
   },
 );
+it("computes a mortgage payment split into principal/interest and tax/insurance", () => {
+  expect(
+    run("mortgage-calculator", "", {
+      price: "300000",
+      down: "60000",
+      rate: "6",
+      years: "30",
+      tax: "0",
+      insurance: "0",
+    }),
+  ).toMatchObject({ "Loan amount": 240000 });
+  const withEscrow = run("mortgage-calculator", "", {
+    price: "300000",
+    down: "60000",
+    rate: "6",
+    years: "30",
+    tax: "3600",
+    insurance: "1200",
+  }) as Record<string, number>;
+  expect(withEscrow["Monthly principal & interest"]).toBeCloseTo(
+    1438.9212603666167,
+    6,
+  );
+  expect(withEscrow["Monthly tax & insurance"]).toBe(400);
+  expect(withEscrow["Total monthly payment"]).toBeCloseTo(
+    1838.9212603666167,
+    6,
+  );
+  expect(() =>
+    run("mortgage-calculator", "", {
+      price: "100000",
+      down: "100000",
+      rate: "6",
+      years: "30",
+      tax: "0",
+      insurance: "0",
+    }),
+  ).toThrow();
+});
+it("reuses quarterly compound interest for a fixed deposit", () => {
+  const result = run("fd-calculator", "", {
+    principal: "100000",
+    rate: "7",
+    years: "5",
+  }) as Record<string, number>;
+  expect(result["Maturity amount"]).toBeCloseTo(141477.81957557995, 5);
+  expect(result["Interest earned"]).toBeCloseTo(41477.81957557995, 5);
+});
+it("simulates a recurring deposit with quarterly-compounded interest", () => {
+  expect(
+    run("rd-calculator", "", { monthly: "1000", rate: "8", months: "3" }),
+  ).toEqual({
+    "Maturity amount": 3060,
+    "Total invested": 3000,
+    "Interest earned": 60,
+  });
+  const sixMonths = run("rd-calculator", "", {
+    monthly: "1000",
+    rate: "8",
+    months: "6",
+  }) as Record<string, number>;
+  expect(sixMonths["Maturity amount"]).toBeCloseTo(6181.2, 6);
+  expect(sixMonths["Total invested"]).toBe(6000);
+  expect(sixMonths["Interest earned"]).toBeCloseTo(181.2, 6);
+});
+it("projects a future equivalent value for inflation", () => {
+  const result = run("inflation-calculator", "", {
+    amount: "1000",
+    rate: "6",
+    years: "10",
+  }) as Record<string, number>;
+  expect(result["Future equivalent value"]).toBeCloseTo(1790.8476965428547, 6);
+  expect(result["Purchasing power lost"]).toBeCloseTo(790.8476965428547, 6);
+});
+it("sums assets and liabilities into a net worth", () => {
+  expect(
+    run("net-worth-calculator", "", {
+      assets: "Savings, 500000\nCar, 300000",
+      liabilities: "Home loan, 1200000\nCredit card, 15000",
+    }),
+  ).toEqual({
+    "Total assets": 800000,
+    "Total liabilities": 1215000,
+    "Net worth": -415000,
+  });
+  expect(() =>
+    run("net-worth-calculator", "", {
+      assets: "Savings 500000",
+      liabilities: "",
+    }),
+  ).toThrow();
+});
+it("weights grades by credits for a 4.0-scale GPA", () => {
+  expect(run("gpa-calculator", "A,3\nB+,4\nA-,3", {})).toEqual({
+    GPA: 3.63,
+    "Total credits": 10,
+  });
+  expect(() => run("gpa-calculator", "Z,3", {})).toThrow();
+  expect(() => run("gpa-calculator", "A,0", {})).toThrow();
+});
+it("solves quadratics with real, repeated, and complex roots", () => {
+  expect(
+    run("quadratic-equation-solver", "", { a: "1", b: "-3", c: "2" }),
+  ).toEqual({ "Root 1": 2, "Root 2": 1, Discriminant: 1 });
+  expect(
+    run("quadratic-equation-solver", "", { a: "1", b: "-4", c: "4" }),
+  ).toEqual({ Root: 2, Discriminant: 0 });
+  expect(
+    run("quadratic-equation-solver", "", { a: "1", b: "2", c: "5" }),
+  ).toEqual({ "Root 1": "-1 + 2i", "Root 2": "-1 - 2i", Discriminant: -16 });
+  expect(() =>
+    run("quadratic-equation-solver", "", { a: "0", b: "2", c: "5" }),
+  ).toThrow();
+});
+it("sums worked hours across shifts, handling overnight shifts", () => {
+  expect(
+    run("work-hours-calculator", "09:00,17:30,30\n09:00,18:00,60", {}),
+  ).toEqual({ "Total hours": 16, "Total shifts": 2 });
+  expect(run("work-hours-calculator", "22:00,06:00,30", {})).toEqual({
+    "Total hours": 7.5,
+    "Total shifts": 1,
+  });
+  expect(() => run("work-hours-calculator", "09:00,10:00,120", {})).toThrow();
+});
+it("converts wall-clock time between time zones independent of host time zone", () => {
+  expect(
+    run("timezone-converter", "", {
+      date: "2026-01-15",
+      time: "12:00",
+      from: "Asia/Kolkata",
+      to: "UTC",
+    }),
+  ).toEqual({ "Time in UTC": "2026-01-15 06:30" });
+  expect(
+    run("timezone-converter", "", {
+      date: "2026-01-15",
+      time: "06:30",
+      from: "UTC",
+      to: "America/New_York",
+    }),
+  ).toEqual({ "Time in America/New_York": "2026-01-15 01:30" });
+  expect(
+    run("timezone-converter", "", {
+      date: "2026-07-15",
+      time: "09:00",
+      from: "America/Los_Angeles",
+      to: "UTC",
+    }),
+  ).toEqual({ "Time in UTC": "2026-07-15 16:00" });
+  expect(() =>
+    run("timezone-converter", "", {
+      date: "2026-01-15",
+      time: "25:00",
+      from: "UTC",
+      to: "UTC",
+    }),
+  ).toThrow();
+});
+it("converts between integers and canonical Roman numerals", () => {
+  expect(run("roman-numeral-converter", "1994", { mode: "to-roman" })).toBe(
+    "MCMXCIV",
+  );
+  expect(run("roman-numeral-converter", "58", { mode: "to-roman" })).toBe(
+    "LVIII",
+  );
+  expect(run("roman-numeral-converter", "3999", { mode: "to-roman" })).toBe(
+    "MMMCMXCIX",
+  );
+  expect(run("roman-numeral-converter", "MCMXCIV", { mode: "to-number" })).toBe(
+    "1994",
+  );
+  expect(() =>
+    run("roman-numeral-converter", "4000", { mode: "to-roman" }),
+  ).toThrow();
+  expect(() =>
+    run("roman-numeral-converter", "IIII", { mode: "to-number" }),
+  ).toThrow();
+});
+it("truncates title and description to common social-share limits", () => {
+  expect(
+    run("open-graph-preview-generator", "", {
+      title: "Short title",
+      description: "Short description",
+      url: "https://example.com/blog/post",
+    }),
+  ).toEqual({
+    "Title (as shown, ~60 chars)": "Short title",
+    "Description (as shown, ~155 chars)": "Short description",
+    "Display link": "example.com",
+  });
+  const longTitle = "T".repeat(80);
+  const truncated = run("open-graph-preview-generator", "", {
+    title: longTitle,
+    description: "",
+    url: "https://example.com",
+  }) as Record<string, string>;
+  expect(truncated["Title (as shown, ~60 chars)"]).toHaveLength(60);
+  expect(truncated["Title (as shown, ~60 chars)"]!.endsWith("…")).toBe(true);
+  expect(() =>
+    run("open-graph-preview-generator", "", {
+      title: "",
+      description: "",
+      url: "https://example.com",
+    }),
+  ).toThrow();
+});
+it("counts characters against per-platform social limits", () => {
+  expect(
+    run("social-media-character-counter", "Hello world", { platform: "x" }),
+  ).toEqual({ Characters: 11, Limit: 280, Remaining: 269 });
+  expect(
+    run("social-media-character-counter", "🚀🚀", { platform: "x" }),
+  ).toEqual({ Characters: 2, Limit: 280, Remaining: 278 });
+});
+it("scores password strength from character-pool entropy", () => {
+  expect(run("password-strength-checker", "Tr0ub4dor&3", {})).toEqual({
+    Strength: "Strong",
+    "Estimated entropy (bits)": 72.26841169164042,
+    Length: 11,
+  });
+  expect(
+    (run("password-strength-checker", "abc", {}) as Record<string, string>)
+      .Strength,
+  ).toBe("Weak");
+  expect(
+    (run("password-strength-checker", "password", {}) as Record<string, string>)
+      .Strength,
+  ).toBe("Good");
+  expect(() => run("password-strength-checker", "", {})).toThrow();
+});
+it("draws unique lottery numbers without replacement using injected randomness", () => {
+  const draw = vi
+    .fn()
+    .mockReturnValueOnce(0)
+    .mockReturnValueOnce(0)
+    .mockReturnValueOnce(0);
+  expect(
+    run(
+      "lottery-number-generator",
+      "",
+      { mainCount: "3", mainMax: "10", bonusCount: "0", bonusMax: "1" },
+      draw,
+    ),
+  ).toEqual({ "Main numbers": "1, 2, 3" });
+  expect(
+    run(
+      "lottery-number-generator",
+      "",
+      { mainCount: "2", mainMax: "5", bonusCount: "1", bonusMax: "3" },
+      () => 0,
+    ),
+  ).toEqual({ "Main numbers": "1, 2", "Bonus numbers": "1" });
+});
 it("creates escaped same-origin sitemap XML and removes duplicate URLs", () => {
   const result = run(
     "sitemap-generator",

@@ -145,6 +145,62 @@ export const PHOTO_ID_PRESETS: PhotoIdPreset[] = [
     maxKB: 50,
   },
 ];
+export type SocialImagePreset = {
+  id: string;
+  label: string;
+  width: number;
+  height: number;
+};
+export const SOCIAL_IMAGE_PRESETS: SocialImagePreset[] = [
+  {
+    id: "ig-square",
+    label: "Instagram post — Square (1080 × 1080)",
+    width: 1080,
+    height: 1080,
+  },
+  {
+    id: "ig-portrait",
+    label: "Instagram post — Portrait (1080 × 1350)",
+    width: 1080,
+    height: 1350,
+  },
+  {
+    id: "ig-story",
+    label: "Instagram / Facebook Story (1080 × 1920)",
+    width: 1080,
+    height: 1920,
+  },
+  {
+    id: "fb-post",
+    label: "Facebook post (1200 × 630)",
+    width: 1200,
+    height: 630,
+  },
+  {
+    id: "fb-cover",
+    label: "Facebook cover (820 × 312)",
+    width: 820,
+    height: 312,
+  },
+  {
+    id: "x-post",
+    label: "X / Twitter post (1600 × 900)",
+    width: 1600,
+    height: 900,
+  },
+  {
+    id: "linkedin-cover",
+    label: "LinkedIn cover (1584 × 396)",
+    width: 1584,
+    height: 396,
+  },
+  {
+    id: "youtube-thumb",
+    label: "YouTube thumbnail (1280 × 720)",
+    width: 1280,
+    height: 720,
+  },
+];
 export function mmToPx(mm: number, dpi = 300) {
   if (!Number.isFinite(mm) || mm < 10 || mm > 200)
     throw new Error("Use a size between 10 mm and 200 mm.");
@@ -269,7 +325,8 @@ export type FileTask = {
     | "split-pdf"
     | "organize-pdf-pages"
     | "watermark-pdf"
-    | "passport-photo-maker";
+    | "passport-photo-maker"
+    | "social-media-image-resizer";
   files: File[];
   quality: number;
   maxWidth: number;

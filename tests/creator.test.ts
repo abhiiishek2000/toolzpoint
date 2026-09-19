@@ -14,6 +14,7 @@ import {
   coverCropRect,
   hexToRgb,
   replaceBackground,
+  SOCIAL_IMAGE_PRESETS,
 } from "../src/features/files/domain";
 import { processFiles } from "../src/features/files/process";
 import { validateQr, createQr } from "../src/features/qr-code-generator/domain";
@@ -206,6 +207,17 @@ it("converts millimeters to pixels at 300 DPI and bounds the range", () => {
   expect(mmToPx(25)).toBe(295);
   expect(() => mmToPx(5)).toThrow();
   expect(() => mmToPx(500)).toThrow();
+});
+it("defines unique, positive-dimension social image presets", () => {
+  expect(SOCIAL_IMAGE_PRESETS.length).toBeGreaterThanOrEqual(6);
+  expect(new Set(SOCIAL_IMAGE_PRESETS.map((p) => p.id)).size).toBe(
+    SOCIAL_IMAGE_PRESETS.length,
+  );
+  for (const preset of SOCIAL_IMAGE_PRESETS) {
+    expect(preset.width).toBeGreaterThan(0);
+    expect(preset.height).toBeGreaterThan(0);
+    expect(preset.label).toContain(String(preset.width));
+  }
 });
 it("crops centered to a target aspect ratio and applies zoom and vertical bias", () => {
   expect(coverCropRect(800, 1200, 413, 531)).toEqual({

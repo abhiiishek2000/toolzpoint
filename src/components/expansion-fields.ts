@@ -1,3 +1,4 @@
+import { timezoneOptions } from "../features/tools/expansion/domain";
 export type WorkspaceField = {
   key: string;
   label: string;
@@ -150,6 +151,105 @@ export const expansionFields: Record<string, WorkspaceField[]> = {
     select("currency", "Currency", "INR", ["INR", "USD", "EUR", "GBP"]),
     { key: "method", label: "Payment method", value: "Bank transfer" },
   ],
+  "mortgage-calculator": [
+    number("price", "Home price", "300000"),
+    number("down", "Down payment", "60000"),
+    number("rate", "Annual interest rate (%)", "6"),
+    number("years", "Loan term (years)", "30"),
+    number("tax", "Annual property tax (optional)", "0"),
+    number("insurance", "Annual home insurance (optional)", "0"),
+  ],
+  "fd-calculator": [
+    number("principal", "Deposit amount", "100000"),
+    number("rate", "Annual interest rate (%)", "7"),
+    number("years", "Tenure (years)", "5"),
+  ],
+  "rd-calculator": [
+    number("monthly", "Monthly deposit", "5000"),
+    number("rate", "Annual interest rate (%)", "7"),
+    number("months", "Tenure (months)", "12"),
+  ],
+  "inflation-calculator": [
+    number("amount", "Amount today", "100000"),
+    number("rate", "Annual inflation rate (%)", "6"),
+    number("years", "Years", "10"),
+  ],
+  "net-worth-calculator": [
+    {
+      key: "assets",
+      label: "Assets (one per line: label, amount)",
+      type: "textarea",
+      value: "Savings account, 500000\nCar, 300000",
+    },
+    {
+      key: "liabilities",
+      label: "Liabilities (one per line: label, amount)",
+      type: "textarea",
+      value: "Home loan, 1200000",
+    },
+  ],
+  "quadratic-equation-solver": [
+    number("a", "a (coefficient of x²)", "1"),
+    number("b", "b (coefficient of x)", "-3"),
+    number("c", "c (constant)", "2"),
+  ],
+  "timezone-converter": [
+    { key: "date", label: "Date", type: "date", value: "2026-09-19" },
+    { key: "time", label: "Time (24-hour)", type: "time", value: "12:00" },
+    select("from", "From time zone", timezoneOptions[0]!, timezoneOptions),
+    select("to", "To time zone", timezoneOptions[1]!, timezoneOptions),
+  ],
+  "roman-numeral-converter": [
+    {
+      key: "mode",
+      label: "Direction",
+      value: "to-roman",
+      options: [
+        ["to-roman", "Number → Roman numeral"],
+        ["to-number", "Roman numeral → Number"],
+      ],
+    },
+  ],
+  "open-graph-preview-generator": [
+    {
+      key: "title",
+      label: "Page title",
+      value: "A Little Less Busy, A Lot More Done",
+    },
+    {
+      key: "description",
+      label: "Meta description",
+      type: "textarea",
+      value:
+        "ToolzPoint is a set of free, browser-based utilities that run entirely on your device.",
+    },
+    {
+      key: "url",
+      label: "Page URL",
+      type: "url",
+      value: "https://example.com/",
+    },
+  ],
+  "social-media-character-counter": [
+    {
+      key: "platform",
+      label: "Platform",
+      value: "x",
+      options: [
+        ["x", "X / Twitter (280)"],
+        ["threads", "Threads (500)"],
+        ["instagram", "Instagram caption (2,200)"],
+        ["linkedin", "LinkedIn post (3,000)"],
+        ["facebook", "Facebook post (63,206)"],
+      ],
+    },
+  ],
+  "lottery-number-generator": [
+    number("mainCount", "Main numbers to draw (1–20)", "6"),
+    number("mainMax", "Main number pool (1–200)", "49"),
+    number("bonusCount", "Bonus numbers (0–10)", "1"),
+    number("bonusMax", "Bonus number pool (1–200)", "10"),
+  ],
 };
 export const expansionSamples: Record<string, string> = {
   "number-base-converter": "255",
@@ -162,4 +262,9 @@ export const expansionSamples: Record<string, string> = {
   "sitemap-generator": "https://example.com/\nhttps://example.com/about",
   "hashtag-generator": "design, tools, #design",
   "random-name-picker": "Alex\nSam\nTaylor",
+  "gpa-calculator": "A,3\nB+,4\nA-,3",
+  "work-hours-calculator": "09:00,17:30,30\n09:00,18:00,60",
+  "roman-numeral-converter": "1994",
+  "social-media-character-counter": "Check out our new feature! 🚀",
+  "password-strength-checker": "Tr0ub4dor&3",
 };

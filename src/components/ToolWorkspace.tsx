@@ -952,7 +952,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                     .map((f) => (
                       <label
                         key={f.key}
-                        className={`field ${f.key === "url" || f.key === "activity" ? "full-width" : ""}`}
+                        className={`field ${f.key === "url" || f.key === "activity" || f.type === "textarea" ? "full-width" : ""}`}
                         htmlFor={f.key}
                       >
                         {f.label}
@@ -972,6 +972,15 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                               </option>
                             ))}
                           </select>
+                        ) : f.type === "textarea" ? (
+                          <textarea
+                            id={f.key}
+                            value={values[f.key] ?? ""}
+                            rows={3}
+                            aria-describedby={error ? "tool-error" : undefined}
+                            onChange={(e) => update(f.key, e.target.value)}
+                            maxLength={2000}
+                          />
                         ) : (
                           <input
                             id={f.key}

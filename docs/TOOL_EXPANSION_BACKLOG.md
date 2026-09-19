@@ -30,6 +30,14 @@ The catalog now contains 84 tools. Completed the remaining Tier 1 Health & nutri
 
 Also polished existing Random & fun tools: Coin Flip and Dice Roller now show a real flip/roll animation (a CSS 3D coin flip, and rolling dice with pip faces for d6) before revealing the result, instead of a static number. Invoice Maker gained an optional company logo upload (PNG/JPEG, embedded via `pdf-lib`), and PDF-only tools no longer show the image-transparency checkerboard behind their preview panel.
 
+## Implementation progress — 2026-09-19 (third batch — 100 tools)
+
+Added the final 16 tools to reach 100: five Finance calculators (Mortgage, Fixed Deposit, Recurring Deposit, Inflation, Net Worth), three Calculators (GPA, Quadratic Equation Solver, Work Hours), two Converters (Timezone, Roman Numeral), two SEO & social tools (Open Graph Preview Generator, Social Post Character Counter), one Security tool (Password Strength Checker), one Random & fun tool (Lottery Number Generator), one Images tool (Social Media Image Resizer, an exact-crop sibling to the Passport & ID Photo Maker built by extending its existing `coverCropRect` code path), and Resume Maker in Documents & design. All sixteen were reviewed and shipped as `reviewed: true`.
+
+Resume Maker is the largest addition: three single-column PDF templates (Classic, Modern, Minimal) driven by one shared rendering pipeline and a per-template style config (accent color, header treatment, divider weight), repeatable Experience/Education/Project entries with bullet points, and optional Projects/Certifications/Languages sections toggled from a sidebar — mirroring the Invoice Maker's repeatable-line-item pattern and the Biodata Maker's PDF layout conventions.
+
+The Timezone Converter's first implementation had a real bug worth recording: computing the source-zone offset via `new Date(someLocaleString)` silently depends on the _host machine's own_ local time zone, so it only produced correct results when the runtime happened to be UTC. Rewritten to derive the offset entirely from `Intl.DateTimeFormat.formatToParts` and `Date.UTC`, which is deterministic regardless of where the code executes — verified with test cases that cross a DST boundary (America/New_York and America/Los_Angeles at different times of year) and one fixed-offset zone (Asia/Kolkata) with hand-computed expected times.
+
 ## Research basis
 
 Web search across current (Sept 2026) "most popular free online tools"

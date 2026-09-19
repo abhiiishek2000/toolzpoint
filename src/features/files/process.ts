@@ -210,9 +210,12 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       pages: task.files.length,
     };
   }
-  if (task.kind === "passport-photo-maker") {
+  if (
+    task.kind === "passport-photo-maker" ||
+    task.kind === "social-media-image-resizer"
+  ) {
     const file = task.files[0];
-    if (!file) throw new Error("Choose a photo.");
+    if (!file) throw new Error("Choose an image.");
     const image = await bitmap(file);
     try {
       const { sx, sy, sWidth, sHeight } = coverCropRect(

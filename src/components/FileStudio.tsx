@@ -8,6 +8,7 @@ import {
   prettyBytes,
   savings,
   PHOTO_ID_PRESETS,
+  SOCIAL_IMAGE_PRESETS,
   mmToPx,
   type FileTask,
   type FileResult,
@@ -30,6 +31,9 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const [watermarkOpacity, setWatermarkOpacity] = useState(20);
   const [watermarkFontSize, setWatermarkFontSize] = useState(60);
   const [presetId, setPresetId] = useState(PHOTO_ID_PRESETS[0]!.id);
+  const [socialPresetId, setSocialPresetId] = useState(
+    SOCIAL_IMAGE_PRESETS[0]!.id,
+  );
   const [customWidthMm, setCustomWidthMm] = useState(35);
   const [customHeightMm, setCustomHeightMm] = useState(45);
   const [zoom, setZoom] = useState(1);
@@ -61,8 +65,14 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
     slug === "image-resizer" ||
     slug === "image-format-converter" ||
     slug === "image-rotator-flipper";
-  const isImageResult = imageOutput || slug === "passport-photo-maker";
+  const isImageResult =
+    imageOutput ||
+    slug === "passport-photo-maker" ||
+    slug === "social-media-image-resizer";
   const activePreset = PHOTO_ID_PRESETS.find((p) => p.id === presetId);
+  const activeSocialPreset = SOCIAL_IMAGE_PRESETS.find(
+    (p) => p.id === socialPresetId,
+  );
   useEffect(
     () => () => {
       worker.current?.terminate();
@@ -129,6 +139,10 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
           presetId === "custom" ? customHeightMm : activePreset!.heightMm;
         photoWidth = mmToPx(widthMm);
         photoHeight = mmToPx(heightMm);
+      }
+      if (slug === "social-media-image-resizer") {
+        photoWidth = activeSocialPreset!.width;
+        photoHeight = activeSocialPreset!.height;
       }
       if (!window.Worker)
         throw new Error("This tool needs a browser with Web Worker support.");
@@ -742,6 +756,74 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                 )}
               </>
             )}
+            {slug === "social-media-image-resizer" && (
+              <>
+                <div className="studio-step">
+                  <span>02</span>
+                  <h2>Choose a platform size</h2>
+                </div>
+                <label className="field">
+                  Platform & size
+                  <select
+                    value={socialPresetId}
+                    onChange={(e) => {
+                      setSocialPresetId(e.target.value);
+                      changed();
+                    }}
+                  >
+                    {SOCIAL_IMAGE_PRESETS.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="quality-row">
+                  <label htmlFor="social-zoom">Zoom</label>
+                  <strong>{zoom.toFixed(2)}×</strong>
+                </div>
+                <input
+                  id="social-zoom"
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.05"
+                  value={zoom}
+                  onChange={(e) => {
+                    setZoom(Number(e.target.value));
+                    changed();
+                  }}
+                />
+                <div className="quality-row">
+                  <label htmlFor="social-vbias">Vertical position</label>
+                  <strong>
+                    {verticalBias < 0
+                      ? "Higher"
+                      : verticalBias > 0
+                        ? "Lower"
+                        : "Centered"}
+                  </strong>
+                </div>
+                <input
+                  id="social-vbias"
+                  type="range"
+                  min="-1"
+                  max="1"
+                  step="0.05"
+                  value={verticalBias}
+                  onChange={(e) => {
+                    setVerticalBias(Number(e.target.value));
+                    changed();
+                  }}
+                />
+                <p className="setting-hint">
+                  Crops to exactly {activeSocialPreset?.width} ×{" "}
+                  {activeSocialPreset?.height} pixels. Zoom and nudge the crop
+                  until it looks right, then download a JPEG. Transparent areas
+                  become white.
+                </p>
+              </>
+            )}
             {error && (
               <p className="error-message" role="alert">
                 {error}
@@ -777,7 +859,9 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
                                       ? "Resize image"
                                       : slug === "passport-photo-maker"
                                         ? "Create ID photo"
-                                        : "Compress image"}
+                                        : slug === "social-media-image-resizer"
+                                          ? "Crop & resize"
+                                          : "Compress image"}
                 <Icon name="ArrowRight" size={17} />
               </button>
               <button

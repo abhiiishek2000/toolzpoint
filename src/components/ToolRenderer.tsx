@@ -5,6 +5,7 @@ const FileStudio = dynamic(() => import("./FileStudio"));
 const QrCreator = dynamic(() => import("./QrCreator"));
 const InvoiceMaker = dynamic(() => import("./InvoiceMaker"));
 const BiodataMaker = dynamic(() => import("./BiodataMaker"));
+const ResumeMaker = dynamic(() => import("./ResumeMaker"));
 const PdfInfoViewer = dynamic(() => import("./PdfInfoViewer"));
 export default function ToolRenderer({ slug }: { slug: string }) {
   return (
@@ -15,6 +16,8 @@ export default function ToolRenderer({ slug }: { slug: string }) {
         <InvoiceMaker />
       ) : slug === "biodata-maker" ? (
         <BiodataMaker />
+      ) : slug === "resume-maker" ? (
+        <ResumeMaker />
       ) : slug === "image-compressor" ||
         slug === "image-resizer" ||
         slug === "image-format-converter" ||
@@ -26,7 +29,8 @@ export default function ToolRenderer({ slug }: { slug: string }) {
         slug === "split-pdf" ||
         slug === "organize-pdf-pages" ||
         slug === "watermark-pdf" ||
-        slug === "passport-photo-maker" ? (
+        slug === "passport-photo-maker" ||
+        slug === "social-media-image-resizer" ? (
         <FileStudio slug={slug} />
       ) : slug === "pdf-page-counter" ? (
         <PdfInfoViewer />

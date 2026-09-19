@@ -1,5 +1,7 @@
 import { textSchema, parseDate } from "../shared";
 import { nutrition } from "../nutrition-calculator/domain";
+import { emiLoan } from "../emi-loan-calculator/domain";
+import { compoundInterest } from "../compound-interest-calculator/domain";
 
 export const unitFactors: Record<string, Record<string, number>> = {
   "weight-converter": {
@@ -61,6 +63,20 @@ export const expansionSlugs = [
   "random-number-generator",
   "random-name-picker",
   "receipt-maker",
+  "mortgage-calculator",
+  "fd-calculator",
+  "rd-calculator",
+  "inflation-calculator",
+  "net-worth-calculator",
+  "gpa-calculator",
+  "quadratic-equation-solver",
+  "work-hours-calculator",
+  "timezone-converter",
+  "roman-numeral-converter",
+  "open-graph-preview-generator",
+  "social-media-character-counter",
+  "password-strength-checker",
+  "lottery-number-generator",
 ];
 export function secureIndex(size: number): number {
   if (!Number.isSafeInteger(size) || size < 1 || size > 2 ** 32)
@@ -95,6 +111,85 @@ function httpUrl(raw: string) {
   )
     throw new Error("Use an HTTP(S) URL without embedded credentials.");
   return url;
+}
+const ROMAN_TABLE: [number, string][] = [
+  [1000, "M"],
+  [900, "CM"],
+  [500, "D"],
+  [400, "CD"],
+  [100, "C"],
+  [90, "XC"],
+  [50, "L"],
+  [40, "XL"],
+  [10, "X"],
+  [9, "IX"],
+  [5, "V"],
+  [4, "IV"],
+  [1, "I"],
+];
+function toRomanNumeral(n: number) {
+  let remaining = n;
+  let result = "";
+  for (const [value, symbol] of ROMAN_TABLE) {
+    while (remaining >= value) {
+      result += symbol;
+      remaining -= value;
+    }
+  }
+  return result;
+}
+export const timezoneOptions = [
+  "UTC",
+  "America/New_York",
+  "America/Chicago",
+  "America/Denver",
+  "America/Los_Angeles",
+  "America/Sao_Paulo",
+  "Europe/London",
+  "Europe/Paris",
+  "Europe/Berlin",
+  "Europe/Moscow",
+  "Africa/Cairo",
+  "Africa/Johannesburg",
+  "Asia/Dubai",
+  "Asia/Kolkata",
+  "Asia/Dhaka",
+  "Asia/Bangkok",
+  "Asia/Shanghai",
+  "Asia/Tokyo",
+  "Asia/Seoul",
+  "Asia/Singapore",
+  "Australia/Sydney",
+  "Australia/Perth",
+  "Pacific/Auckland",
+];
+// Finds the UTC instant that displays as `dateStr`/`timeStr` in `zone`. Uses
+// Intl.DateTimeFormat.formatToParts and Date.UTC exclusively (never
+// `new Date(someLocaleString)`, whose parsing depends on the host's own
+// local time zone) so the result is correct regardless of where this code
+// runs — the browser, a server, or a test runner in any time zone.
+function zonedToUtc(dateStr: string, timeStr: string, zone: string) {
+  const naive = new Date(`${dateStr}T${timeStr}:00Z`);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: zone,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).formatToParts(naive);
+  const get = (t: string) => Number(parts.find((p) => p.type === t)?.value);
+  const asUtc = Date.UTC(
+    get("year"),
+    get("month") - 1,
+    get("day"),
+    get("hour"),
+    get("minute"),
+    get("second"),
+  );
+  return new Date(naive.getTime() - (asUtc - naive.getTime()));
 }
 export function runExpansion(
   slug: string,
@@ -471,6 +566,326 @@ export function runExpansion(
       parseDate(date);
       const currency = option("currency", ["INR", "USD", "EUR", "GBP"]);
       return `PAYMENT RECEIPT\nReceipt: ${field("reference")}\nDate: ${date}\nReceived from: ${field("payer")}\nReceived by: ${field("payee")}\nFor: ${field("description")}\nAmount: ${currency} ${num("amount", 0.01).toFixed(2)}\nPayment method: ${field("method")}\n\nDraft only — verify payment and details before issuing.`;
+    }
+    case "mortgage-calculator": {
+      const price = num("price", 1);
+      const down = num("down", 0);
+      if (down >= price)
+        throw new Error("Down payment must be less than the home price.");
+      const loanAmount = price - down;
+      const rate = num("rate", 0, 50);
+      const years = num("years", 1, 40);
+      const { "Monthly EMI": principalAndInterest } = emiLoan(
+        loanAmount,
+        rate,
+        years,
+      );
+      const taxAndInsurance =
+        num("tax", 0, 1e7) / 12 + num("insurance", 0, 1e7) / 12;
+      return {
+        "Loan amount": loanAmount,
+        "Monthly principal & interest": principalAndInterest,
+        "Monthly tax & insurance": taxAndInsurance,
+        "Total monthly payment": principalAndInterest + taxAndInsurance,
+      };
+    }
+    case "fd-calculator": {
+      const principal = num("principal", 1);
+      const rate = num("rate", 0, 50);
+      const years = num("years", 0.1, 60);
+      return compoundInterest(principal, rate, years, 4);
+    }
+    case "rd-calculator": {
+      const monthly = num("monthly", 1);
+      const rate = num("rate", 0, 50);
+      const months = num("months", 1, 600, true);
+      const quarterlyRate = rate / 100 / 4;
+      let balance = 0;
+      for (let m = 1; m <= months; m++) {
+        balance += monthly;
+        if (m % 3 === 0) balance *= 1 + quarterlyRate;
+      }
+      const invested = monthly * months;
+      return {
+        "Maturity amount": balance,
+        "Total invested": invested,
+        "Interest earned": balance - invested,
+      };
+    }
+    case "inflation-calculator": {
+      const amount = num("amount", 0.01);
+      const rate = num("rate", 0, 100);
+      const years = num("years", 0, 100);
+      const future = amount * Math.pow(1 + rate / 100, years);
+      return {
+        "Future equivalent value": future,
+        "Purchasing power lost": future - amount,
+      };
+    }
+    case "net-worth-calculator": {
+      const parseList = (key: string) => {
+        const lines = str(key)
+          .split("\n")
+          .map((l) => l.trim())
+          .filter(Boolean);
+        if (lines.length > 200)
+          throw new Error(`Use at most 200 ${key} lines.`);
+        let total = 0;
+        for (const line of lines) {
+          const idx = line.lastIndexOf(",");
+          if (idx === -1)
+            throw new Error(`Use "label, amount" for each ${key} line.`);
+          const amount = Number(line.slice(idx + 1).trim());
+          if (!Number.isFinite(amount) || amount < 0 || amount > 1e12)
+            throw new Error(`Invalid amount in "${line}".`);
+          total += amount;
+        }
+        return total;
+      };
+      const assets = parseList("assets");
+      const liabilities = parseList("liabilities");
+      return {
+        "Total assets": assets,
+        "Total liabilities": liabilities,
+        "Net worth": assets - liabilities,
+      };
+    }
+    case "gpa-calculator": {
+      const scale: Record<string, number> = {
+        "A+": 4.0,
+        A: 4.0,
+        "A-": 3.7,
+        "B+": 3.3,
+        B: 3.0,
+        "B-": 2.7,
+        "C+": 2.3,
+        C: 2.0,
+        "C-": 1.7,
+        "D+": 1.3,
+        D: 1.0,
+        "D-": 0.7,
+        F: 0.0,
+      };
+      const lines = input
+        .trim()
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter(Boolean);
+      if (!lines.length || lines.length > 60)
+        throw new Error('Enter 1–60 lines as "Grade,Credits".');
+      let points = 0,
+        credits = 0;
+      for (const line of lines) {
+        const parts = line.split(",");
+        if (parts.length !== 2)
+          throw new Error(`Use "Grade,Credits" for "${line}".`);
+        const grade = parts[0]!.trim().toUpperCase();
+        const credit = Number(parts[1]!.trim());
+        const gradePoints = scale[grade];
+        if (gradePoints === undefined)
+          throw new Error(`Unknown grade "${parts[0]!.trim()}".`);
+        if (!Number.isFinite(credit) || credit <= 0 || credit > 20)
+          throw new Error(`Invalid credits in "${line}".`);
+        points += gradePoints * credit;
+        credits += credit;
+      }
+      return { GPA: points / credits, "Total credits": credits };
+    }
+    case "quadratic-equation-solver": {
+      const a = num("a", -1e9, 1e9);
+      if (a === 0)
+        throw new Error(
+          "Coefficient a must not be zero for a quadratic equation.",
+        );
+      const b = num("b", -1e9, 1e9);
+      const c = num("c", -1e9, 1e9);
+      const discriminant = b * b - 4 * a * c;
+      const round = (n: number) => Math.round(n * 10000) / 10000;
+      if (discriminant > 0) {
+        const sq = Math.sqrt(discriminant);
+        return {
+          "Root 1": (-b + sq) / (2 * a),
+          "Root 2": (-b - sq) / (2 * a),
+          Discriminant: discriminant,
+        };
+      }
+      if (discriminant === 0) return { Root: -b / (2 * a), Discriminant: 0 };
+      const real = round(-b / (2 * a));
+      const imag = round(Math.sqrt(-discriminant) / (2 * a));
+      return {
+        "Root 1": `${real} + ${imag}i`,
+        "Root 2": `${real} - ${imag}i`,
+        Discriminant: discriminant,
+      };
+    }
+    case "work-hours-calculator": {
+      const lines = input
+        .trim()
+        .split(/\r?\n/)
+        .map((l) => l.trim())
+        .filter(Boolean);
+      if (!lines.length || lines.length > 31)
+        throw new Error(
+          'Enter 1–31 lines as "start,end" or "start,end,break minutes".',
+        );
+      const toMinutes = (t: string) => {
+        const m = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(t);
+        if (!m) throw new Error(`"${t}" is not a valid 24-hour time.`);
+        return Number(m[1]) * 60 + Number(m[2]);
+      };
+      let totalMinutes = 0;
+      for (const line of lines) {
+        const parts = line.split(",").map((p) => p.trim());
+        if (parts.length < 2 || parts.length > 3)
+          throw new Error(
+            `Use "start,end" or "start,end,break minutes" for "${line}".`,
+          );
+        const start = toMinutes(parts[0]!);
+        let end = toMinutes(parts[1]!);
+        if (end <= start) end += 24 * 60;
+        const brk = parts[2] ? Number(parts[2]) : 0;
+        if (!Number.isFinite(brk) || brk < 0 || brk > 720)
+          throw new Error(`Invalid break minutes in "${line}".`);
+        const worked = end - start - brk;
+        if (worked < 0)
+          throw new Error(`Break time exceeds shift length in "${line}".`);
+        totalMinutes += worked;
+      }
+      return {
+        "Total hours": totalMinutes / 60,
+        "Total shifts": lines.length,
+      };
+    }
+    case "timezone-converter": {
+      const date = str("date").trim();
+      parseDate(date);
+      const time = str("time").trim();
+      if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))
+        throw new Error("Enter a valid 24-hour time.");
+      const from = option("from", timezoneOptions);
+      const to = option("to", timezoneOptions);
+      const utc = zonedToUtc(date, time, from);
+      if (!Number.isFinite(utc.getTime()))
+        throw new Error("Enter a valid date and time.");
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: to,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).formatToParts(utc);
+      const get = (t: string) => parts.find((p) => p.type === t)?.value ?? "";
+      return {
+        [`Time in ${to}`]: `${get("year")}-${get("month")}-${get("day")} ${get("hour")}:${get("minute")}`,
+      };
+    }
+    case "roman-numeral-converter": {
+      const mode = option("mode", ["to-roman", "to-number"]);
+      if (mode === "to-roman") {
+        const n = Number(input.trim());
+        if (!Number.isInteger(n) || n < 1 || n > 3999)
+          throw new Error("Enter a whole number between 1 and 3999.");
+        return toRomanNumeral(n);
+      }
+      const roman = input.trim().toUpperCase();
+      if (!/^[MDCLXVI]+$/.test(roman))
+        throw new Error(
+          "Enter a valid Roman numeral using only M, D, C, L, X, V, I.",
+        );
+      const values: Record<string, number> = {
+        M: 1000,
+        D: 500,
+        C: 100,
+        L: 50,
+        X: 10,
+        V: 5,
+        I: 1,
+      };
+      let total = 0;
+      for (let i = 0; i < roman.length; i++) {
+        const current = values[roman[i]!]!;
+        const next = values[roman[i + 1] ?? ""] ?? 0;
+        total += current < next ? -current : current;
+      }
+      if (total > 3999 || toRomanNumeral(total) !== roman)
+        throw new Error("This isn't a valid Roman numeral.");
+      return String(total);
+    }
+    case "open-graph-preview-generator": {
+      const title = str("title").trim();
+      if (!title || title.length > 200)
+        throw new Error("Enter a title of 1–200 characters.");
+      const description = str("description").trim();
+      if (description.length > 500)
+        throw new Error("Keep the description to at most 500 characters.");
+      const url = httpUrl(str("url").trim());
+      const truncate = (text: string, max: number) =>
+        text.length > max ? text.slice(0, max - 1).trimEnd() + "…" : text;
+      return {
+        "Title (as shown, ~60 chars)": truncate(title, 60),
+        "Description (as shown, ~155 chars)":
+          truncate(description, 155) || "No description",
+        "Display link": url.hostname,
+      };
+    }
+    case "social-media-character-counter": {
+      const limits: Record<string, number> = {
+        x: 280,
+        threads: 500,
+        instagram: 2200,
+        linkedin: 3000,
+        facebook: 63206,
+      };
+      const platform = option("platform", Object.keys(limits));
+      const limit = limits[platform]!;
+      const count = [...input].length;
+      return { Characters: count, Limit: limit, Remaining: limit - count };
+    }
+    case "password-strength-checker": {
+      if (!input) throw new Error("Enter a password to check.");
+      let pool = 0;
+      if (/[a-z]/.test(input)) pool += 26;
+      if (/[A-Z]/.test(input)) pool += 26;
+      if (/[0-9]/.test(input)) pool += 10;
+      if (/[^a-zA-Z0-9]/.test(input)) pool += 33;
+      const entropy = pool > 0 ? input.length * Math.log2(pool) : 0;
+      const label =
+        entropy < 28
+          ? "Weak"
+          : entropy < 36
+            ? "Fair"
+            : entropy < 60
+              ? "Good"
+              : "Strong";
+      return {
+        Strength: label,
+        "Estimated entropy (bits)": entropy,
+        Length: input.length,
+      };
+    }
+    case "lottery-number-generator": {
+      const mainCount = num("mainCount", 1, 20, true);
+      const mainMax = num("mainMax", mainCount, 200, true);
+      const bonusCount = num("bonusCount", 0, 10, true);
+      const bonusMax = bonusCount > 0 ? num("bonusMax", 1, 200, true) : 0;
+      const drawUnique = (count: number, max: number) => {
+        const pool = Array.from({ length: max }, (_, i) => i + 1);
+        const picked: number[] = [];
+        for (let i = 0; i < count; i++) {
+          const idx = randomIndex(pool.length);
+          picked.push(pool[idx]!);
+          pool.splice(idx, 1);
+        }
+        return picked.sort((a, b) => a - b);
+      };
+      const result: Record<string, string> = {
+        "Main numbers": drawUnique(mainCount, mainMax).join(", "),
+      };
+      if (bonusCount > 0)
+        result["Bonus numbers"] = drawUnique(bonusCount, bonusMax).join(", ");
+      return result;
     }
     default:
       throw new Error("This tool is unavailable.");

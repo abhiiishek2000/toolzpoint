@@ -3992,5 +3992,757 @@
       "merge-pdf",
       "split-pdf"
     ]
+  },
+  {
+    "slug": "mortgage-calculator",
+    "name": "Mortgage Calculator",
+    "category": "Finance",
+    "shortDescription": "Estimate a monthly mortgage payment, including tax and insurance.",
+    "icon": "Home",
+    "intro": "Estimate a monthly mortgage payment from a home price, down payment, interest rate, and loan term, with optional property tax and insurance added in. This uses the same amortizing-loan formula as the EMI/Loan Calculator, applied to the price minus your down payment, then adds one-twelfth of your annual property tax and insurance estimates to show a fuller monthly cost. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Loan amount = home price − down payment. The standard amortization formula (shared with the EMI/Loan Calculator) gives the monthly principal and interest; annual property tax and insurance are each divided by 12 and added to give the total monthly payment.",
+    "examples": [
+      {
+        "input": "$300,000 home; $60,000 down; 6% rate; 30 years",
+        "output": "$1,438.92/month principal & interest"
+      },
+      {
+        "input": "Same loan, plus $3,600/year tax and $1,200/year insurance",
+        "output": "$1,838.92/month total payment"
+      }
+    ],
+    "limitations": "Down payment must be less than the home price. Does not include PMI, HOA fees, or closing costs, and assumes a fixed interest rate for the full term. This is an estimate for planning, not a lender's official quote.",
+    "keywords": ["mortgage", "calculator", "home loan", "down payment"],
+    "relatedSlugs": [
+      "emi-loan-calculator",
+      "compound-interest-calculator",
+      "savings-goal-calculator",
+      "net-worth-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Loan amount = home price − down payment. The standard amortization formula (shared with the EMI/Loan Calculator) gives the monthly principal and interest; annual property tax and insurance are each divided by 12 and added to give the total monthly payment."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Down payment must be less than the home price. Does not include PMI, HOA fees, or closing costs, and assumes a fixed interest rate for the full term. This is an estimate for planning, not a lender's official quote."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "fd-calculator",
+    "name": "Fixed Deposit (FD) Calculator",
+    "category": "Finance",
+    "shortDescription": "Calculate the maturity value of a fixed deposit with quarterly compounding.",
+    "icon": "PiggyBank",
+    "intro": "Calculate the maturity value of a fixed deposit (FD) using quarterly compounding, the standard method most Indian banks use for FDs. Enter the deposit amount, annual interest rate, and tenure in years, and this tool reuses the same compound-interest formula as the Compound Interest Calculator, fixed to a quarterly compounding frequency, to project the total maturity amount and interest earned. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Reuses the compound interest formula A = P × (1 + r/4)^(4×years), where r is the annual rate as a decimal — the same quarterly-compounding calculation as the Compound Interest Calculator.",
+    "examples": [
+      {
+        "input": "₹100,000; 7% annual rate; 5 years",
+        "output": "₹141,477.82 maturity amount"
+      },
+      {
+        "input": "Same deposit",
+        "output": "₹41,477.82 interest earned"
+      }
+    ],
+    "limitations": "Assumes a fixed interest rate for the full tenure and quarterly compounding; some banks use different compounding frequencies or charge premature-withdrawal penalties not reflected here. For planning only, not a bank's official maturity certificate.",
+    "keywords": ["fd", "fixed deposit", "calculator", "maturity"],
+    "relatedSlugs": [
+      "compound-interest-calculator",
+      "rd-calculator",
+      "sip-calculator",
+      "savings-goal-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Reuses the compound interest formula A = P × (1 + r/4)^(4×years), where r is the annual rate as a decimal — the same quarterly-compounding calculation as the Compound Interest Calculator."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Assumes a fixed interest rate for the full tenure and quarterly compounding; some banks use different compounding frequencies or charge premature-withdrawal penalties not reflected here. For planning only, not a bank's official maturity certificate."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "rd-calculator",
+    "name": "Recurring Deposit (RD) Calculator",
+    "category": "Finance",
+    "shortDescription": "Project the maturity value of a monthly recurring deposit.",
+    "icon": "HandCoins",
+    "intro": "Project the maturity value of a recurring deposit (RD), where you deposit a fixed amount every month and interest compounds quarterly — the common structure Indian banks use. Enter your monthly deposit, annual interest rate, and tenure in months; the tool simulates each month's deposit and applies compounding at the end of every completed quarter, then reports the maturity amount, total invested, and interest earned. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Simulates month by month: each month adds your deposit to the running balance, and every third month the balance is multiplied by (1 + annual rate/4/100) to apply one quarter's compounding.",
+    "examples": [
+      {
+        "input": "₹1,000/month; 8% annual rate; 3 months",
+        "output": "₹3,060 maturity amount"
+      },
+      {
+        "input": "₹1,000/month; 8% annual rate; 6 months",
+        "output": "₹6,181.20 maturity amount"
+      }
+    ],
+    "limitations": "Interest is only credited at the end of each completed quarter; a tenure that isn't a multiple of 3 months leaves the final partial quarter's deposits uncompounded, which slightly understates real-world maturity value. For planning only, not a bank's official maturity certificate.",
+    "keywords": ["rd", "recurring deposit", "calculator", "maturity"],
+    "relatedSlugs": [
+      "fd-calculator",
+      "sip-calculator",
+      "compound-interest-calculator",
+      "savings-goal-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Simulates month by month: each month adds your deposit to the running balance, and every third month the balance is multiplied by (1 + annual rate/4/100) to apply one quarter's compounding."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Interest is only credited at the end of each completed quarter; a tenure that isn't a multiple of 3 months leaves the final partial quarter's deposits uncompounded, which slightly understates real-world maturity value. For planning only, not a bank's official maturity certificate."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "inflation-calculator",
+    "name": "Inflation Calculator",
+    "category": "Finance",
+    "shortDescription": "See what today's money will be worth after years of inflation.",
+    "icon": "TrendingUp",
+    "intro": "See what an amount of money today is equivalent to after a number of years of inflation, using a constant assumed annual inflation rate. Enter today's amount, an annual inflation rate, and a number of years, and this tool compounds that rate forward to show the future amount you would need to have the same purchasing power, along with how much purchasing power is lost in nominal terms. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Future equivalent value = amount × (1 + annual rate / 100) ^ years, the standard compound-growth formula applied to a constant inflation rate.",
+    "examples": [
+      {
+        "input": "$1,000 today; 6% annual inflation; 10 years",
+        "output": "$1,790.85 future equivalent value"
+      },
+      {
+        "input": "Same inputs",
+        "output": "$790.85 purchasing power lost"
+      }
+    ],
+    "limitations": "Assumes one constant inflation rate for the entire period; real-world inflation varies year to year and by what you're buying. This is an illustrative estimate, not a forecast.",
+    "keywords": ["inflation", "calculator", "purchasing power"],
+    "relatedSlugs": [
+      "compound-interest-calculator",
+      "net-worth-calculator",
+      "savings-goal-calculator",
+      "sip-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Future equivalent value = amount × (1 + annual rate / 100) ^ years, the standard compound-growth formula applied to a constant inflation rate."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Assumes one constant inflation rate for the entire period; real-world inflation varies year to year and by what you're buying. This is an illustrative estimate, not a forecast."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "net-worth-calculator",
+    "name": "Net Worth Calculator",
+    "category": "Finance",
+    "shortDescription": "Add up your assets and liabilities to find your net worth.",
+    "icon": "Wallet",
+    "intro": "Add up your assets and liabilities to find your net worth, entirely in your browser. List each asset on its own line as \"label, amount\" — savings, investments, property, vehicles — and do the same for liabilities such as loans and credit card balances; this tool totals each list and subtracts liabilities from assets to give your net worth. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Parses each line as \"label, amount\", sums the amounts in each list, and subtracts total liabilities from total assets.",
+    "examples": [
+      {
+        "input": "Assets \"Savings, 500000\" and \"Car, 300000\"; Liabilities \"Home loan, 1200000\" and \"Credit card, 15000\"",
+        "output": "Net worth: −415,000"
+      },
+      {
+        "input": "Assets \"Savings, 500000\"; no liabilities",
+        "output": "Net worth: 500,000"
+      }
+    ],
+    "limitations": "Each line must be \"label, amount\" with a non-negative amount; up to 200 lines per list. This is a simple sum, not investment or tax advice, and doesn't account for how asset values change over time.",
+    "keywords": ["net worth", "calculator", "assets", "liabilities"],
+    "relatedSlugs": [
+      "savings-goal-calculator",
+      "inflation-calculator",
+      "compound-interest-calculator",
+      "sip-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Parses each line as \"label, amount\", sums the amounts in each list, and subtracts total liabilities from total assets."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Each line must be \"label, amount\" with a non-negative amount; up to 200 lines per list. This is a simple sum, not investment or tax advice, and doesn't account for how asset values change over time."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "gpa-calculator",
+    "name": "GPA Calculator",
+    "category": "Calculators",
+    "shortDescription": "Calculate a weighted GPA on the standard 4.0 scale.",
+    "icon": "GraduationCap",
+    "intro": "Calculate a weighted grade point average (GPA) on the standard US 4.0 scale from a list of grades and credit hours. Enter one course per line as \"Grade,Credits\" — for example \"A,3\" — and this tool multiplies each grade's standard 4.0-scale points by its credit hours, sums the results, and divides by total credits to give your GPA. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Grades map to points on the standard 4.0 scale (A=4.0, A-=3.7, B+=3.3, down to F=0.0). GPA = sum(grade points × credits) ÷ sum(credits).",
+    "examples": [
+      {
+        "input": "\"A,3\", \"B+,4\", \"A-,3\"",
+        "output": "GPA 3.63"
+      },
+      {
+        "input": "\"B,3\", \"C+,3\"",
+        "output": "GPA 2.65"
+      }
+    ],
+    "limitations": "Uses the standard US 4.0 scale only, not a school-specific or weighted-honors scale. Up to 60 course lines, and credits must be between 0 and 20 per course.",
+    "keywords": ["gpa", "calculator", "grade point average"],
+    "relatedSlugs": [
+      "percentage-calculator",
+      "average-calculator",
+      "quadratic-equation-solver",
+      "work-hours-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Grades map to points on the standard 4.0 scale (A=4.0, A-=3.7, B+=3.3, down to F=0.0). GPA = sum(grade points × credits) ÷ sum(credits)."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Uses the standard US 4.0 scale only, not a school-specific or weighted-honors scale. Up to 60 course lines, and credits must be between 0 and 20 per course."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "quadratic-equation-solver",
+    "name": "Quadratic Equation Solver",
+    "category": "Calculators",
+    "shortDescription": "Solve ax² + bx + c = 0 for real or complex roots.",
+    "icon": "Sigma",
+    "intro": "Solve a quadratic equation in the form ax² + bx + c = 0 for its roots, whether they're two real numbers, one repeated real root, or a complex conjugate pair. Enter the three coefficients a, b, and c, and this tool computes the discriminant b² − 4ac and applies the quadratic formula, showing complex roots in a + bi form when the discriminant is negative. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Computes the discriminant b² − 4ac, then applies the quadratic formula x = (−b ± √discriminant) / (2a); a negative discriminant gives a complex conjugate pair instead of real roots.",
+    "examples": [
+      {
+        "input": "a=1, b=-3, c=2",
+        "output": "Roots 2 and 1"
+      },
+      {
+        "input": "a=1, b=2, c=5",
+        "output": "Roots −1 + 2i and −1 − 2i"
+      }
+    ],
+    "limitations": "Coefficient a must not be zero — an equation with a=0 is linear, not quadratic. Coefficients are limited to ±1,000,000,000, and complex-root values are rounded to 4 decimal places.",
+    "keywords": ["quadratic", "equation", "solver", "roots"],
+    "relatedSlugs": [
+      "percentage-calculator",
+      "gpa-calculator",
+      "ratio-calculator",
+      "average-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Computes the discriminant b² − 4ac, then applies the quadratic formula x = (−b ± √discriminant) / (2a); a negative discriminant gives a complex conjugate pair instead of real roots."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Coefficient a must not be zero — an equation with a=0 is linear, not quadratic. Coefficients are limited to ±1,000,000,000, and complex-root values are rounded to 4 decimal places."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "work-hours-calculator",
+    "name": "Work Hours Calculator",
+    "category": "Calculators",
+    "shortDescription": "Add up hours worked across shifts, minus breaks.",
+    "icon": "Clock3",
+    "intro": "Add up hours worked across one or more shifts, subtracting break time, right in your browser. Enter each shift on its own line as \"start,end\" or \"start,end,break minutes\" using 24-hour times — for example \"09:00,17:30,30\" — and this tool calculates each shift's worked time and totals them, automatically handling a shift that crosses midnight. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "For each line, worked minutes = end time − start time (adding 24 hours if end is not after start, to handle overnight shifts) − break minutes; all shifts' worked minutes are summed and converted to hours.",
+    "examples": [
+      {
+        "input": "\"09:00,17:30,30\" and \"09:00,18:00,60\"",
+        "output": "16 total hours across 2 shifts"
+      },
+      {
+        "input": "\"22:00,06:00,30\"",
+        "output": "7.5 total hours (overnight shift)"
+      }
+    ],
+    "limitations": "Up to 31 shift lines per run. Break minutes can't exceed 12 hours or the shift's own length, and times must be valid 24-hour clock values.",
+    "keywords": ["work hours", "calculator", "timesheet", "payroll"],
+    "relatedSlugs": [
+      "date-difference-calculator",
+      "tip-calculator",
+      "average-calculator",
+      "gpa-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "For each line, worked minutes = end time − start time (adding 24 hours if end is not after start, to handle overnight shifts) − break minutes; all shifts' worked minutes are summed and converted to hours."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Up to 31 shift lines per run. Break minutes can't exceed 12 hours or the shift's own length, and times must be valid 24-hour clock values."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "timezone-converter",
+    "name": "Timezone Converter",
+    "category": "Converters",
+    "shortDescription": "Convert a date and time between world time zones.",
+    "icon": "Globe",
+    "intro": "Convert a date and time from one world time zone to another, accounting for each zone's own daylight-saving rules on that specific date. Choose a date and time, pick the time zone it's in and the time zone you want to see it in, and this tool uses your browser's built-in time zone database to compute the equivalent local time — no external service or API required. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Uses the Intl.DateTimeFormat time zone database built into your browser to find the UTC instant matching your entered wall-clock time in the source zone, then formats that same instant in the destination zone.",
+    "examples": [
+      {
+        "input": "2026-01-15, 12:00, Asia/Kolkata → UTC",
+        "output": "2026-01-15 06:30"
+      },
+      {
+        "input": "2026-07-15, 09:00, America/Los_Angeles → UTC",
+        "output": "2026-07-15 16:00"
+      }
+    ],
+    "limitations": "Limited to a curated list of common time zones rather than the full IANA database. Results depend on your browser's built-in time zone data; a time entered exactly during a daylight-saving transition hour can be ambiguous.",
+    "keywords": ["timezone", "converter", "time zone", "utc"],
+    "relatedSlugs": [
+      "timestamp-converter",
+      "date-difference-calculator",
+      "age-calculator",
+      "work-hours-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Uses the Intl.DateTimeFormat time zone database built into your browser to find the UTC instant matching your entered wall-clock time in the source zone, then formats that same instant in the destination zone."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Limited to a curated list of common time zones rather than the full IANA database. Results depend on your browser's built-in time zone data; a time entered exactly during a daylight-saving transition hour can be ambiguous."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "roman-numeral-converter",
+    "name": "Roman Numeral Converter",
+    "category": "Converters",
+    "shortDescription": "Convert between whole numbers and Roman numerals.",
+    "icon": "Calculator",
+    "intro": "Convert between whole numbers and Roman numerals in either direction, right in your browser. Choose a direction, enter a whole number from 1 to 3,999 to get its Roman numeral, or enter a Roman numeral using the letters M, D, C, L, X, V, and I to get its numeric value; numeral input is checked against the canonical subtractive-notation form, so malformed numerals like \"IIII\" are rejected. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Builds the Roman numeral greedily from the largest matching value-symbol pair (M, CM, D, CD, C, XC, L, XL, X, IX, V, IV, I); the reverse direction sums symbol values, subtracting a symbol that precedes a larger one, and rejects any input that doesn't re-encode to the same numeral.",
+    "examples": [
+      {
+        "input": "1994",
+        "output": "MCMXCIV"
+      },
+      {
+        "input": "MCMXCIV",
+        "output": "1994"
+      }
+    ],
+    "limitations": "Supports the standard range of 1 to 3,999; Roman numerals have no symbol for zero or negative numbers. Only canonical subtractive-notation numerals are accepted as valid input.",
+    "keywords": ["roman numeral", "converter", "number"],
+    "relatedSlugs": [
+      "number-base-converter",
+      "timestamp-converter",
+      "gpa-calculator",
+      "quadratic-equation-solver"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Builds the Roman numeral greedily from the largest matching value-symbol pair (M, CM, D, CD, C, XC, L, XL, X, IX, V, IV, I); the reverse direction sums symbol values, subtracting a symbol that precedes a larger one, and rejects any input that doesn't re-encode to the same numeral."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Supports the standard range of 1 to 3,999; Roman numerals have no symbol for zero or negative numbers. Only canonical subtractive-notation numerals are accepted as valid input."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "open-graph-preview-generator",
+    "name": "Open Graph Preview Generator",
+    "category": "SEO & social",
+    "shortDescription": "See how your page title and description get truncated when shared.",
+    "icon": "Share2",
+    "intro": "See how your page's title and description are likely to display when shared as a link preview, using the common truncation limits social platforms and search engines apply. Enter your page title, meta description, and URL, and this tool truncates the title to roughly 60 characters and the description to roughly 155 characters and shows the domain that would display as the link. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Truncates the title to 60 characters and the description to 155 characters, appending an ellipsis when text is cut, and extracts the domain from the URL you enter — common display limits used across major link-preview implementations.",
+    "examples": [
+      {
+        "input": "Title \"Short title\"; description \"Short description\"",
+        "output": "Shown unchanged, since both are under the limit"
+      },
+      {
+        "input": "An 80-character title",
+        "output": "Truncated to 60 characters with a trailing …"
+      }
+    ],
+    "limitations": "60/155-character limits are commonly used approximations; actual display varies by platform, font, and screen size. Does not generate or validate actual Open Graph meta tags — pair this with the Meta Tag Generator for that.",
+    "keywords": ["open graph", "preview", "social share", "meta"],
+    "relatedSlugs": [
+      "meta-tag-generator",
+      "utm-builder",
+      "slug-generator",
+      "social-media-character-counter"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Truncates the title to 60 characters and the description to 155 characters, appending an ellipsis when text is cut, and extracts the domain from the URL you enter — common display limits used across major link-preview implementations."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "60/155-character limits are commonly used approximations; actual display varies by platform, font, and screen size. Does not generate or validate actual Open Graph meta tags — pair this with the Meta Tag Generator for that."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "social-media-character-counter",
+    "name": "Social Post Character Counter",
+    "category": "SEO & social",
+    "shortDescription": "Check post length against X, Threads, Instagram, and LinkedIn limits.",
+    "icon": "MessageSquare",
+    "intro": "Check how long your post is against the character limit of the platform you're posting to. Paste your draft, choose X/Twitter, Threads, Instagram, LinkedIn, or Facebook, and this tool counts Unicode characters — counting each emoji as one character, not by UTF-16 code units — and shows how many you have left or how far over the limit you are. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Counts Unicode code points (so most emoji count as one character each, not two or more) and subtracts from the selected platform's published character limit.",
+    "examples": [
+      {
+        "input": "\"Hello world\" on X",
+        "output": "11 characters, 269 remaining"
+      },
+      {
+        "input": "\"🚀🚀\" on X",
+        "output": "2 characters, 278 remaining"
+      }
+    ],
+    "limitations": "Platform limits are current published values and can change; some platforms count URLs, mentions, or certain emoji differently in practice. Facebook's limit is included for completeness even though its posts are rarely constrained by it.",
+    "keywords": ["character counter", "social media", "twitter", "instagram"],
+    "relatedSlugs": [
+      "word-counter",
+      "character-counter",
+      "open-graph-preview-generator",
+      "hashtag-generator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Counts Unicode code points (so most emoji count as one character each, not two or more) and subtracts from the selected platform's published character limit."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Platform limits are current published values and can change; some platforms count URLs, mentions, or certain emoji differently in practice. Facebook's limit is included for completeness even though its posts are rarely constrained by it."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "password-strength-checker",
+    "name": "Password Strength Checker",
+    "category": "Security & privacy",
+    "shortDescription": "Estimate password strength from character variety and length.",
+    "icon": "KeySquare",
+    "intro": "Estimate how strong a password is from its length and character variety, without ever sending it anywhere. Type or paste a password, and this tool detects which character types it uses — lowercase, uppercase, numbers, and symbols — estimates its entropy in bits from that character pool and length, and labels it Weak, Fair, Good, or Strong against common entropy thresholds. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Entropy (bits) = length × log2(character pool size), where pool size adds 26 for lowercase, 26 for uppercase, 10 for digits, and 33 for symbols found in the password. Below 28 bits is Weak, below 36 is Fair, below 60 is Good, and 60 or above is Strong.",
+    "examples": [
+      {
+        "input": "\"abc\"",
+        "output": "Weak (≈14.1 bits)"
+      },
+      {
+        "input": "\"Tr0ub4dor&3\"",
+        "output": "Strong (≈72.3 bits)"
+      }
+    ],
+    "limitations": "This is a length-and-variety heuristic, not a check against known breached-password lists or dictionary words — a long but common phrase can score well here while still being guessable. Up to 256 characters.",
+    "keywords": ["password", "strength", "checker", "security"],
+    "relatedSlugs": [
+      "password-generator",
+      "pin-code-generator",
+      "hash-generator",
+      "jwt-decoder"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Entropy (bits) = length × log2(character pool size), where pool size adds 26 for lowercase, 26 for uppercase, 10 for digits, and 33 for symbols found in the password. Below 28 bits is Weak, below 36 is Fair, below 60 is Good, and 60 or above is Strong."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "This is a length-and-variety heuristic, not a check against known breached-password lists or dictionary words — a long but common phrase can score well here while still being guessable. Up to 256 characters."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "lottery-number-generator",
+    "name": "Lottery Number Generator",
+    "category": "Random & fun",
+    "shortDescription": "Draw random lottery numbers with no repeats.",
+    "icon": "Ticket",
+    "intro": "Draw a set of random lottery numbers with no repeats within each draw, using cryptographically secure randomness. Choose how many main numbers to draw and the highest number in the pool, and optionally add a separate bonus-number draw with its own pool size; this tool draws unique numbers from each pool using the same secure random source as the Password Generator, then sorts and displays them. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Draws numbers one at a time from a shrinking pool using the browser's cryptographically secure random number generator (rejection sampling to avoid bias), guaranteeing no repeats within a draw, then sorts the result in ascending order.",
+    "examples": [
+      {
+        "input": "6 main numbers from 1–49; no bonus",
+        "output": "Six unique sorted numbers between 1 and 49"
+      },
+      {
+        "input": "5 main numbers from 1–70; 1 bonus number from 1–25",
+        "output": "Five main numbers, plus one separate bonus number"
+      }
+    ],
+    "limitations": "Purely for entertainment; it does not predict, influence, or improve odds in any real lottery draw. Main numbers can't exceed 20 per draw, and pools are capped at 200.",
+    "keywords": ["lottery", "numbers", "generator", "random"],
+    "relatedSlugs": [
+      "coin-flip",
+      "dice-roller",
+      "random-number-generator",
+      "random-name-picker"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Draws numbers one at a time from a shrinking pool using the browser's cryptographically secure random number generator (rejection sampling to avoid bias), guaranteeing no repeats within a draw, then sorts the result in ascending order."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Purely for entertainment; it does not predict, influence, or improve odds in any real lottery draw. Main numbers can't exceed 20 per draw, and pools are capped at 200."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "social-media-image-resizer",
+    "name": "Social Media Image Resizer",
+    "category": "Images",
+    "shortDescription": "Crop a photo to the exact pixel size a platform needs.",
+    "icon": "Crop",
+    "intro": "Crop a photo to the exact pixel dimensions a social platform needs — an Instagram square post, a Story, a Facebook cover, a YouTube thumbnail, and more — right in your browser. Choose a platform preset, then zoom and nudge the crop until it looks right; this tool crops to fill the exact target size without letterboxing, the same center-crop approach used by the Passport & ID Photo Maker, and saves the result as a JPEG. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Crops the source image to fill the selected preset's exact width and height without distortion, using the same center-crop-with-zoom approach as the Passport & ID Photo Maker, then saves it as a JPEG.",
+    "examples": [
+      {
+        "input": "Any photo; Instagram post preset",
+        "output": "A 1080 × 1080 pixel JPEG"
+      },
+      {
+        "input": "Any photo; YouTube thumbnail preset",
+        "output": "A 1280 × 720 pixel JPEG"
+      }
+    ],
+    "limitations": "Output is always JPEG, which flattens transparency to white; PNG or WebP output isn't available. One JPG/PNG/WebP source image up to 20 MB and 12 million pixels.",
+    "keywords": ["social media", "image resizer", "crop", "instagram"],
+    "relatedSlugs": [
+      "image-resizer",
+      "image-compressor",
+      "passport-photo-maker",
+      "image-rotator-flipper"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Crops the source image to fill the selected preset's exact width and height without distortion, using the same center-crop-with-zoom approach as the Passport & ID Photo Maker, then saves it as a JPEG."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Output is always JPEG, which flattens transparency to white; PNG or WebP output isn't available. One JPG/PNG/WebP source image up to 20 MB and 12 million pixels."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
+  },
+  {
+    "slug": "resume-maker",
+    "name": "Resume Maker",
+    "category": "Documents & design",
+    "shortDescription": "Build a resume from a template and download it as a PDF.",
+    "icon": "FileUser",
+    "intro": "Build a resume without design software: pick a template, fill in your details section by section, and download a polished PDF. Choose from three templates — Classic, Modern, or Minimal — enter your contact details, a summary, work experience and education with repeatable entries and bullet points, and skills, then add optional sections for projects, certifications, or languages as you need them. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Lays out your sections directly onto A4 PDF pages using precise text positioning, with per-template colors, header styles, and spacing, automatic text wrapping, and a new page added whenever the current one fills up.",
+    "examples": [
+      {
+        "input": "Name, one experience entry, one education entry, Classic template",
+        "output": "A one-page PDF with underlined section headers"
+      },
+      {
+        "input": "Same details, Modern template",
+        "output": "The same content with accent-colored headers and a bold divider under your name"
+      }
+    ],
+    "limitations": "Three fixed single-column templates; there's no free-form drag-and-drop layout or multi-column sidebar. Up to 10 experience entries, 6 education entries, and 6 project entries, each with up to 8 bullet points. Only standard Latin-alphabet text renders; unsupported characters are dropped rather than breaking the document.",
+    "keywords": ["resume", "maker", "cv", "template", "pdf"],
+    "relatedSlugs": [
+      "biodata-maker",
+      "invoice-maker",
+      "gpa-calculator",
+      "work-hours-calculator"
+    ],
+    "faq": [
+      {
+        "question": "How is the result produced?",
+        "answer": "Lays out your sections directly onto A4 PDF pages using precise text positioning, with per-template colors, header styles, and spacing, automatic text wrapping, and a new page added whenever the current one fills up."
+      },
+      {
+        "question": "Are my inputs sent to a server?",
+        "answer": "No. Inputs and results are processed locally and are not uploaded or included in telemetry. Copying or downloading is your choice."
+      },
+      {
+        "question": "What are the limits of this tool?",
+        "answer": "Three fixed single-column templates; there's no free-form drag-and-drop layout or multi-column sidebar. Up to 10 experience entries, 6 education entries, and 6 project entries, each with up to 8 bullet points. Only standard Latin-alphabet text renders; unsupported characters are dropped rather than breaking the document."
+      }
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-19",
+    "updatedAt": "2026-09-19",
+    "reviewed": true
   }
 ]

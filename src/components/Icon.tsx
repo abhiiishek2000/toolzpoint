@@ -73,6 +73,14 @@ import {
   Receipt,
   UserSquare2,
   Flame,
+  Home,
+  GraduationCap,
+  Sigma,
+  Wallet,
+  Share2,
+  MessageSquare,
+  Ticket,
+  FileUser,
 } from "lucide-react";
 const icons = {
   ArrowUpDown,
@@ -149,6 +157,14 @@ const icons = {
   Receipt,
   UserSquare2,
   Flame,
+  Home,
+  GraduationCap,
+  Sigma,
+  Wallet,
+  Share2,
+  MessageSquare,
+  Ticket,
+  FileUser,
 };
 export function Icon({
   name,

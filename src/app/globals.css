@@ -2535,6 +2535,91 @@ body {
 .invoice-items > .text-button {
   margin-top: 4px;
 }
+.template-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 4px 0 8px;
+}
+.template-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-align: left;
+  font-size: 12px;
+  color: var(--muted);
+}
+.template-card strong {
+  font-size: 13px;
+  color: var(--ink);
+}
+.template-card[data-selected="true"] {
+  border-color: var(--green);
+  box-shadow: 0 0 0 1.5px var(--green) inset;
+}
+.template-swatch {
+  height: 52px;
+  border-radius: 6px;
+  background: var(--soft);
+  padding: 9px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.swatch-name {
+  height: 8px;
+  width: 55%;
+  border-radius: 2px;
+  background: var(--ink);
+}
+.swatch-line {
+  height: 4px;
+  width: 85%;
+  border-radius: 2px;
+  background: var(--line);
+}
+.swatch-line.short {
+  width: 55%;
+}
+.template-card[data-template="modern"] .swatch-name {
+  background: var(--green);
+  width: 65%;
+  height: 9px;
+}
+.template-card[data-template="minimal"] .swatch-name {
+  background: var(--muted);
+  width: 45%;
+  height: 6px;
+}
+.resume-entries {
+  margin-bottom: 20px;
+}
+.resume-entry {
+  padding: 16px;
+  margin-bottom: 12px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.resume-entry .fields-grid {
+  margin-bottom: 10px;
+}
+.resume-section-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.resume-section-chips .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-start;
+}
 .photo-picker {
   display: flex;
   align-items: center;
@@ -2601,6 +2686,9 @@ body {
 .studio-step h2 {
   font-size: 15px;
   letter-spacing: -0.2px;
+}
+.studio-step > .text-button {
+  margin-left: auto;
 }
 .drop-zone {
   border: 1.5px dashed #b9b6e6;
