@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { readList, writeList } from "@/lib/storage";
 import { track } from "@/lib/analytics";
 import { useLocalList, useLocalDate } from "@/lib/useLocalList";
@@ -448,6 +448,20 @@ const textTools = [
   "hash-generator",
   "jwt-decoder",
 ];
+// These produce a fresh random result each run, so recomputing them live
+// while the user is still adjusting settings would be surprising (a
+// password/roll changing before you've finished deciding on a length).
+// They keep the explicit-button-only behavior; every other tool auto-runs.
+const randomTools = [
+  "coin-flip",
+  "password-generator",
+  "uuid-generator",
+  "pin-code-generator",
+  "dice-roller",
+  "random-number-generator",
+  "random-name-picker",
+  "lottery-number-generator",
+];
 const samples: Record<string, string> = {
   ...expansionSamples,
   "character-counter": "Hello world!",
@@ -542,11 +556,13 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
       }
       return { ...v, [key]: value };
     });
-    setResult(null);
     setError("");
     setNotice("");
-    setCoinPhase("idle");
-    setDicePhase("idle");
+    if (randomTools.includes(slug)) {
+      setResult(null);
+      setCoinPhase("idle");
+      setDicePhase("idle");
+    }
   }
   async function run() {
     if (busy) return;
@@ -635,6 +651,51 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
       setBusy(false);
     }
   }
+  const liveRunId = useRef(0);
+  useEffect(() => {
+    if (randomTools.includes(slug) || busy) return;
+    const id = ++liveRunId.current;
+    const timeout = setTimeout(async () => {
+      try {
+        const { executeTool } = await import("@/features/tools/runner");
+        const output = await executeTool({
+          slug,
+          values,
+          input,
+          mode,
+          scope,
+          separator,
+          unicode,
+          minify,
+          localDate,
+          caseMode,
+          algorithm,
+        });
+        if (id !== liveRunId.current) return;
+        setResult(output);
+        setError("");
+      } catch {
+        // A live preview stays quiet on invalid input — the visible result
+        // (if any) is left as the last valid one rather than flashing an
+        // error on every keystroke. The Calculate/Run button still reports
+        // errors normally.
+      }
+    }, 350);
+    return () => clearTimeout(timeout);
+  }, [
+    slug,
+    values,
+    input,
+    mode,
+    scope,
+    separator,
+    unicode,
+    minify,
+    caseMode,
+    algorithm,
+    localDate,
+    busy,
+  ]);
   const currencyTools = [
     "sip-calculator",
     "emi-loan-calculator",
@@ -760,10 +821,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                       type="button"
                       aria-pressed={mode === v}
                       className={mode === v ? "selected" : ""}
-                      onClick={() => {
-                        setMode(v);
-                        setResult(null);
-                      }}
+                      onClick={() => setMode(v)}
                     >
                       {v === "encode" ? "Encode" : "Decode"}
                     </button>
@@ -775,10 +833,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   Encoding scope
                   <select
                     value={scope}
-                    onChange={(e) => {
-                      setScope(e.target.value);
-                      setResult(null);
-                    }}
+                    onChange={(e) => setScope(e.target.value)}
                   >
                     <option value="component">URL component</option>
                     <option value="full">Full URL</option>
@@ -790,10 +845,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   <input
                     type="checkbox"
                     checked={minify}
-                    onChange={(e) => {
-                      setMinify(e.target.checked);
-                      setResult(null);
-                    }}
+                    onChange={(e) => setMinify(e.target.checked)}
                   />
                   Minify output
                 </label>
@@ -804,10 +856,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                     Separator
                     <select
                       value={separator}
-                      onChange={(e) => {
-                        setSeparator(e.target.value);
-                        setResult(null);
-                      }}
+                      onChange={(e) => setSeparator(e.target.value)}
                     >
                       <option value="-">Hyphen (-)</option>
                       <option value="_">Underscore (_)</option>
@@ -817,10 +866,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                     <input
                       type="checkbox"
                       checked={unicode}
-                      onChange={(e) => {
-                        setUnicode(e.target.checked);
-                        setResult(null);
-                      }}
+                      onChange={(e) => setUnicode(e.target.checked)}
                     />
                     Keep Unicode letters
                   </label>
@@ -831,10 +877,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   Convert to
                   <select
                     value={caseMode}
-                    onChange={(e) => {
-                      setCaseMode(e.target.value);
-                      setResult(null);
-                    }}
+                    onChange={(e) => setCaseMode(e.target.value)}
                   >
                     <option value="upper">UPPERCASE</option>
                     <option value="lower">lowercase</option>
@@ -851,10 +894,7 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                   Algorithm
                   <select
                     value={algorithm}
-                    onChange={(e) => {
-                      setAlgorithm(e.target.value);
-                      setResult(null);
-                    }}
+                    onChange={(e) => setAlgorithm(e.target.value)}
                   >
                     <option value="SHA-1">SHA-1</option>
                     <option value="SHA-256">SHA-256</option>
@@ -921,8 +961,8 @@ export default function ToolWorkspace({ slug }: { slug: string }) {
                     aria-describedby={error ? "tool-error" : "input-limit"}
                     onChange={(e) => {
                       setInput(e.target.value);
-                      setResult(null);
                       setError("");
+                      if (randomTools.includes(slug)) setResult(null);
                     }}
                     placeholder={
                       slug === "json-formatter"
