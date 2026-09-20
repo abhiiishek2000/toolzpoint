@@ -10,9 +10,7 @@ export function emiLoan(principal: number, rate: number, years: number) {
   const n = Math.round(years * 12);
   const r = rate / 12 / 100;
   const payment =
-    r === 0
-      ? principal / n
-      : (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    r === 0 ? principal / n : (principal * r) / -Math.expm1(-n * Math.log1p(r));
   if (!Number.isFinite(payment)) throw new Error("The result is too large.");
   const total = payment * n;
   return {

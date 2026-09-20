@@ -1,4 +1,4 @@
-import { timezoneOptions } from "../features/tools/expansion/domain";
+import { timezoneOptions } from "../features/tools/expansion/timezones";
 export type WorkspaceField = {
   key: string;
   label: string;

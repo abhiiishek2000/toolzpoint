@@ -9,7 +9,7 @@
 
 ## Deployment procedure
 
-1. Use the pinned lockfile and Node 22+ in the hosting build.
+1. Use the pinned lockfile and Node 24.x in the hosting build.
 2. Configure the production origin and keep indexing disabled on previews.
 3. Run the complete CI checks. Review current dependency advisories.
 4. Deploy a preview to the chosen Vercel project, then verify routes, security headers, real mobile devices, keyboard use, and copy behavior under HTTPS.

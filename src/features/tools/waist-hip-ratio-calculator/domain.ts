@@ -12,17 +12,13 @@ export function waistHipRatio(
 ) {
   waistHipSchema.parse({ sex, waist, hip });
   const ratio = waist / hip;
-  const risk =
-    sex === "male"
-      ? ratio < 0.9
-        ? "Low risk"
-        : ratio < 1.0
-          ? "Moderate risk"
-          : "High risk"
-      : ratio < 0.8
-        ? "Low risk"
-        : ratio < 0.85
-          ? "Moderate risk"
-          : "High risk";
-  return { "Waist-to-hip ratio": ratio, "WHO risk category": risk };
+  const threshold = sex === "male" ? 0.9 : 0.85;
+  return {
+    "Waist-to-hip ratio": ratio,
+    "Reference threshold": threshold,
+    "Screening reference":
+      ratio >= threshold
+        ? "At or above the increased-risk threshold"
+        : "Below the increased-risk threshold",
+  };
 }

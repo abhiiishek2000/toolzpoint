@@ -1,6 +1,8 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- Generated local PNG data URLs cannot benefit from remote image optimization. */
 import { useState } from "react";
+import InsightReport from "./InsightReport";
+import type { ToolInsight } from "@/features/tools/insights";
 import { Icon } from "./Icon";
 import { UtilityFrame, markUsed } from "./UtilityFrame";
 export default function QrCreator({
@@ -14,6 +16,7 @@ export default function QrCreator({
   const [image, setImage] = useState(initialImage);
   const [color, setColor] = useState("#222348");
   const [size, setSize] = useState(640);
+  const [specification, setSpecification] = useState<ToolInsight | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
@@ -25,10 +28,13 @@ export default function QrCreator({
     if (busy) return;
     setBusy(true);
     setError("");
+    setImage("");
     setNotice("");
     try {
-      const { createQr } = await import("@/features/qr-code-generator/domain");
+      const { createQr, qrSpecification } =
+        await import("@/features/qr-code-generator/domain");
       setImage(await createQr(text, color, size));
+      setSpecification(await qrSpecification(text, color, size));
       setGeneratedText(text);
       setNotice("Your QR code is ready to download.");
       markUsed("qr-code-generator");
@@ -163,6 +169,9 @@ export default function QrCreator({
           <span className="qr-caption">Static QR · no tracking redirect</span>
         )}
       </div>
+      {!compact && image && !stale && specification && (
+        <InsightReport insight={specification} />
+      )}
       <p className="result-status" role="status">
         {notice}
       </p>

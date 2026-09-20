@@ -604,11 +604,13 @@ describe("waist-to-hip ratio calculator", () => {
   it("classifies risk by sex-specific WHO thresholds", () => {
     expect(waistHipRatio("male", 80, 100)).toEqual({
       "Waist-to-hip ratio": 0.8,
-      "WHO risk category": "Low risk",
+      "Reference threshold": 0.9,
+      "Screening reference": "Below the increased-risk threshold",
     });
     expect(waistHipRatio("female", 90, 100)).toEqual({
       "Waist-to-hip ratio": 0.9,
-      "WHO risk category": "High risk",
+      "Reference threshold": 0.85,
+      "Screening reference": "At or above the increased-risk threshold",
     });
   });
 });

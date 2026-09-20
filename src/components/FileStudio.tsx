@@ -1,10 +1,12 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- Previews are local blob URLs, not remotely optimized images. */
 import { useEffect, useRef, useState } from "react";
+import { ReportTable } from "./InsightReport";
 import { Icon } from "./Icon";
 import { UtilityFrame, markUsed } from "./UtilityFrame";
 import {
   validateFiles,
+  imageDimensions,
   prettyBytes,
   savings,
   PHOTO_ID_PRESETS,
@@ -42,6 +44,7 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const [bgColor, setBgColor] = useState("#ffffff");
   const [result, setResult] = useState<FileResult | null>(null);
   const [url, setUrl] = useState("");
+  const [showOriginal, setShowOriginal] = useState(false);
   const [preview, setPreview] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -51,6 +54,7 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   const inputUrl = useRef("");
   const input = useRef<HTMLInputElement>(null);
   const worker = useRef<Worker | null>(null);
+  const selectionId = useRef(0);
   const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const multiple = slug === "merge-pdf" || slug === "images-to-pdf";
   const pdf =
@@ -75,6 +79,7 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   );
   useEffect(
     () => () => {
+      selectionId.current++;
       worker.current?.terminate();
       if (timeout.current) clearTimeout(timeout.current);
       URL.revokeObjectURL(outputUrl.current);
@@ -85,15 +90,26 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
   function changed() {
     URL.revokeObjectURL(outputUrl.current);
     outputUrl.current = "";
+    setShowOriginal(false);
     setResult(null);
     setUrl("");
     setNotice("");
     setError("");
   }
-  function choose(selected: File[]) {
+  async function choose(selected: File[]) {
     if (busy) return;
+    const selectedId = ++selectionId.current;
+    changed();
+    setFiles([]);
+    setPreview("");
+    URL.revokeObjectURL(inputUrl.current);
     try {
+      setBusy(true);
       validateFiles(selected, pdf ? "pdf" : "image", multiple);
+      if (!pdf)
+        for (const file of selected)
+          imageDimensions(new Uint8Array(await file.arrayBuffer()));
+      if (selectedId !== selectionId.current) return;
       setFiles(selected);
       URL.revokeObjectURL(inputUrl.current);
       inputUrl.current =
@@ -108,10 +124,13 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
       changed();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Choose a supported file.");
+    } finally {
+      if (selectedId === selectionId.current) setBusy(false);
     }
     if (input.current) input.current.value = "";
   }
   function cancel() {
+    selectionId.current++;
     worker.current?.terminate();
     worker.current = null;
     if (timeout.current) clearTimeout(timeout.current);
@@ -911,9 +930,11 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
             files.length > 0 &&
             ((result && url) || preview) ? (
               <img
-                src={result && url ? url : preview}
+                src={result && url && !showOriginal ? url : preview}
                 alt={
-                  result ? "Processed image preview" : "Original image preview"
+                  result && !showOriginal
+                    ? "Processed image preview"
+                    : "Original image preview"
                 }
               />
             ) : (
@@ -951,6 +972,29 @@ export default function FileStudio({ slug }: { slug: FileTask["kind"] }) {
           </div>
           {result && (
             <>
+              {isImageResult && (
+                <div
+                  className="schedule-controls"
+                  role="group"
+                  aria-label="Image comparison"
+                >
+                  <button
+                    type="button"
+                    aria-pressed={showOriginal}
+                    onClick={() => setShowOriginal(true)}
+                  >
+                    Original
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={!showOriginal}
+                    onClick={() => setShowOriginal(false)}
+                  >
+                    Processed
+                  </button>
+                </div>
+              )}
+              {result.report && <ReportTable table={result.report} />}
               <dl className="file-result-metrics">
                 <div>
                   <dt>Original</dt>

@@ -15,11 +15,11 @@ const sets = {
 } as const;
 function defaultRandomIndex(max: number) {
   const range = 256 - (256 % max);
-  let byte: number;
-  do {
-    byte = crypto.getRandomValues(new Uint8Array(1))[0]!;
-  } while (byte >= range);
-  return byte % max;
+  for (let attempt = 0; attempt < 1000; attempt++) {
+    const byte = crypto.getRandomValues(new Uint8Array(1))[0]!;
+    if (byte < range) return byte % max;
+  }
+  throw new Error("Random generation failed. Please try again.");
 }
 export function generatePasswords(
   input: z.input<typeof passwordSchema>,

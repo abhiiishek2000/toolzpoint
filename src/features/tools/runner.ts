@@ -2,7 +2,7 @@ import { expansionSlugs, runExpansion } from "./expansion/domain";
 import { runTextUtility, textUtilitySlugs } from "./text-utilities/domain";
 import { ZodError } from "zod";
 import * as domain from "./index";
-type RunOptions = {
+export type RunOptions = {
   slug: string;
   values: Record<string, string>;
   input: string;
@@ -182,7 +182,7 @@ export async function executeTool({
         });
         break;
       case "date-difference-calculator":
-        output = domain.dateDifference(d("start"), d("end"));
+        output = domain.dateDifference(d("start"), values.end || localDate);
         break;
       case "pregnancy-due-date-calculator":
         output = domain.pregnancyDueDate(

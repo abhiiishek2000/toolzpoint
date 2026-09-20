@@ -1,21 +1,10 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "./Icon";
 import { UtilityFrame, markUsed } from "./UtilityFrame";
-import {
-  validateFiles,
-  prettyBytes,
-  paperSizeLabel,
-} from "@/features/files/domain";
-type Info = {
-  pages: number;
-  size: number;
-  width: number;
-  height: number;
-  encrypted: boolean;
-  title?: string;
-  author?: string;
-};
+import { validateFiles, prettyBytes } from "@/features/files/domain";
+import type { PdfInfo as Info } from "@/features/files/inspect-pdf";
+import { ReportTable } from "./InsightReport";
 export default function PdfInfoViewer() {
   const [file, setFile] = useState<File | null>(null);
   const [info, setInfo] = useState<Info | null>(null);
@@ -23,43 +12,74 @@ export default function PdfInfoViewer() {
   const [busy, setBusy] = useState(false);
   const [dragging, setDragging] = useState(false);
   const input = useRef<HTMLInputElement>(null);
+  const worker = useRef<Worker | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const request = useRef(0);
+  const [notice, setNotice] = useState("");
+  function stop() {
+    request.current++;
+    worker.current?.terminate();
+    worker.current = null;
+    if (timer.current) clearTimeout(timer.current);
+    setBusy(false);
+  }
+  useEffect(
+    () => () => {
+      request.current++;
+      worker.current?.terminate();
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
   async function choose(selected: File[]) {
     if (busy) return;
+    stop();
+    const id = request.current;
     setError("");
     setInfo(null);
+    setFile(null);
+    setNotice("");
     try {
       validateFiles(selected, "pdf", false);
       const chosen = selected[0]!;
       setFile(chosen);
       setBusy(true);
-      const { PDFDocument } = await import("pdf-lib");
-      const doc = await PDFDocument.load(await chosen.arrayBuffer(), {
-        ignoreEncryption: true,
-      });
-      const pages = doc.getPageCount();
-      if (!pages) throw new Error("This PDF has no pages.");
-      const { width, height } = doc.getPage(0).getSize();
-      setInfo({
-        pages,
-        size: chosen.size,
-        width,
-        height,
-        encrypted: doc.isEncrypted,
-        title: doc.getTitle() || undefined,
-        author: doc.getAuthor() || undefined,
-      });
-      markUsed("pdf-page-counter");
-    } catch (e) {
-      setFile(null);
-      setError(
-        e instanceof Error
-          ? e.message
-          : "This file could not be read. Try an undamaged PDF.",
+      const bytes = await chosen.arrayBuffer();
+      if (id !== request.current) return;
+      const reader = new Worker(
+        new URL("../features/files/pdf-info.worker.ts", import.meta.url),
       );
+      worker.current = reader;
+      timer.current = setTimeout(() => {
+        stop();
+        setError("Reading took too long. Try a smaller PDF.");
+      }, 45000);
+      reader.onmessage = ({
+        data,
+      }: MessageEvent<{ info?: Info; error?: string }>) => {
+        if (id !== request.current) return;
+        stop();
+        if (data.error) setError(data.error);
+        else if (data.info) {
+          setInfo(data.info);
+          markUsed("pdf-page-counter");
+        }
+      };
+      reader.onerror = () => {
+        stop();
+        setError(
+          "Could not read this PDF. Try an unencrypted, undamaged file.",
+        );
+      };
+      reader.postMessage(bytes, [bytes]);
+    } catch (e) {
+      if (id !== request.current) return;
+      stop();
+      setFile(null);
+      setError(e instanceof Error ? e.message : "Could not read this PDF.");
     } finally {
-      setBusy(false);
+      if (input.current) input.current.value = "";
     }
-    if (input.current) input.current.value = "";
   }
   return (
     <UtilityFrame slug="pdf-page-counter">
@@ -86,7 +106,7 @@ export default function PdfInfoViewer() {
               <Icon name="FileText" size={32} />
             </div>
             <h3>{file ? file.name : "Drop it like it’s done."}</h3>
-            <p>PDF files · up to 20 MB</p>
+            <p>PDF files · up to 20 MB · 1–400 pages · unencrypted</p>
             <button
               className="button primary"
               disabled={busy}
@@ -108,6 +128,34 @@ export default function PdfInfoViewer() {
               Stays on your device
             </span>
           </div>
+          <div className="button-row">
+            {busy && (
+              <button
+                type="button"
+                className="button quiet"
+                onClick={() => {
+                  stop();
+                  setNotice("Reading canceled.");
+                }}
+              >
+                Cancel reading
+              </button>
+            )}
+            <button
+              type="button"
+              className="button quiet"
+              onClick={() => {
+                stop();
+                setFile(null);
+                setInfo(null);
+                setError("");
+                setNotice("");
+              }}
+            >
+              Reset
+            </button>
+          </div>
+          <p role="status">{notice}</p>
           {error && (
             <p className="error-message" role="alert">
               {error}
@@ -132,21 +180,6 @@ export default function PdfInfoViewer() {
                   <dt>File size</dt>
                   <dd>{prettyBytes(info.size)}</dd>
                 </div>
-                <div>
-                  <dt>Page size (first page)</dt>
-                  <dd>
-                    {Math.round(info.width)} × {Math.round(info.height)} pt
-                    {paperSizeLabel(info.width, info.height)}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Encrypted</dt>
-                  <dd>
-                    {info.encrypted
-                      ? "Yes — page contents are not readable without a password"
-                      : "No"}
-                  </dd>
-                </div>
                 {info.title && (
                   <div>
                     <dt>Title</dt>
@@ -160,6 +193,47 @@ export default function PdfInfoViewer() {
                   </div>
                 )}
               </dl>
+              <ReportTable
+                table={{
+                  title: "Page-by-page PDF inspection",
+                  headers: [
+                    "Page",
+                    "Width (pt)",
+                    "Height (pt)",
+                    "Rotation (degrees)",
+                  ],
+                  rows: info.pageDetails.map((p) => [
+                    p.page,
+                    p.width,
+                    p.height,
+                    p.rotation,
+                  ]),
+                }}
+              />
+              <button
+                type="button"
+                className="button quiet"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(
+                      [
+                        `Pages: ${info.pages}`,
+                        `Bytes: ${info.size}`,
+                        "Page,Width (pt),Height (pt),Rotation",
+                        ...info.pageDetails.map(
+                          (p) =>
+                            `${p.page},${p.width},${p.height},${p.rotation}`,
+                        ),
+                      ].join("\n"),
+                    );
+                    setNotice("PDF report copied.");
+                  } catch {
+                    setNotice("Copy unavailable in this browser.");
+                  }
+                }}
+              >
+                Copy report
+              </button>
               <p className="result-status" role="status">
                 Read locally. Nothing was uploaded.
               </p>

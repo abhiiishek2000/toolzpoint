@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { tools, getTool, categoryFor } from "@/lib/tool-registry";
 import { metadata, notFoundMetadata, safeJson, siteUrl } from "@/lib/seo";
+import { resultGuides, toolSeo, toolSteps } from "@/lib/tool-experience";
 import ToolRenderer from "@/components/ToolRenderer";
 import { ToolCard } from "@/components/ToolCard";
 import { Icon } from "@/components/Icon";
@@ -16,7 +17,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const t = getTool(slug);
   return t
-    ? metadata(t.name, t.shortDescription, `/tools/${slug}`, t.reviewed)
+    ? metadata(
+        toolSeo(t).title,
+        toolSeo(t).description,
+        `/tools/${slug}`,
+        t.reviewed,
+      )
     : notFoundMetadata;
 }
 function formatUpdated(date: string) {
@@ -36,6 +42,7 @@ export default async function ToolPage({
   const t = getTool(slug);
   if (!t) notFound();
   const category = categoryFor(t.category);
+  const steps = toolSteps(t);
   const toolUrl = new URL(`/tools/${slug}`, siteUrl).href;
   return (
     <main id="main" className="page-container tool-page">
@@ -57,7 +64,42 @@ export default async function ToolPage({
           <p>{t.shortDescription}</p>
         </div>
       </div>
-      <ToolRenderer slug={slug} />
+      <div className="tool-quick-nav">
+        <div className="tool-trust">
+          <span>
+            <Icon name="ShieldCheck" size={15} />
+            Private in your browser
+          </span>
+          <span>Free · No sign-up</span>
+        </div>
+        <nav aria-label="On this page">
+          <a href="#tool-workspace">Use tool</a>
+          <a href="#tool-method">How it works</a>
+          <a href="#tool-examples">Examples</a>
+          <a href="#tool-faq">FAQs</a>
+        </nav>
+      </div>
+      <div id="tool-workspace">
+        <ToolRenderer
+          slug={slug}
+          how={t.how}
+          limitations={t.limitations}
+          resultGuide={resultGuides[slug]!}
+        />
+      </div>
+      <section className="tool-use-guide" aria-labelledby="use-guide-title">
+        <div className="eyebrow">FROM INPUT TO ANSWER</div>
+        <h2 id="use-guide-title">How to use the {t.name.toLowerCase()}</h2>
+        <ol>
+          {steps.map((step, i) => (
+            <li key={step.title}>
+              <span className="guide-step-number">0{i + 1}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
       {t.category === "Health & nutrition" && (
         <p className="health-note">
           General estimates only. This tool is not a diagnosis, treatment, or
@@ -72,12 +114,12 @@ export default async function ToolPage({
             <h2>About this {t.name.toLowerCase()}</h2>
             <p>{t.intro}</p>
           </section>
-          <section>
-            <h2>How it works</h2>
+          <section id="tool-method">
+            <h2>How the {t.name.toLowerCase()} works</h2>
             <p>{t.how}</p>
           </section>
-          <section>
-            <h2>Try these examples</h2>
+          <section id="tool-examples">
+            <h2>{t.name} examples</h2>
             <div className="examples">
               {t.examples.map((e, i) => (
                 <div key={e.input}>
@@ -119,8 +161,8 @@ export default async function ToolPage({
               </p>
             )}
           </section>
-          <section>
-            <h2>A few good questions</h2>
+          <section id="tool-faq">
+            <h2>{t.name}: frequently asked questions</h2>
             {t.faq.map((f) => (
               <details key={f.question}>
                 <summary>
@@ -154,7 +196,7 @@ export default async function ToolPage({
       </div>
       <section className="section">
         <div className="section-heading">
-          <h2>Keep the momentum going.</h2>
+          <h2>Related tools for your next step</h2>
           <Link href="/tools">
             All tools
             <Icon name="ArrowRight" size={16} />
@@ -176,7 +218,14 @@ export default async function ToolPage({
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: t.name,
-            description: t.shortDescription,
+            description: toolSeo(t).description,
+            featureList: [
+              t.shortDescription,
+              "Local browser processing",
+              "Worked examples and method explanation",
+            ],
+            isAccessibleForFree: true,
+            inLanguage: "en",
             url: toolUrl,
             applicationCategory: "UtilitiesApplication",
             operatingSystem: "Any",

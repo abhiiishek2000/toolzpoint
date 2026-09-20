@@ -22,11 +22,8 @@ export function savingsGoal(
   const monthly =
     r === 0
       ? (goal - current) / months
-      : (goal - current * Math.pow(1 + r, months)) /
-        ((Math.pow(1 + r, months) - 1) / r);
-  if (!Number.isFinite(monthly) || monthly < 0)
-    throw new Error(
-      "Your current savings and growth already exceed this goal within the timeframe.",
-    );
-  return { "Monthly deposit needed": monthly };
+      : (goal - current * Math.exp(months * Math.log1p(r))) /
+        (Math.expm1(months * Math.log1p(r)) / r);
+  if (!Number.isFinite(monthly)) throw new Error("The result is too large.");
+  return { "Monthly deposit needed": Math.max(0, monthly) };
 }

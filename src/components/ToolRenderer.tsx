@@ -7,7 +7,17 @@ const InvoiceMaker = dynamic(() => import("./InvoiceMaker"));
 const BiodataMaker = dynamic(() => import("./BiodataMaker"));
 const ResumeMaker = dynamic(() => import("./ResumeMaker"));
 const PdfInfoViewer = dynamic(() => import("./PdfInfoViewer"));
-export default function ToolRenderer({ slug }: { slug: string }) {
+export default function ToolRenderer({
+  slug,
+  how,
+  limitations,
+  resultGuide,
+}: {
+  slug: string;
+  how: string;
+  limitations: string;
+  resultGuide: string;
+}) {
   return (
     <>
       {slug === "qr-code-generator" ? (
@@ -35,7 +45,12 @@ export default function ToolRenderer({ slug }: { slug: string }) {
       ) : slug === "pdf-page-counter" ? (
         <PdfInfoViewer />
       ) : (
-        <ToolWorkspace slug={slug} />
+        <ToolWorkspace
+          slug={slug}
+          how={how}
+          limitations={limitations}
+          resultGuide={resultGuide}
+        />
       )}
     </>
   );

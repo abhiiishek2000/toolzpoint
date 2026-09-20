@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import InsightReport from "./InsightReport";
+import type { ToolInsight } from "@/features/tools/insights";
 import { Icon } from "./Icon";
 import { UtilityFrame, markUsed } from "./UtilityFrame";
 import {
@@ -28,7 +30,11 @@ function emptyEntry(): EntryRow {
 }
 function toEntries(rows: EntryRow[]) {
   return rows
-    .filter((r) => r.title.trim())
+    .filter((r) =>
+      [r.title, r.subtitle, r.dates, r.location, r.bulletsText].some((value) =>
+        value.trim(),
+      ),
+    )
     .map((r) => ({
       title: r.title,
       subtitle: r.subtitle || undefined,
@@ -37,8 +43,7 @@ function toEntries(rows: EntryRow[]) {
       bullets: r.bulletsText
         .split("\n")
         .map((b) => b.trim())
-        .filter(Boolean)
-        .slice(0, 8),
+        .filter(Boolean),
     }));
 }
 function EntryEditor({
@@ -166,9 +171,21 @@ function ResumePreview({
   const contact = [location, phone, email, links]
     .filter(Boolean)
     .join("   ·   ");
-  const exp = experience.filter((r) => r.title.trim());
-  const edu = education.filter((r) => r.title.trim());
-  const proj = projects.filter((r) => r.title.trim());
+  const exp = experience.filter((r) =>
+    [r.title, r.subtitle, r.dates, r.location, r.bulletsText].some((value) =>
+      value.trim(),
+    ),
+  );
+  const edu = education.filter((r) =>
+    [r.title, r.subtitle, r.dates, r.location, r.bulletsText].some((value) =>
+      value.trim(),
+    ),
+  );
+  const proj = projects.filter((r) =>
+    [r.title, r.subtitle, r.dates, r.location, r.bulletsText].some((value) =>
+      value.trim(),
+    ),
+  );
   const entryBlock = (row: EntryRow) => (
     <div className="rp-entry" key={row.id}>
       <div className="rp-entry-head">
@@ -278,6 +295,29 @@ export default function ResumeMaker() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const exportKey = JSON.stringify([
+    template,
+    fullName,
+    title,
+    email,
+    phone,
+    location,
+    links,
+    summary,
+    experience,
+    education,
+    skills,
+    showProjects,
+    projects,
+    showCertifications,
+    certifications,
+    showLanguages,
+    languages,
+  ]);
+  const [exportReport, setExportReport] = useState<{
+    key: string;
+    insight: ToolInsight;
+  } | null>(null);
   async function download() {
     if (busy) return;
     setBusy(true);
@@ -302,6 +342,21 @@ export default function ResumeMaker() {
         certifications:
           showCertifications && certifications ? certifications : undefined,
         languages: showLanguages && languages ? languages : undefined,
+      });
+      const { documentReport } =
+        await import("@/features/files/document-report");
+      setExportReport({
+        key: exportKey,
+        insight: await documentReport(bytes, "resume", {
+          Name: fullName,
+          Template: template,
+          "Experience entries": toEntries(experience).length,
+          "Education entries": toEntries(education).length,
+          "Project entries": showProjects ? toEntries(projects).length : 0,
+          "Contact details":
+            [email, phone, location, links].filter(Boolean).join(" · ") ||
+            "Not supplied",
+        }),
       });
       const blob = new Blob([new Uint8Array(bytes)], {
         type: "application/pdf",
@@ -571,6 +626,34 @@ export default function ResumeMaker() {
             )}
             <div className="button-row">
               <button
+                type="button"
+                className="button quiet"
+                onClick={() => {
+                  setTemplate("classic");
+                  setFullName("");
+                  setTitle("");
+                  setEmail("");
+                  setPhone("");
+                  setLocation("");
+                  setLinks("");
+                  setSummary("");
+                  setExperience([emptyEntry()]);
+                  setEducation([emptyEntry()]);
+                  setSkills("");
+                  setShowProjects(false);
+                  setProjects([emptyEntry()]);
+                  setShowCertifications(false);
+                  setCertifications("");
+                  setShowLanguages(false);
+                  setLanguages("");
+                  setError("");
+                  setNotice("");
+                  setExportReport(null);
+                }}
+              >
+                Reset
+              </button>
+              <button
                 className="button primary"
                 type="submit"
                 disabled={busy || !fullName.trim()}
@@ -604,6 +687,9 @@ export default function ResumeMaker() {
               languages={showLanguages ? languages : ""}
             />
           </div>
+          {exportReport?.key === exportKey && (
+            <InsightReport insight={exportReport.insight} />
+          )}
           <p className="result-status" role="status">
             {notice}
           </p>

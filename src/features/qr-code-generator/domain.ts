@@ -19,3 +19,34 @@ export async function createQr(text: string, color = "#222348", size = 640) {
     color: { dark: color, light: "#ffffff" },
   });
 }
+
+export async function qrSpecification(
+  text: string,
+  color: string,
+  size: number,
+) {
+  validateQr(text);
+  const QRCode = await import("qrcode");
+  const symbol = QRCode.create(text, { errorCorrectionLevel: "M" });
+  return {
+    title: "QR encoding and print specification",
+    explanation:
+      "Scan the final PNG with a second device before printing. Keep the four-module white border intact. This static code contains your text directly; destination availability is separate from QR validity.",
+    tables: [
+      {
+        title: "QR encoding and print specification",
+        headers: ["Property", "Value"],
+        rows: [
+          ["Encoded text", text],
+          ["UTF-8 bytes", new TextEncoder().encode(text).length],
+          ["QR version", symbol.version],
+          ["Module grid", `${symbol.modules.size} × ${symbol.modules.size}`],
+          ["Error correction", "M"],
+          ["Quiet zone", "4 modules on every side"],
+          ["PNG pixels", `${size} × ${size}`],
+          ["Ink", color],
+        ],
+      },
+    ],
+  };
+}

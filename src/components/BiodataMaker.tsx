@@ -1,5 +1,7 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import InsightReport from "./InsightReport";
+import type { ToolInsight } from "@/features/tools/insights";
 import { Icon } from "./Icon";
 import { UtilityFrame, markUsed } from "./UtilityFrame";
 import { validateFiles } from "@/features/files/domain";
@@ -130,25 +132,43 @@ export default function BiodataMaker() {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const input = useRef<HTMLInputElement>(null);
+  useEffect(
+    () => () => {
+      if (photoPreview) URL.revokeObjectURL(photoPreview);
+    },
+    [photoPreview],
+  );
+  const exportKey = JSON.stringify([fields, photoPreview]);
+  const [exportReport, setExportReport] = useState<{
+    key: string;
+    insight: ToolInsight;
+  } | null>(null);
   function set<K extends keyof Fields>(key: K, value: Fields[K]) {
     setFields((f) => ({ ...f, [key]: value }));
     setNotice("");
   }
-  function choosePhoto(file: File | null) {
+  async function choosePhoto(file: File | null) {
     setError("");
+    setPhoto(null);
+    setPhotoPreview("");
     if (!file) {
       setPhoto(null);
       setPhotoPreview("");
       return;
     }
     try {
+      setBusy(true);
       validateFiles([file], "image");
+      const { imageDimensions } = await import("@/features/files/domain");
+      imageDimensions(new Uint8Array(await file.arrayBuffer()));
       setPhoto(file);
       setPhotoPreview(URL.createObjectURL(file));
     } catch (e) {
       setError(
         e instanceof Error ? e.message : "Choose a JPG, PNG, or WebP photo.",
       );
+    } finally {
+      setBusy(false);
     }
   }
   async function download() {
@@ -175,6 +195,17 @@ export default function BiodataMaker() {
               type: photo.type,
             }
           : undefined,
+      });
+      const { documentReport } =
+        await import("@/features/files/document-report");
+      setExportReport({
+        key: exportKey,
+        insight: await documentReport(bytes, "biodata", {
+          Name: fields.fullName,
+          "Included fields": Object.values(fields).filter((v) => v.trim())
+            .length,
+          Photo: photo ? "Included" : "Not included",
+        }),
       });
       const blob = new Blob([new Uint8Array(bytes)], {
         type: "application/pdf",
@@ -343,6 +374,9 @@ export default function BiodataMaker() {
           <div className="doc-page-frame">
             <BiodataPreview fields={fields} photoPreview={photoPreview} />
           </div>
+          {exportReport?.key === exportKey && (
+            <InsightReport insight={exportReport.insight} />
+          )}
           <p className="result-status" role="status">
             {notice}
           </p>

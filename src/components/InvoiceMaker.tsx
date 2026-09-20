@@ -1,6 +1,8 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- Preview is a local blob URL, not a remotely optimized image. */
 import { useEffect, useRef, useState } from "react";
+import InsightReport from "./InsightReport";
+import type { ToolInsight } from "@/features/tools/insights";
 import { Icon } from "./Icon";
 import { UtilityFrame, markUsed } from "./UtilityFrame";
 import {
@@ -203,6 +205,24 @@ export default function InvoiceMaker() {
   } catch {
     totals = null;
   }
+  const exportKey = JSON.stringify([
+    businessName,
+    businessDetails,
+    clientName,
+    clientDetails,
+    invoiceNumber,
+    invoiceDate,
+    dueDate,
+    currency,
+    taxRate,
+    notes,
+    items,
+    logoPreview,
+  ]);
+  const [exportReport, setExportReport] = useState<{
+    key: string;
+    insight: ToolInsight;
+  } | null>(null);
   async function download() {
     if (busy) return;
     setBusy(true);
@@ -223,14 +243,33 @@ export default function InvoiceMaker() {
           currency,
           notes: notes || undefined,
           taxRate,
-          items: validItems.map((r) => ({
-            description: r.description,
-            quantity: r.quantity,
-            price: r.price,
-          })),
+          items: items
+            .filter(
+              (r) => r.description.trim() || r.price !== 0 || r.quantity !== 1,
+            )
+            .map((r) => ({
+              description: r.description,
+              quantity: r.quantity,
+              price: r.price,
+            })),
         },
         logoBytes ? { bytes: logoBytes } : undefined,
       );
+      const { documentReport } =
+        await import("@/features/files/document-report");
+      setExportReport({
+        key: exportKey,
+        insight: await documentReport(bytes, "invoice", {
+          "Invoice reference": invoiceNumber,
+          Seller: businessName,
+          Client: clientName,
+          "Line items": validItems.length,
+          Subtotal: totals!.subtotal,
+          Tax: totals!.tax,
+          Total: totals!.total,
+          "Currency label": currency,
+        }),
+      });
       const blob = new Blob([new Uint8Array(bytes)], {
         type: "application/pdf",
       });
@@ -493,6 +532,29 @@ export default function InvoiceMaker() {
             )}
             <div className="button-row">
               <button
+                type="button"
+                className="button quiet"
+                onClick={() => {
+                  setBusinessName("");
+                  setBusinessDetails("");
+                  setClientName("");
+                  setClientDetails("");
+                  setInvoiceNumber("INV-1001");
+                  setInvoiceDate("");
+                  setDueDate("");
+                  setCurrency("$");
+                  setTaxRate(0);
+                  setNotes("");
+                  setItems([emptyRow()]);
+                  removeLogo();
+                  setError("");
+                  setNotice("");
+                  setExportReport(null);
+                }}
+              >
+                Reset
+              </button>
+              <button
                 className="button primary"
                 type="submit"
                 disabled={
@@ -527,6 +589,9 @@ export default function InvoiceMaker() {
               totals={totals}
             />
           </div>
+          {exportReport?.key === exportKey && (
+            <InsightReport insight={exportReport.insight} />
+          )}
           <p className="result-status" role="status">
             {notice}
           </p>

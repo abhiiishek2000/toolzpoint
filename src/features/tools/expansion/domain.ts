@@ -1,3 +1,4 @@
+import { timezoneOptions } from "./timezones";
 import { textSchema, parseDate } from "../shared";
 import { nutrition } from "../nutrition-calculator/domain";
 import { emiLoan } from "../emi-loan-calculator/domain";
@@ -138,31 +139,8 @@ function toRomanNumeral(n: number) {
   }
   return result;
 }
-export const timezoneOptions = [
-  "UTC",
-  "America/New_York",
-  "America/Chicago",
-  "America/Denver",
-  "America/Los_Angeles",
-  "America/Sao_Paulo",
-  "Europe/London",
-  "Europe/Paris",
-  "Europe/Berlin",
-  "Europe/Moscow",
-  "Africa/Cairo",
-  "Africa/Johannesburg",
-  "Asia/Dubai",
-  "Asia/Kolkata",
-  "Asia/Dhaka",
-  "Asia/Bangkok",
-  "Asia/Shanghai",
-  "Asia/Tokyo",
-  "Asia/Seoul",
-  "Asia/Singapore",
-  "Australia/Sydney",
-  "Australia/Perth",
-  "Pacific/Auckland",
-];
+export { timezoneOptions } from "./timezones";
+
 // Finds the UTC instant that displays as `dateStr`/`timeStr` in `zone`. Uses
 // Intl.DateTimeFormat.formatToParts and Date.UTC exclusively (never
 // `new Date(someLocaleString)`, whose parsing depends on the host's own
@@ -619,7 +597,9 @@ export function runExpansion(
       const future = amount * Math.pow(1 + rate / 100, years);
       return {
         "Future equivalent value": future,
-        "Purchasing power lost": future - amount,
+        "Additional amount needed": future - amount,
+        "Purchasing power in today’s money":
+          amount / Math.pow(1 + rate / 100, years),
       };
     }
     case "net-worth-calculator": {
@@ -633,7 +613,11 @@ export function runExpansion(
         let total = 0;
         for (const line of lines) {
           const idx = line.lastIndexOf(",");
-          if (idx === -1)
+          if (
+            idx === -1 ||
+            !line.slice(0, idx).trim() ||
+            !line.slice(idx + 1).trim()
+          )
             throw new Error(`Use "label, amount" for each ${key} line.`);
           const amount = Number(line.slice(idx + 1).trim());
           if (!Number.isFinite(amount) || amount < 0 || amount > 1e12)
@@ -703,15 +687,16 @@ export function runExpansion(
       const round = (n: number) => Math.round(n * 10000) / 10000;
       if (discriminant > 0) {
         const sq = Math.sqrt(discriminant);
+        const q = -0.5 * (b + (b >= 0 ? sq : -sq));
         return {
-          "Root 1": (-b + sq) / (2 * a),
-          "Root 2": (-b - sq) / (2 * a),
+          "Root 1": b >= 0 ? c / q : q / a,
+          "Root 2": b >= 0 ? q / a : c / q,
           Discriminant: discriminant,
         };
       }
       if (discriminant === 0) return { Root: -b / (2 * a), Discriminant: 0 };
       const real = round(-b / (2 * a));
-      const imag = round(Math.sqrt(-discriminant) / (2 * a));
+      const imag = round(Math.sqrt(-discriminant) / (2 * Math.abs(a)));
       return {
         "Root 1": `${real} + ${imag}i`,
         "Root 2": `${real} - ${imag}i`,
@@ -845,14 +830,19 @@ export function runExpansion(
     }
     case "password-strength-checker": {
       if (!input) throw new Error("Enter a password to check.");
+      if (input.length > 1024)
+        throw new Error("Use at most 1,024 characters for a password check.");
       let pool = 0;
       if (/[a-z]/.test(input)) pool += 26;
       if (/[A-Z]/.test(input)) pool += 26;
       if (/[0-9]/.test(input)) pool += 10;
       if (/[^a-zA-Z0-9]/.test(input)) pool += 33;
       const entropy = pool > 0 ? input.length * Math.log2(pool) : 0;
+      const predictable =
+        /password|qwerty|123456|letmein|admin/i.test(input) ||
+        /^(.*?)\1{2,}$/u.test(input);
       const label =
-        entropy < 28
+        predictable || entropy < 28
           ? "Weak"
           : entropy < 36
             ? "Fair"
@@ -869,7 +859,8 @@ export function runExpansion(
       const mainCount = num("mainCount", 1, 20, true);
       const mainMax = num("mainMax", mainCount, 200, true);
       const bonusCount = num("bonusCount", 0, 10, true);
-      const bonusMax = bonusCount > 0 ? num("bonusMax", 1, 200, true) : 0;
+      const bonusMax =
+        bonusCount > 0 ? num("bonusMax", bonusCount, 200, true) : 0;
       const drawUnique = (count: number, max: number) => {
         const pool = Array.from({ length: max }, (_, i) => i + 1);
         const picked: number[] = [];

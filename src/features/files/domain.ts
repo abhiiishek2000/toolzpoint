@@ -346,6 +346,7 @@ export type FileTask = {
   backgroundColor?: string;
 };
 export type FileResult = {
+  report?: { title: string; headers: string[]; rows: (string | number)[][] };
   blob: Blob;
   width?: number;
   height?: number;

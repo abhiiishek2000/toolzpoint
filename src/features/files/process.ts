@@ -35,6 +35,11 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
     isPdfInput ? "pdf" : "image",
     task.kind === "merge-pdf" || task.kind === "images-to-pdf",
   );
+  const report = (
+    title: string,
+    headers: string[],
+    rows: (string | number)[][],
+  ) => ({ title, headers, rows });
   if (task.kind === "rotate-pdf" || task.kind === "add-page-numbers-to-pdf") {
     const { PDFDocument, degrees, StandardFonts, rgb } =
       await import("pdf-lib");
@@ -68,6 +73,26 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       blob: new Blob([new Uint8Array(await doc.save())], {
         type: "application/pdf",
       }),
+      report:
+        task.kind === "rotate-pdf"
+          ? report(
+              "Rotation by page",
+              ["Page", "Applied rotation", "Final rotation"],
+              pages.map((p, i) => [
+                i + 1,
+                task.rotation ?? 90,
+                p.getRotation().angle,
+              ]),
+            )
+          : report(
+              "Page number placement",
+              ["Page", "Printed label", "Placement"],
+              pages.map((_, i) => [
+                i + 1,
+                `${i + 1} / ${pages.length}`,
+                "Bottom center, 18 pt from crop edge",
+              ]),
+            ),
       pages: pages.length,
     };
   }
@@ -75,9 +100,12 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
     const { PDFDocument } = await import("pdf-lib");
     const out = await PDFDocument.create();
     let total = 0;
+    const sources: (string | number)[][] = [];
     for (const file of task.files) {
       const src = await PDFDocument.load(await file.arrayBuffer());
+      const first = total + 1;
       total += src.getPageCount();
+      sources.push([file.name, src.getPageCount(), `${first}–${total}`]);
       if (total > 200)
         throw new Error(
           "The combined PDF must contain no more than 200 pages.",
@@ -90,6 +118,11 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       blob: new Blob([new Uint8Array(await out.save())], {
         type: "application/pdf",
       }),
+      report: report(
+        "Merged PDF source order",
+        ["Source file", "Pages", "Output pages"],
+        sources,
+      ),
       pages: total,
     };
   }
@@ -98,6 +131,8 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
     const file = task.files[0];
     if (!file) throw new Error("Choose a PDF.");
     const src = await PDFDocument.load(await file.arrayBuffer());
+    if (src.getPageCount() < 1 || src.getPageCount() > 400)
+      throw new Error("Use a PDF with 1–400 pages.");
     const indices = parsePageRange(task.pageRange ?? "", src.getPageCount());
     const out = await PDFDocument.create();
     const pages = await out.copyPages(src, indices);
@@ -106,6 +141,13 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       blob: new Blob([new Uint8Array(await out.save())], {
         type: "application/pdf",
       }),
+      report: report(
+        task.kind === "split-pdf"
+          ? "Extracted page mapping"
+          : "Rebuilt page order",
+        ["Output page", "Original page"],
+        indices.map((index, i) => [i + 1, index + 1]),
+      ),
       pages: indices.length,
     };
   }
@@ -114,6 +156,8 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
     const file = task.files[0];
     if (!file) throw new Error("Choose a PDF.");
     const src = await PDFDocument.load(await file.arrayBuffer());
+    if (src.getPageCount() < 1 || src.getPageCount() > 400)
+      throw new Error("Use a PDF with 1–400 pages.");
     const indices = parsePageOrder(task.pageOrder ?? "", src.getPageCount());
     const out = await PDFDocument.create();
     const pages = await out.copyPages(src, indices);
@@ -122,6 +166,11 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       blob: new Blob([new Uint8Array(await out.save())], {
         type: "application/pdf",
       }),
+      report: report(
+        "Rebuilt page order",
+        ["Output page", "Original page"],
+        indices.map((index, i) => [i + 1, index + 1]),
+      ),
       pages: indices.length,
     };
   }
@@ -167,6 +216,11 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       blob: new Blob([new Uint8Array(await doc.save())], {
         type: "application/pdf",
       }),
+      report: report(
+        "Watermark on each page",
+        ["Page", "Text", "Opacity (%)", "Font size (pt)"],
+        pages.map((_, i) => [i + 1, clean, opacity * 100, fontSize]),
+      ),
       pages: pages.length,
     };
   }
@@ -207,6 +261,15 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       blob: new Blob([new Uint8Array(await out.save())], {
         type: "application/pdf",
       }),
+      report: report(
+        "Image-to-page mapping",
+        ["Page", "Source image", "Page format"],
+        task.files.map((f, i) => [
+          i + 1,
+          f.name,
+          "A4 portrait · white background · fitted inside margins",
+        ]),
+      ),
       pages: task.files.length,
     };
   }
@@ -276,7 +339,45 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
             `Could not compress under ${task.maxKB} KB. Try a smaller source photo.`,
           );
       }
-      return { blob, width: task.maxWidth, height: task.maxHeight };
+      return {
+        blob,
+        width: task.maxWidth,
+        height: task.maxHeight,
+        report: report(
+          task.kind === "passport-photo-maker"
+            ? "Photo crop and export checks"
+            : "Social image crop specification",
+          ["Check", "Value"],
+          [
+            ["Original pixels", `${image.width} × ${image.height}`],
+            ["Output pixels", `${task.maxWidth} × ${task.maxHeight}`],
+            [
+              "Source crop (x, y, width, height)",
+              [sx, sy, sWidth, sHeight].map((n) => n.toFixed(1)).join(", "),
+            ],
+            ["Output", "JPEG"],
+            ["Encoded quality (%)", Math.round(quality * 100)],
+            [
+              "Background replacement",
+              task.removeBackground
+                ? (task.backgroundColor ?? "#ffffff")
+                : "Off",
+            ],
+            [
+              "Size limit",
+              task.maxKB
+                ? `${task.maxKB} KB; actual ${(blob.size / 1024).toFixed(1)} KB`
+                : "No size cap selected",
+            ],
+            [
+              "Review",
+              task.kind === "passport-photo-maker"
+                ? "Dimensions do not certify official photo acceptance. Check face, lighting and current issuing-authority rules."
+                : "Check the crop, text and safe areas for the destination placement.",
+            ],
+          ],
+        ),
+      };
     } finally {
       image.close();
     }
@@ -330,7 +431,55 @@ export async function processFiles(task: FileTask): Promise<FileResult> {
       throw new Error(
         "This browser does not support the selected output format.",
       );
-    return { blob, width: outputWidth, height: outputHeight };
+    const title = {
+      "image-compressor": "Compression quality and size report",
+      "image-resizer": "Resize dimensions and aspect ratio",
+      "image-format-converter": "Format conversion specification",
+      "image-rotator-flipper": "Rotation and flip operations",
+    }[task.kind];
+    return {
+      blob,
+      width: outputWidth,
+      height: outputHeight,
+      report: report(
+        title,
+        ["Property", "Original", "Output"],
+        [
+          [
+            "Dimensions (px)",
+            `${image.width} × ${image.height}`,
+            `${outputWidth} × ${outputHeight}`,
+          ],
+          ["File format", file.type, blob.type],
+          ["File bytes", file.size, blob.size],
+          ...(task.kind === "image-rotator-flipper"
+            ? [
+                ["Clockwise rotation", "0°", `${angle}°`],
+                ["Flip", "None", flip],
+              ]
+            : []),
+          [
+            "Resize behavior",
+            "Source dimensions",
+            "Aspect ratio preserved; no enlargement",
+          ],
+          [
+            "Encoding quality",
+            "Source encoding",
+            task.format === "image/png"
+              ? "Lossless PNG; quality slider not applicable"
+              : `${Math.round(task.quality * 100)}% encoder setting`,
+          ],
+          [
+            "Transparency",
+            "Source alpha if present",
+            task.format === "image/jpeg"
+              ? "Flattened onto white"
+              : "Retained if present",
+          ],
+        ],
+      ),
+    };
   } finally {
     image.close();
   }

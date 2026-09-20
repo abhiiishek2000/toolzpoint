@@ -357,7 +357,7 @@ it("projects a future equivalent value for inflation", () => {
     years: "10",
   }) as Record<string, number>;
   expect(result["Future equivalent value"]).toBeCloseTo(1790.8476965428547, 6);
-  expect(result["Purchasing power lost"]).toBeCloseTo(790.8476965428547, 6);
+  expect(result["Additional amount needed"]).toBeCloseTo(790.8476965428547, 6);
 });
 it("sums assets and liabilities into a net worth", () => {
   expect(
@@ -512,7 +512,7 @@ it("scores password strength from character-pool entropy", () => {
   expect(
     (run("password-strength-checker", "password", {}) as Record<string, string>)
       .Strength,
-  ).toBe("Good");
+  ).toBe("Weak");
   expect(() => run("password-strength-checker", "", {})).toThrow();
 });
 it("draws unique lottery numbers without replacement using injected randomness", () => {

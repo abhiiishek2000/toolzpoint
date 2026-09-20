@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { numeric } from "../shared";
+import { numeric, parseDate } from "../shared";
 export const invoiceItemSchema = z.object({
   description: z.string().trim().min(1).max(200),
   quantity: numeric.min(0.01).max(1e6),
@@ -43,6 +43,9 @@ export async function generateInvoicePdf(
   logo?: InvoiceLogo,
 ) {
   const v = invoiceSchema.parse(input);
+  const issued = parseDate(v.invoiceDate);
+  if (v.dueDate && parseDate(v.dueDate) < issued)
+    throw new Error("Due date must be on or after the invoice date.");
   const totals = invoiceTotals(v.items, v.taxRate);
   const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
   const { wrapText, wrapParagraphs, sanitizeForPdf } =
