@@ -1,6 +1,57 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+for (const slug of ["sip-calculator", "compound-interest-calculator"]) {
+  test(`${slug} loads chart and report styles from the production build`, async ({
+    page,
+  }) => {
+    await page.goto(`/tools/${slug}`);
+    await page.getByRole("button", { name: "Calculate result" }).click();
+    await expect(page.locator(".schedule-panel")).toBeVisible();
+    // Unstyled SVG lines default to black fill and no stroke. This catches the
+    // production regression that functional and accessibility tests missed.
+    await expect(page.locator(".chart-balance")).toHaveCSS("fill", "none");
+    await expect(page.locator(".chart-balance")).not.toHaveCSS(
+      "stroke",
+      "none",
+    );
+    await expect(page.locator(".chart-balance")).toHaveCSS(
+      "stroke-width",
+      "3px",
+    );
+    await expect(page.locator(".growth-chart")).toHaveCSS(
+      "border-radius",
+      "14px",
+    );
+    await expect(page.locator(".schedule-controls")).toHaveCSS(
+      "display",
+      "inline-flex",
+    );
+    await expect(page.locator(".schedule-panel td").first()).toHaveCSS(
+      "padding-left",
+      "16px",
+    );
+    await expect(page.locator(".insight-table td").first()).toHaveCSS(
+      "padding-top",
+      "13px",
+    );
+    await expect(page.locator(".data-table-scroll").first()).toHaveCSS(
+      "overflow-x",
+      "auto",
+    );
+    await page.getByRole("button", { name: "Switch to dark theme" }).click();
+    await expect(page.locator(".chart-balance")).not.toHaveCSS(
+      "stroke",
+      "none",
+    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+    ).toBe(true);
+  });
+}
+
 test("SIP shows reconciling yearly/monthly rows and exports the whole schedule", async ({
   page,
 }) => {

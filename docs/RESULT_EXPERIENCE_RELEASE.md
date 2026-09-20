@@ -6,6 +6,16 @@ All 100 browser-tool pages now have a tool-specific interpretation of the output
 
 The shared workspace adds clearer result hierarchy, readable long-text results, input/output character counts for text outputs, accessible method and limitation disclosures, responsive tables, and reduced-motion-aware report transitions. Invalid or changed input immediately disables copying and hides the previous result/export. Async live previews cannot overwrite a newer input state.
 
+## Production stylesheet correction — September 20, 2026
+
+The deployed SIP page rendered the new reports, but its linked stylesheet (`1xrkn9s3tyuq4.css`) omitted every appended result rule, including `.schedule-panel`, `.detail-table`, `.growth-chart` and `.insight-report`. Computed styles confirmed zero cell padding and SVG curves without their intended stroke. The earlier functional and accessibility checks did not detect missing presentation rules.
+
+`npm run build` now explicitly uses Webpack, so Vercel and CI use the same build path as the local browser checks. The default Turbopack build still fails locally with `binding to a port — Operation not permitted (os error 1)`, including an elevated retry; this prevents establishing the exact cause inside that compiler here.
+
+A mandatory `postbuild` check reads the stylesheet links from every generated tool page and rejects missing chart, table, report or workspace selectors. It verifies all 100 pages and was also checked against the broken production stylesheet, which it correctly rejects. Desktop and mobile regression tests inspect actual chart fill/stroke, table padding, report containers, dark mode and page overflow for SIP and compound interest.
+
+Validation: the production build, 100-page linked-style check, 305 unit tests, 344 desktop/mobile browser tests, ESLint, TypeScript and formatting all passed.
+
 ## Detailed reports
 
 | Tools                                            | Added output                                                                                                                         |
