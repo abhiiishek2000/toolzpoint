@@ -62,6 +62,15 @@ export default async function DeleteAccountPage({
         </p>
       </section>
       <section>
+        <h2>Delete some of your data</h2>
+        <p>
+          You can delete individual entries without deleting your account: in
+          the app, go to Log → History, pick an entry and delete it. Deleting a
+          meal logged from a photo also deletes the stored photo. Community
+          posts can be deleted from the Community screen.
+        </p>
+      </section>
+      <section>
         <h2>What is deleted</h2>
         <p>
           Your account and profile, every entry you logged (medication doses,
