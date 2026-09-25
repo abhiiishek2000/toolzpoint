@@ -11,15 +11,21 @@
     "screenshots": [
       {
         "src": "/apps/cashyai/screenshot-dashboard.png",
-        "alt": "CashyAi dashboard showing monthly cash flow, income, expenses, and upcoming bills"
+        "alt": "CashyAi dashboard showing monthly cash flow, income, expenses, and upcoming bills",
+        "width": 270,
+        "height": 480
       },
       {
         "src": "/apps/cashyai/screenshot-ai-chat.png",
-        "alt": "CashyAi on-device AI chat answering a spending-safety question"
+        "alt": "CashyAi on-device AI chat answering a spending-safety question",
+        "width": 270,
+        "height": 480
       },
       {
         "src": "/apps/cashyai/screenshot-splits.png",
-        "alt": "CashyAi split expenses screen showing balances owed between friends"
+        "alt": "CashyAi split expenses screen showing balances owed between friends",
+        "width": 270,
+        "height": 480
       }
     ],
     "features": [
@@ -53,6 +59,82 @@
     "status": "published",
     "reviewed": true,
     "publishedAt": "2026-09-19",
-    "updatedAt": "2026-09-19"
+    "updatedAt": "2026-09-19",
+    "availability": "live",
+    "schemaCategory": "FinanceApplication",
+    "sidebar": {
+      "title": "Financial data stays on your device.",
+      "body": "CashyAi's AI features run entirely on-device. Google Sign-In is optional and used only for Drive backup."
+    }
+  },
+  {
+    "slug": "wend",
+    "name": "Wend",
+    "tagline": "GLP-1 tracker & journal",
+    "shortDescription": "Log injections, protein, weight and symptoms on your GLP-1 medication — a calm, private journal to bring to your next appointment.",
+    "description": "Wend is a companion journal for people taking GLP-1 medication. Log each injection and site, weight, food and protein, water and symptoms, and see a smoothed weight trend instead of daily noise. Keep your prescriber's dose plan, track medication costs and refills, and export a summary for your next appointment. Premium adds AI meal estimates from a photo, a weekly strength plan to help protect muscle, and the doctor-visit summary. Wend is not a medical device and never recommends doses.",
+    "category": "Health & Fitness",
+    "platforms": ["Android"],
+    "icon": "/apps/wend/icon.png",
+    "screenshots": [
+      {
+        "src": "/apps/wend/screenshot-photo-estimate.png",
+        "alt": "Wend reviewing an AI estimate of protein and calories from a meal photo",
+        "width": 270,
+        "height": 600
+      },
+      {
+        "src": "/apps/wend/screenshot-symptom-log.png",
+        "alt": "Wend symptom log with nausea selected at moderate severity and a safety note",
+        "width": 270,
+        "height": 600
+      },
+      {
+        "src": "/apps/wend/screenshot-cost-tracker.png",
+        "alt": "Wend cost and refills tracker showing monthly spend and days of supply left",
+        "width": 270,
+        "height": 600
+      },
+      {
+        "src": "/apps/wend/screenshot-badges.png",
+        "alt": "Wend victories screen with milestone badges and a non-scale win",
+        "width": 270,
+        "height": 600
+      }
+    ],
+    "features": [
+      "Injection log with dose, site rotation and a countdown to your next dose",
+      "Protein, water, food and symptom tracking with severity",
+      "Smoothed weight trend, weekly recap and badges for non-scale wins",
+      "Your prescriber's dose plan, medication cost and refill tracking",
+      "AI meal estimates from a photo — 3 free scans, then Premium",
+      "Doctor-visit summary, data export and one-tap account deletion"
+    ],
+    "playStoreUrl": "https://play.google.com/store/apps/details?id=com.wend.app.wend",
+    "packageId": "com.wend.app.wend",
+    "developer": "ToolzPoint",
+    "supportEmail": "ak663904@gmail.com",
+    "googleSignIn": {
+      "purpose": "Wend uses Google Sign-In to create your account and sign you in. There are no Wend passwords. Your Google name pre-fills your first name during setup.",
+      "scopes": [
+        {
+          "scope": "openid, email, profile (basic profile)",
+          "reason": "Identifies your Wend account so your journal syncs securely to it. Your name and email are not shown to other members, and are not used for advertising or analytics."
+        }
+      ],
+      "dataNotAccessed": "Wend never requests access to your Gmail, Google Drive, contacts, calendar, or any other Google data."
+    },
+    "privacyPolicyPath": "/apps/wend/privacy",
+    "termsPath": "/apps/wend/terms",
+    "status": "published",
+    "reviewed": false,
+    "publishedAt": "2026-09-25",
+    "updatedAt": "2026-09-25",
+    "availability": "coming-soon",
+    "schemaCategory": "HealthApplication",
+    "sidebar": {
+      "title": "Your health journal stays private.",
+      "body": "Entries are private to your account, community posts are anonymous, and Wend has no ads or ad trackers. Export or delete everything from Settings."
+    }
   }
 ]

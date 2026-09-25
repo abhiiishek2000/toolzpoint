@@ -4,7 +4,7 @@ import { AppCard } from "@/components/AppCard";
 export const generateMetadata = () =>
   metadata(
     "Apps",
-    "Mobile apps built by ToolzPoint, including CashyAi, an Android expense tracker and AI money coach.",
+    "Mobile apps built by ToolzPoint, including CashyAi, an Android expense tracker and AI money coach, and Wend, a GLP-1 tracker and journal.",
     "/apps",
   );
 export default function Apps() {

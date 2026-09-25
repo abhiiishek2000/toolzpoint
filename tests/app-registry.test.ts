@@ -18,13 +18,18 @@ it("has at least one published app with complete content", () => {
       expect(s.scope.length).toBeGreaterThan(0);
       expect(s.reason.length).toBeGreaterThan(0);
     }
+    expect(["live", "coming-soon"]).toContain(a.availability);
+    expect(a.sidebar.title.length).toBeGreaterThan(0);
     for (const s of a.screenshots) {
       expect(s.src).toMatch(/^\/apps\//);
       expect(s.alt.length).toBeGreaterThan(0);
+      expect(s.width).toBeGreaterThan(0);
+      expect(s.height).toBeGreaterThan(0);
     }
   }
 });
 it("looks up published apps by slug only", () => {
   expect(getApp("cashyai")).toBeDefined();
+  expect(getApp("wend")).toBeDefined();
   expect(getApp("missing")).toBeUndefined();
 });

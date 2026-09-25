@@ -47,14 +47,18 @@ export default async function AppPage({
         </div>
       </div>
       <div className="app-cta">
-        <a
-          className="play-store-badge"
-          href={a.playStoreUrl}
-          rel="noopener noreferrer"
-        >
-          <Icon name="ArrowUpRight" size={16} />
-          Get it on Google Play
-        </a>
+        {a.availability === "live" ? (
+          <a
+            className="play-store-badge"
+            href={a.playStoreUrl}
+            rel="noopener noreferrer"
+          >
+            <Icon name="ArrowUpRight" size={16} />
+            Get it on Google Play
+          </a>
+        ) : (
+          <span className="play-store-badge">Coming soon to Google Play</span>
+        )}
         <Link href={a.privacyPolicyPath}>
           Privacy Policy <Icon name="ArrowUpRight" size={15} />
         </Link>
@@ -94,8 +98,8 @@ export default async function AppPage({
                     key={s.src}
                     src={s.src}
                     alt={s.alt}
-                    width={270}
-                    height={480}
+                    width={s.width}
+                    height={s.height}
                   />
                 ))}
               </div>
@@ -129,11 +133,8 @@ export default async function AppPage({
         </article>
         <aside className="tool-sidebar">
           <Icon name="ShieldCheck" size={29} />
-          <h3>Financial data stays on your device.</h3>
-          <p>
-            CashyAi&apos;s AI features run entirely on-device. Google Sign-In is
-            optional and used only for Drive backup.
-          </p>
+          <h3>{a.sidebar.title}</h3>
+          <p>{a.sidebar.body}</p>
           <Link href={a.privacyPolicyPath}>
             Read our privacy policy <Icon name="ArrowUpRight" size={15} />
           </Link>
@@ -153,7 +154,7 @@ export default async function AppPage({
             name: a.name,
             description: a.shortDescription,
             url: new URL(`/apps/${slug}`, siteUrl).href,
-            applicationCategory: "FinanceApplication",
+            applicationCategory: a.schemaCategory,
             operatingSystem: "Android",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           }),
