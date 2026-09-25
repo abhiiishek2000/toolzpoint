@@ -39,6 +39,11 @@ test("Wend policy pages carry the health and medical-device disclosures", async 
     page.getByRole("link", { name: "Health Connect Permissions policy" }),
   ).toBeVisible();
   await expect(page.getByText("is not a medical device").first()).toBeVisible();
+  await page.getByRole("link", { name: "how to delete your account" }).click();
+  await expect(page).toHaveURL(/\/apps\/wend\/delete-account$/);
+  await expect(
+    page.getByRole("heading", { name: "Delete your Wend account", level: 1 }),
+  ).toBeVisible();
   await page.goto("/apps/wend/terms");
   await page.getByRole("link", { name: "Privacy Policy" }).click();
   await expect(page).toHaveURL(/\/apps\/wend\/privacy$/);

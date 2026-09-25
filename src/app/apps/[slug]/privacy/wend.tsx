@@ -1,6 +1,7 @@
+import Link from "next/link";
 import type { LegalBodyProps } from "../legal";
 /** Wend privacy policy, ported verbatim from wend_app/docs/legal/privacy.html. */
-export function WendPrivacy({ doc: p }: LegalBodyProps) {
+export function WendPrivacy({ doc: p, slug }: LegalBodyProps) {
   const mail = <a href={`mailto:${p.supportEmail}`}>{p.supportEmail}</a>;
   return (
     <>
@@ -135,7 +136,11 @@ export function WendPrivacy({ doc: p }: LegalBodyProps) {
             <strong>Delete:</strong> Settings → Delete account &amp; data
             permanently deletes your account, entries and photos from our
             systems. Deleting your account does not cancel a store subscription;
-            cancel it in Google Play or the App Store.
+            cancel it in Google Play or the App Store. Without the app, see{" "}
+            <Link href={`/apps/${slug}/delete-account`}>
+              how to delete your account
+            </Link>
+            .
           </li>
           <li>
             <strong>Edit:</strong> you can edit or delete individual entries at
