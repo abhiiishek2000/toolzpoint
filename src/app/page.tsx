@@ -4,7 +4,7 @@ import { StudioNav } from "@/components/StudioNav";
 import { Launchpad } from "@/components/Launchpad";
 import { RecentTools } from "@/components/Directory";
 import QrCreator from "@/components/QrCreator";
-import { metadata } from "@/lib/seo";
+import { metadata, safeJson, siteUrl } from "@/lib/seo";
 import { createQr } from "@/features/qr-code-generator/domain";
 export const generateMetadata = () =>
   metadata(
@@ -175,6 +175,36 @@ export default async function Home() {
           </Link>
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJson({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "ToolzPoint",
+            url: siteUrl,
+            description:
+              "A collection of free, private web tools for the things you do every day. No sign-up. Just useful.",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: `${siteUrl}/search?q={search_term_string}`,
+              "query-input": "required name=search_term_string",
+            },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJson({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "ToolzPoint",
+            url: siteUrl,
+            logo: new URL("/icon.svg", siteUrl).href,
+          }),
+        }}
+      />
     </main>
   );
 }

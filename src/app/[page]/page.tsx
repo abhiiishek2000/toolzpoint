@@ -121,6 +121,14 @@ export const pages: Record<
     lead: "New tools and meaningful changes, in one place.",
     sections: [
       [
+        "September 26, 2026 — 12 more tools, now 112 total",
+        "Business Days Calculator, Countdown Timer, CAGR Calculator, Sales Tax Calculator, Volume Converter, Area Converter, Color Converter, Reading Time Calculator, Text Diff Checker, Dog Age Calculator, Magic 8 Ball, and Love Calculator.",
+      ],
+      [
+        "September 19–20, 2026 — Expanded to 100 tools",
+        "A large batch across every category: unit and number-base converters, developer utilities, additional finance and health calculators, text tools, random generators, and more, plus a detailed result breakdown, bounded input validation, and search-friendly metadata across the whole catalog.",
+      ],
+      [
         "September 19, 2026 — Invoice Maker and Biodata Maker",
         "A new Documents & design category: fill in a form and download a clean PDF. Invoice Maker builds an itemized invoice with automatic tax and totals; Biodata Maker builds a matrimonial biodata with an optional photo, where every field but your name is left off the page unless you fill it in.",
       ],

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { categories } from "@/lib/tool-registry";
 import { Directory } from "@/components/Directory";
-import { metadata, notFoundMetadata } from "@/lib/seo";
+import { metadata, notFoundMetadata, safeJson, siteUrl } from "@/lib/seo";
 const titleOverrides: Record<string, string> = {
   Images: "Image tools",
   Calculators: "Calculators",
@@ -45,6 +45,29 @@ export default async function Category({
       <h1>{categoryTitle(c.name)}.</h1>
       <p className="page-lead">{c.description}</p>
       <Directory initialCategory={c.name} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJson({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "All tools",
+                item: new URL("/tools", siteUrl).href,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: categoryTitle(c.name),
+                item: new URL(`/category/${slug}`, siteUrl).href,
+              },
+            ],
+          }),
+        }}
+      />
     </main>
   );
 }
