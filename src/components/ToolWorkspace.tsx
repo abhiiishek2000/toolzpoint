@@ -21,6 +21,10 @@ const primaryResults: Record<string, string> = {
   "gst-calculator": "Total price",
   "fd-calculator": "Maturity amount",
   "rd-calculator": "Maturity amount",
+  "cagr-calculator": "CAGR (%)",
+  "business-days-calculator": "Business days",
+  "sales-tax-calculator": "Total price",
+  "love-calculator": "Compatibility (%)",
 };
 export default function ToolWorkspace({
   slug,

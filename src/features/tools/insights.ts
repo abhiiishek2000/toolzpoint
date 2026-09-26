@@ -1223,6 +1223,168 @@ export function toolInsight(
         ]),
         "These are the inputs behind the current result. Use the period schedule to reconcile opening balance, cash flows, interest or cost increases, and closing balance.",
       );
+    case "business-days-calculator":
+      return table(
+        "Calendar breakdown",
+        ["Metric", "Value"],
+        [
+          ["Business days", val("Business days")],
+          ["Holidays excluded", val("Holidays excluded")],
+          ["Total calendar days", val("Total calendar days")],
+        ],
+        "Business days count Monday through Friday between the two dates, inclusive of both endpoints, minus any listed holidays that fall on a weekday in that range.",
+      );
+    case "countdown-timer":
+      return table(
+        "Countdown breakdown",
+        ["Unit", "Value"],
+        [
+          ["Direction", val("Direction")],
+          ["Days", val("Days")],
+          ["Hours", val("Hours")],
+          ["Minutes", val("Minutes")],
+          ["Seconds", val("Seconds")],
+        ],
+        'This countdown is fixed to the two date-and-time values you entered; it does not tick forward automatically. Update the "from" value to a later moment to see a fresh countdown.',
+      );
+    case "cagr-calculator":
+      return table(
+        "How the growth rate was formed",
+        ["Input", "Value"],
+        [
+          ["Initial value", v.initial!],
+          ["Final value", v.final!],
+          ["Years", v.years!],
+          ["CAGR (%)", val("CAGR (%)")],
+        ],
+        "CAGR is the constant annual growth rate that would turn the initial value into the final value over the given years. It smooths out any actual year-to-year fluctuation.",
+      );
+    case "sales-tax-calculator":
+      return table(
+        "Tax breakdown",
+        ["Field", "Value"],
+        [
+          ["Base price", val("Base price")],
+          ["Sales tax", val("Sales tax")],
+          ["Total price", val("Total price")],
+        ],
+        "Exclusive mode adds tax on top of a base price; inclusive mode extracts the tax already contained in a total. Confirm which one matches your receipt or quote.",
+      );
+    case "color-converter":
+      return table(
+        "Color in every supported format",
+        ["Format", "Value"],
+        [
+          ["Hex", val("Hex")],
+          ["RGB", val("RGB")],
+          ["HSL", val("HSL")],
+        ],
+        "All three rows describe the same color. Hex and RGB use red, green and blue channels; HSL separates hue, saturation and lightness.",
+      );
+    case "reading-time-calculator": {
+      const tokens = words(input);
+      return table(
+        "Most frequent words in this text",
+        ["Word (case-insensitive)", "Occurrences"],
+        frequency(tokens.map((w) => w.toLocaleLowerCase("en"))).slice(0, 20),
+        "Reading time is an estimate at the selected words-per-minute pace. Very short or list-like text can read faster than continuous prose.",
+      );
+    }
+    case "text-diff-checker": {
+      const a = (v.original ?? "").split(/\r?\n/);
+      const b = (v.changed ?? "").split(/\r?\n/);
+      const m = a.length;
+      const n2 = b.length;
+      const dp: number[][] = Array.from({ length: m + 1 }, () =>
+        new Array(n2 + 1).fill(0),
+      );
+      for (let i = m - 1; i >= 0; i--)
+        for (let j = n2 - 1; j >= 0; j--)
+          dp[i]![j] =
+            a[i] === b[j]
+              ? dp[i + 1]![j + 1]! + 1
+              : Math.max(dp[i + 1]![j]!, dp[i]![j + 1]!);
+      const rows: (string | number)[][] = [];
+      let i = 0;
+      let j = 0;
+      let line = 0;
+      while (i < m && j < n2) {
+        line++;
+        if (a[i] === b[j]) {
+          rows.push([line, "Unchanged", a[i]!]);
+          i++;
+          j++;
+        } else if (dp[i + 1]![j]! >= dp[i]![j + 1]!) {
+          rows.push([line, "Removed", a[i]!]);
+          i++;
+        } else {
+          rows.push([line, "Added", b[j]!]);
+          j++;
+        }
+      }
+      while (i < m) {
+        line++;
+        rows.push([line, "Removed", a[i]!]);
+        i++;
+      }
+      while (j < n2) {
+        line++;
+        rows.push([line, "Added", b[j]!]);
+        j++;
+      }
+      return table(
+        "Line-by-line comparison",
+        ["#", "Change", "Line"],
+        rows.slice(0, 1000),
+        "Unchanged lines match exactly. Added lines appear only in the changed text; removed lines appear only in the original. Comparison is case-sensitive and whitespace-sensitive.",
+      );
+    }
+    case "dog-age-calculator": {
+      const size = (v.size as string) || "medium";
+      const perYear: Record<string, number> = {
+        small: 4,
+        medium: 4.5,
+        large: 5,
+        giant: 5.5,
+      };
+      const rows = [1, 2, 3, 5, 7, 10, 12, 15].map((year) => {
+        const human =
+          year <= 1
+            ? year * 15
+            : year <= 2
+              ? 15 + (year - 1) * 9
+              : 24 + (year - 2) * perYear[size]!;
+        return [year, Math.round(human * 10) / 10];
+      });
+      return table(
+        "Human age equivalent by dog age",
+        ["Dog age (years)", "Human age equivalent"],
+        rows,
+        "The first two dog years count for more human-equivalent years than later years. The per-year rate after year two depends on the selected size category.",
+      );
+    }
+    case "magic-8-ball":
+      return table(
+        "This shake's answer",
+        ["Field", "Value"],
+        [
+          ["Answer", val("Answer")],
+          ["Your question", (v.question ?? "").trim() || "Not entered"],
+        ],
+        "Answers are drawn at random from the classic set of replies and are unrelated to the question's content. Shake again for a new, independent answer.",
+      );
+    case "love-calculator":
+      return table(
+        "How this score was formed",
+        ["Input", "Value"],
+        [
+          ["First name", v.name1!],
+          ["Second name", v.name2!],
+          ["Compatibility (%)", val("Compatibility (%)")],
+          ["Verdict", val("Verdict")],
+        ],
+        "The score comes from a deterministic calculation on the two names, not a real measure of compatibility. The same two names always produce the same score regardless of order.",
+      );
     default: {
       if (unitFactors[slug] || slug === "temperature-converter")
         return table(

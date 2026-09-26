@@ -24,10 +24,10 @@ export const specialTools = [
 ];
 const generic = tools.filter((t) => !specialTools.includes(t.slug));
 describe("individual result coverage", () => {
-  it("accounts for exactly 100 tools", () => {
-    expect(generic).toHaveLength(82);
+  it("accounts for exactly 112 tools", () => {
+    expect(generic).toHaveLength(94);
     expect(specialTools).toHaveLength(18);
-    expect(tools).toHaveLength(100);
+    expect(tools).toHaveLength(112);
   });
   for (const tool of generic)
     it(`${tool.slug} renders a complete bounded individual report`, async () => {

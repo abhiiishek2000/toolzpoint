@@ -203,6 +203,30 @@ export const resultGuides: Record<string, string> = {
     "Check the preset dimensions and the crop preview. Keep faces, text and logos away from areas that the destination platform may crop further.",
   "resume-maker":
     "Check the PDF preview for spelling, dates, page breaks and contact details. A template helps presentation; tailor the content to the role before sharing.",
+  "volume-converter":
+    "The main result uses your chosen output unit. The reference table below shows the same volume in every supported unit for an easy cross-check.",
+  "area-converter":
+    "The main result uses your chosen output unit. The reference table below shows the same area in every supported unit for an easy cross-check.",
+  "business-days-calculator":
+    "Business days count Monday through Friday, inclusive of both the start and end date. Listed holidays are only excluded when they fall on a weekday inside that range.",
+  "countdown-timer":
+    'The countdown is calculated once from the two date-and-time values you enter; it does not update automatically as real time passes. Recalculate with a later "from" value for a fresh countdown.',
+  "cagr-calculator":
+    "CAGR is the constant yearly growth rate that would take the initial value to the final value over the given years. It smooths real fluctuations into a single average rate.",
+  "sales-tax-calculator":
+    "Exclusive mode adds tax on top of a base price; inclusive mode extracts the tax already inside a total. Confirm which one matches your receipt before comparing totals.",
+  "color-converter":
+    "Hex, RGB and HSL describe the same color in different notations. Paste any one of the three formats to see the other two; rounding can shift the last digit slightly.",
+  "reading-time-calculator":
+    "The estimate divides your word count by the selected words-per-minute pace. Dense technical text or lists can take longer to read than the estimate suggests.",
+  "text-diff-checker":
+    "The comparison is exact, line-by-line text matching, not a semantic diff. A single changed character marks the whole line as different; check whitespace and case if a line looks identical but is flagged as changed.",
+  "dog-age-calculator":
+    "The estimate uses a size-adjusted curve, not a fixed multiplier, since small and giant breeds age at different rates after the first two years. Treat it as a general reference, not a veterinary assessment.",
+  "magic-8-ball":
+    "The answer is drawn at random from the classic set of replies. It is a novelty response, unrelated to the question you typed, and repeated shakes can repeat an answer.",
+  "love-calculator":
+    "The compatibility score is a deterministic calculation based on the two names, not a real measure of romantic compatibility. The same two names always give the same score in any order.",
 };
 
 const titleOverrides: Record<string, string> = {

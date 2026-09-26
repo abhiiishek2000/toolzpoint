@@ -5446,5 +5446,663 @@
     "publishedAt": "2026-09-19",
     "updatedAt": "2026-09-20",
     "reviewed": true
+  },
+  {
+    "slug": "business-days-calculator",
+    "name": "Business Days Calculator",
+    "category": "Calculators",
+    "shortDescription": "Count working days between two dates, excluding weekends and optional holidays.",
+    "icon": "CalendarRange",
+    "intro": "Count working days between two dates, excluding weekends and optional holidays. Every weekday from the start date through the end date counts as a business day, inclusive of both endpoints. Any date you list as a holiday is excluded from the count when it falls on a weekday inside that range. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Every weekday from the start date through the end date counts as a business day, inclusive of both endpoints. Any date you list as a holiday is excluded from the count when it falls on a weekday inside that range.",
+    "examples": [
+      {
+        "input": "1–30 Sep 2026, no holidays",
+        "output": "22 business days out of 30 calendar days"
+      },
+      {
+        "input": "24–26 Dec 2026, with 25 Dec listed as a holiday",
+        "output": "1 business day out of 3 calendar days"
+      }
+    ],
+    "limitations": "Covers a single fixed Monday–Friday work week only; it does not support alternate weekend patterns or region-specific holiday calendars. Use a range of at most 100 years and at most 366 listed holidays.",
+    "faq": [
+      {
+        "question": "How does the business days calculator work?",
+        "answer": "Every weekday from the start date through the end date counts as a business day, inclusive of both endpoints. Any date you list as a holiday is excluded from the count when it falls on a weekday inside that range."
+      },
+      {
+        "question": "What can I inspect in the business days calculator result?",
+        "answer": "The calendar breakdown helps you check the result before using it. Covers a single fixed Monday–Friday work week only; it does not support alternate weekend patterns or region-specific holiday calendars. Use a range of at most 100 years and at most 366 listed holidays."
+      },
+      {
+        "question": "Does the business days calculator upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "business days",
+      "calculator",
+      "working days",
+      "business days calculator",
+      "business days calculator online",
+      "working days between two dates",
+      "exclude weekends and holidays"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "date-difference-calculator",
+      "age-calculator",
+      "countdown-timer",
+      "work-hours-calculator"
+    ]
+  },
+  {
+    "slug": "countdown-timer",
+    "name": "Countdown Timer",
+    "category": "Calculators",
+    "shortDescription": "Calculate the days, hours, minutes and seconds between two exact dates and times.",
+    "icon": "Timer",
+    "intro": "Calculate the days, hours, minutes and seconds between two exact dates and times. The target and \"from\" date-and-time values are each converted to a single point in time, and the difference between them is broken down into days, hours, minutes and seconds. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "The target and \"from\" date-and-time values are each converted to a single point in time, and the difference between them is broken down into days, hours, minutes and seconds.",
+    "examples": [
+      {
+        "input": "From 26 Sep 2026 00:00 to 1 Jan 2027 00:00",
+        "output": "97 days remaining until the target"
+      },
+      {
+        "input": "From 26 Sep 2026 00:00 to 1 Jan 2026 00:00",
+        "output": "268 days elapsed since the target"
+      }
+    ],
+    "limitations": "This is a one-time calculation, not a live ticking clock; it does not update automatically as real time passes. Use two moments within 100 years of each other.",
+    "faq": [
+      {
+        "question": "How does the countdown timer work?",
+        "answer": "The target and \"from\" date-and-time values are each converted to a single point in time, and the difference between them is broken down into days, hours, minutes and seconds."
+      },
+      {
+        "question": "What can I inspect in the countdown timer result?",
+        "answer": "The countdown breakdown helps you check the result before using it. This is a one-time calculation, not a live ticking clock; it does not update automatically as real time passes. Use two moments within 100 years of each other."
+      },
+      {
+        "question": "Does the countdown timer upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "countdown",
+      "timer",
+      "countdown timer",
+      "countdown timer online",
+      "days until calculator",
+      "time between two dates",
+      "date countdown"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "date-difference-calculator",
+      "business-days-calculator",
+      "age-calculator",
+      "timezone-converter"
+    ]
+  },
+  {
+    "slug": "cagr-calculator",
+    "name": "CAGR Calculator",
+    "category": "Finance",
+    "shortDescription": "Calculate the compound annual growth rate between an initial and final investment value.",
+    "icon": "TrendingUp",
+    "intro": "Calculate the compound annual growth rate between an initial and final investment value. CAGR equals the final value divided by the initial value, raised to the power of one divided by the number of years, minus one, expressed as a percentage. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "CAGR equals the final value divided by the initial value, raised to the power of one divided by the number of years, minus one, expressed as a percentage.",
+    "examples": [
+      {
+        "input": "₹100,000 growing to ₹200,000 over 5 years",
+        "output": "CAGR ≈14.87% · Total growth 100%"
+      },
+      {
+        "input": "₹100,000 falling to ₹80,000 over 3 years",
+        "output": "CAGR ≈-7.17% · Total growth -20%"
+      }
+    ],
+    "limitations": "This is a smoothed average growth rate, not a description of actual year-to-year returns, and it excludes any interim cash flows, fees or taxes. Initial value must be at least 0.01; years must be 0.1–100.",
+    "faq": [
+      {
+        "question": "How does the cagr calculator work?",
+        "answer": "CAGR equals the final value divided by the initial value, raised to the power of one divided by the number of years, minus one, expressed as a percentage."
+      },
+      {
+        "question": "What can I inspect in the cagr calculator result?",
+        "answer": "The how the growth rate was formed helps you check the result before using it. This is a smoothed average growth rate, not a description of actual year-to-year returns, and it excludes any interim cash flows, fees or taxes. Initial value must be at least 0.01; years must be 0.1–100."
+      },
+      {
+        "question": "Does the cagr calculator upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "cagr",
+      "calculator",
+      "compound annual growth rate",
+      "cagr calculator",
+      "cagr calculator online",
+      "investment growth rate",
+      "annualized return calculator"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "roi-calculator",
+      "compound-interest-calculator",
+      "sip-calculator",
+      "inflation-calculator"
+    ]
+  },
+  {
+    "slug": "sales-tax-calculator",
+    "name": "Sales Tax Calculator",
+    "category": "Finance",
+    "shortDescription": "Add sales tax to a base price or extract it from a tax-inclusive total.",
+    "icon": "Receipt",
+    "intro": "Add sales tax to a base price or extract it from a tax-inclusive total. Adding tax: tax equals the base price multiplied by the rate divided by 100, and the total is the base price plus that tax. Extracting tax: the base price equals the total divided by one plus the rate divided by 100, and the tax is the total minus that base price. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Adding tax: tax equals the base price multiplied by the rate divided by 100, and the total is the base price plus that tax. Extracting tax: the base price equals the total divided by one plus the rate divided by 100, and the tax is the total minus that base price.",
+    "examples": [
+      {
+        "input": "Add 8% tax to a $100 base price",
+        "output": "Tax $8.00 · Total $108.00"
+      },
+      {
+        "input": "Extract 8% tax from a $108 total",
+        "output": "Base price $100.00 · Tax $8.00"
+      }
+    ],
+    "limitations": "This calculates a single flat sales tax rate only; it does not handle multiple stacked tax jurisdictions, exemptions or tax-exempt categories. Confirm the applicable rate for your location.",
+    "faq": [
+      {
+        "question": "How does the sales tax calculator work?",
+        "answer": "Adding tax: tax equals the base price multiplied by the rate divided by 100, and the total is the base price plus that tax. Extracting tax: the base price equals the total divided by one plus the rate divided by 100, and the tax is the total minus that base price."
+      },
+      {
+        "question": "What can I inspect in the sales tax calculator result?",
+        "answer": "The tax breakdown helps you check the result before using it. This calculates a single flat sales tax rate only; it does not handle multiple stacked tax jurisdictions, exemptions or tax-exempt categories. Confirm the applicable rate for your location."
+      },
+      {
+        "question": "Does the sales tax calculator upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "sales tax",
+      "calculator",
+      "sales tax calculator",
+      "sales tax calculator online",
+      "tax inclusive calculator",
+      "reverse sales tax calculator",
+      "add tax to price"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "gst-calculator",
+      "discount-calculator",
+      "tip-calculator",
+      "percentage-calculator"
+    ]
+  },
+  {
+    "slug": "volume-converter",
+    "name": "Volume Converter",
+    "category": "Converters",
+    "shortDescription": "Convert liters, milliliters, US and UK gallons, cups and fluid ounces.",
+    "icon": "Droplets",
+    "intro": "Convert liters, milliliters, US and UK gallons, cups and fluid ounces. Values convert through liters using standard unit definitions: one US gallon is exactly 3.785411784 liters, one UK gallon is exactly 4.54609 liters, and one US cup is exactly 0.2365882365 liters. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Values convert through liters using standard unit definitions: one US gallon is exactly 3.785411784 liters, one UK gallon is exactly 4.54609 liters, and one US cup is exactly 0.2365882365 liters.",
+    "examples": [
+      {
+        "input": "1 US gal → L",
+        "output": "3.785411784 L"
+      },
+      {
+        "input": "1 L → US fl oz",
+        "output": "≈33.814 US fl oz"
+      }
+    ],
+    "limitations": "Nonnegative values up to 1 trillion. US and UK (imperial) units are different definitions and are not interchangeable by name alone. Display uses up to 15 significant digits; floating-point rounding still applies.",
+    "faq": [
+      {
+        "question": "How does the volume converter work?",
+        "answer": "Values convert through liters using standard unit definitions: one US gallon is exactly 3.785411784 liters, one UK gallon is exactly 4.54609 liters, and one US cup is exactly 0.2365882365 liters."
+      },
+      {
+        "question": "What can I inspect in the volume converter result?",
+        "answer": "The conversion input audit helps you check the result before using it. Nonnegative values up to 1 trillion. US and UK (imperial) units are different definitions and are not interchangeable by name alone. Display uses up to 15 significant digits; floating-point rounding still applies."
+      },
+      {
+        "question": "Does the volume converter upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "volume",
+      "converter",
+      "volume converter",
+      "volume converter online",
+      "liters to gallons",
+      "ml to cups",
+      "gallons to liters"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "weight-converter",
+      "length-converter",
+      "area-converter",
+      "temperature-converter"
+    ]
+  },
+  {
+    "slug": "area-converter",
+    "name": "Area Converter",
+    "category": "Converters",
+    "shortDescription": "Convert square meters, square feet, acres, hectares and square miles.",
+    "icon": "Square",
+    "intro": "Convert square meters, square feet, acres, hectares and square miles. Values convert through square meters using standard unit definitions: one acre is exactly 4,046.8564224 square meters, one hectare is exactly 10,000 square meters, and one square mile is exactly 2,589,988.110336 square meters. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Values convert through square meters using standard unit definitions: one acre is exactly 4,046.8564224 square meters, one hectare is exactly 10,000 square meters, and one square mile is exactly 2,589,988.110336 square meters.",
+    "examples": [
+      {
+        "input": "1 acre → m²",
+        "output": "4046.8564224 m²"
+      },
+      {
+        "input": "1 hectare → acre",
+        "output": "≈2.4711 acre"
+      }
+    ],
+    "limitations": "Nonnegative values up to 1 trillion. This converts area, not distance or perimeter. Display uses up to 15 significant digits; floating-point rounding still applies.",
+    "faq": [
+      {
+        "question": "How does the area converter work?",
+        "answer": "Values convert through square meters using standard unit definitions: one acre is exactly 4,046.8564224 square meters, one hectare is exactly 10,000 square meters, and one square mile is exactly 2,589,988.110336 square meters."
+      },
+      {
+        "question": "What can I inspect in the area converter result?",
+        "answer": "The conversion input audit helps you check the result before using it. Nonnegative values up to 1 trillion. This converts area, not distance or perimeter. Display uses up to 15 significant digits; floating-point rounding still applies."
+      },
+      {
+        "question": "Does the area converter upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "area",
+      "converter",
+      "area converter",
+      "area converter online",
+      "square feet to square meters",
+      "acres to hectares",
+      "square meters to square feet"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "length-converter",
+      "volume-converter",
+      "weight-converter",
+      "speed-converter"
+    ]
+  },
+  {
+    "slug": "color-converter",
+    "name": "Color Converter",
+    "category": "Developer",
+    "shortDescription": "Convert a color between hex, RGB and HSL notation.",
+    "icon": "Palette",
+    "intro": "Convert a color between hex, RGB and HSL notation. Enter a color as a hex code, an rgb() value, or an hsl() value; the tool detects the format and computes the same color in the other two notations. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Enter a color as a hex code, an rgb() value, or an hsl() value; the tool detects the format and computes the same color in the other two notations.",
+    "examples": [
+      {
+        "input": "#3B82F6",
+        "output": "rgb(59, 130, 246) · hsl(217, 91%, 60%)"
+      },
+      {
+        "input": "hsl(0, 100%, 50%)",
+        "output": "#FF0000 · rgb(255, 0, 0)"
+      }
+    ],
+    "limitations": "Accepts only #rrggbb/#rgb hex, rgb(r, g, b) and hsl(h, s%, l%) input formats; it does not support named colors (like \"red\"), alpha transparency values, or other color spaces such as CMYK or LAB.",
+    "faq": [
+      {
+        "question": "How does the color converter work?",
+        "answer": "Enter a color as a hex code, an rgb() value, or an hsl() value; the tool detects the format and computes the same color in the other two notations."
+      },
+      {
+        "question": "What can I inspect in the color converter result?",
+        "answer": "The color in every supported format helps you check the result before using it. Accepts only #rrggbb/#rgb hex, rgb(r, g, b) and hsl(h, s%, l%) input formats; it does not support named colors (like \"red\"), alpha transparency values, or other color spaces such as CMYK or LAB."
+      },
+      {
+        "question": "Does the color converter upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "color",
+      "converter",
+      "color converter",
+      "color converter online",
+      "hex to rgb",
+      "rgb to hsl",
+      "hex to hsl"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "json-formatter",
+      "hash-generator",
+      "base64-encoder-decoder",
+      "url-encoder-decoder"
+    ]
+  },
+  {
+    "slug": "reading-time-calculator",
+    "name": "Reading Time Calculator",
+    "category": "Text",
+    "shortDescription": "Estimate how long it takes to read a piece of text at a chosen words-per-minute pace.",
+    "icon": "BookOpen",
+    "intro": "Estimate how long it takes to read a piece of text at a chosen words-per-minute pace. The pasted text is split into words using the same Unicode word boundaries as the word counter. Reading time in minutes is the word count divided by the selected words-per-minute pace, shown rounded up and as minutes and seconds. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "The pasted text is split into words using the same Unicode word boundaries as the word counter. Reading time in minutes is the word count divided by the selected words-per-minute pace, shown rounded up and as minutes and seconds.",
+    "examples": [
+      {
+        "input": "400 words at 200 words per minute",
+        "output": "2 minutes (2:00)"
+      },
+      {
+        "input": "21 words at 200 words per minute",
+        "output": "1 minute (0:06)"
+      }
+    ],
+    "limitations": "This is a length-based estimate; it does not account for text difficulty, images, code blocks or how you actually read. Maximum input: 100,000 characters.",
+    "faq": [
+      {
+        "question": "How does the reading time calculator work?",
+        "answer": "The pasted text is split into words using the same Unicode word boundaries as the word counter. Reading time in minutes is the word count divided by the selected words-per-minute pace, shown rounded up and as minutes and seconds."
+      },
+      {
+        "question": "What can I inspect in the reading time calculator result?",
+        "answer": "The most frequent words in this text helps you check the result before using it. This is a length-based estimate; it does not account for text difficulty, images, code blocks or how you actually read. Maximum input: 100,000 characters."
+      },
+      {
+        "question": "Does the reading time calculator upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "reading time",
+      "calculator",
+      "reading time calculator",
+      "reading time calculator online",
+      "words per minute calculator",
+      "how long to read",
+      "speaking time calculator"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "word-counter",
+      "character-counter",
+      "text-case-converter",
+      "social-media-character-counter"
+    ]
+  },
+  {
+    "slug": "text-diff-checker",
+    "name": "Text Diff Checker",
+    "category": "Text",
+    "shortDescription": "Compare two blocks of text line by line and see what was added, removed or unchanged.",
+    "icon": "GitCompare",
+    "intro": "Compare two blocks of text line by line and see what was added, removed or unchanged. Both texts are split into lines and compared using a longest-common-subsequence match. Matching lines are marked unchanged; lines only in the changed text are added, and lines only in the original are removed. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "Both texts are split into lines and compared using a longest-common-subsequence match. Matching lines are marked unchanged; lines only in the changed text are added, and lines only in the original are removed.",
+    "examples": [
+      {
+        "input": "Two texts differing only on line 1 of 2",
+        "output": "1 line added, 1 line removed, 1 line unchanged"
+      },
+      {
+        "input": "Two identical two-line texts",
+        "output": "0 added, 0 removed, 2 unchanged (Identical: Yes)"
+      }
+    ],
+    "limitations": "Comparison is exact, line-by-line, case-sensitive and whitespace-sensitive; it does not detect partial or word-level changes inside a line. Use at most 2,000 lines and 50,000 characters in each text.",
+    "faq": [
+      {
+        "question": "How does the text diff checker work?",
+        "answer": "Both texts are split into lines and compared using a longest-common-subsequence match. Matching lines are marked unchanged; lines only in the changed text are added, and lines only in the original are removed."
+      },
+      {
+        "question": "What can I inspect in the text diff checker result?",
+        "answer": "The line-by-line comparison helps you check the result before using it. Comparison is exact, line-by-line, case-sensitive and whitespace-sensitive; it does not detect partial or word-level changes inside a line. Use at most 2,000 lines and 50,000 characters in each text."
+      },
+      {
+        "question": "Does the text diff checker upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "text diff",
+      "checker",
+      "text diff checker",
+      "text compare tool",
+      "compare two texts",
+      "diff checker online",
+      "line by line comparison"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "find-and-replace-text",
+      "text-sorter",
+      "duplicate-line-remover",
+      "word-counter"
+    ]
+  },
+  {
+    "slug": "dog-age-calculator",
+    "name": "Dog Age Calculator",
+    "category": "Random & fun",
+    "shortDescription": "Convert a dog's age into human-equivalent years using a size-adjusted formula.",
+    "icon": "PawPrint",
+    "intro": "Convert a dog's age into human-equivalent years using a size-adjusted formula. The first dog year counts as 15 human years and the second as 9 more. Every year after that adds a fixed amount that depends on the dog's size category, since larger breeds age faster in later years. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "The first dog year counts as 15 human years and the second as 9 more. Every year after that adds a fixed amount that depends on the dog's size category, since larger breeds age faster in later years.",
+    "examples": [
+      {
+        "input": "3-year-old medium dog",
+        "output": "≈28.5 human years"
+      },
+      {
+        "input": "1-year-old small dog",
+        "output": "15 human years"
+      }
+    ],
+    "limitations": "This is a general approximation from commonly cited veterinary charts, not an individual or breed-specific prediction, and it is not veterinary advice. Age must be 0–25 years.",
+    "faq": [
+      {
+        "question": "How does the dog age calculator work?",
+        "answer": "The first dog year counts as 15 human years and the second as 9 more. Every year after that adds a fixed amount that depends on the dog's size category, since larger breeds age faster in later years."
+      },
+      {
+        "question": "What can I inspect in the dog age calculator result?",
+        "answer": "The human age equivalent by dog age helps you check the result before using it. This is a general approximation from commonly cited veterinary charts, not an individual or breed-specific prediction, and it is not veterinary advice. Age must be 0–25 years."
+      },
+      {
+        "question": "Does the dog age calculator upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "dog age",
+      "calculator",
+      "dog age calculator",
+      "dog years calculator",
+      "dog age calculator online",
+      "dog to human years",
+      "how old is my dog in human years"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "age-calculator",
+      "bmi-calculator",
+      "magic-8-ball",
+      "coin-flip"
+    ]
+  },
+  {
+    "slug": "magic-8-ball",
+    "name": "Magic 8 Ball",
+    "category": "Random & fun",
+    "shortDescription": "Ask a yes-or-no question and get a random classic fortune-telling answer.",
+    "icon": "Sparkles",
+    "intro": "Ask a yes-or-no question and get a random classic fortune-telling answer. One answer is drawn at random from the classic set of 20 replies, using the same cryptographic random draw as the other random tools here. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "One answer is drawn at random from the classic set of 20 replies, using the same cryptographic random draw as the other random tools here.",
+    "examples": [
+      {
+        "input": "\"Will today be a good day?\"",
+        "output": "One of 20 classic answers, drawn at random — for example, \"Outlook good.\""
+      },
+      {
+        "input": "Shake again with the same question",
+        "output": "A new independent answer, for example \"Ask again later.\""
+      }
+    ],
+    "limitations": "This is a novelty random generator; it does not consider the content of your question and has no predictive value. Requires browser cryptographic randomness.",
+    "faq": [
+      {
+        "question": "How does the magic 8 ball work?",
+        "answer": "One answer is drawn at random from the classic set of 20 replies, using the same cryptographic random draw as the other random tools here."
+      },
+      {
+        "question": "What can I inspect in the magic 8 ball result?",
+        "answer": "The this shake's answer helps you check the result before using it. This is a novelty random generator; it does not consider the content of your question and has no predictive value. Requires browser cryptographic randomness."
+      },
+      {
+        "question": "Does the magic 8 ball upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "magic 8 ball",
+      "fortune teller",
+      "magic 8 ball online",
+      "ask a question",
+      "yes or no generator",
+      "random answer generator"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "coin-flip",
+      "dice-roller",
+      "random-number-generator",
+      "love-calculator"
+    ]
+  },
+  {
+    "slug": "love-calculator",
+    "name": "Love Calculator",
+    "category": "Random & fun",
+    "shortDescription": "Get a playful compatibility percentage for two names.",
+    "icon": "Heart",
+    "intro": "Get a playful compatibility percentage for two names. The two names are combined in a fixed order-independent way and run through a deterministic calculation to produce a percentage from 0 to 100, plus a short verdict. Use this workspace to prepare a result you can review before putting it to use. All processing takes place on your device, without an account or an upload of your inputs. Check the examples to understand the expected output, read the limitations for the supported scope, and reset the form when you want to start a separate task.",
+    "how": "The two names are combined in a fixed order-independent way and run through a deterministic calculation to produce a percentage from 0 to 100, plus a short verdict.",
+    "examples": [
+      {
+        "input": "Alex and Sam",
+        "output": "11% — \"Opposites, maybe just friends.\""
+      },
+      {
+        "input": "Maya and Liam",
+        "output": "81% — \"Great potential.\""
+      }
+    ],
+    "limitations": "This is a novelty calculation for entertainment only, not a real measure of romantic or personal compatibility. Names must be 1–60 characters each.",
+    "faq": [
+      {
+        "question": "How does the love calculator work?",
+        "answer": "The two names are combined in a fixed order-independent way and run through a deterministic calculation to produce a percentage from 0 to 100, plus a short verdict."
+      },
+      {
+        "question": "What can I inspect in the love calculator result?",
+        "answer": "The how this score was formed helps you check the result before using it. This is a novelty calculation for entertainment only, not a real measure of romantic or personal compatibility. Names must be 1–60 characters each."
+      },
+      {
+        "question": "Does the love calculator upload my input?",
+        "answer": "Processing happens in your browser. No tool input or output is uploaded to a server. Use Reset to clear the current workspace before starting a separate task."
+      }
+    ],
+    "keywords": [
+      "love calculator",
+      "love percentage calculator",
+      "love calculator online",
+      "name compatibility calculator",
+      "crush calculator",
+      "relationship compatibility test"
+    ],
+    "status": "published",
+    "execution": "client",
+    "featured": false,
+    "publishedAt": "2026-09-26",
+    "updatedAt": "2026-09-26",
+    "reviewed": true,
+    "relatedSlugs": [
+      "magic-8-ball",
+      "coin-flip",
+      "random-name-picker",
+      "dice-roller"
+    ]
   }
 ]

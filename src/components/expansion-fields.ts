@@ -250,6 +250,135 @@ export const expansionFields: Record<string, WorkspaceField[]> = {
     number("bonusCount", "Bonus numbers (0–10)", "1"),
     number("bonusMax", "Bonus number pool (1–200)", "10"),
   ],
+  "volume-converter": conversion([
+    "L",
+    "mL",
+    "US gal",
+    "US qt",
+    "US cup",
+    "US fl oz",
+    "UK gal",
+    "m³",
+  ]),
+  "area-converter": conversion([
+    "m²",
+    "km²",
+    "cm²",
+    "ft²",
+    "acre",
+    "hectare",
+    "mile²",
+  ]),
+  "business-days-calculator": [
+    { key: "start", label: "Start date", type: "date", value: "2026-09-01" },
+    { key: "end", label: "End date", type: "date", value: "2026-09-30" },
+    {
+      key: "holidays",
+      label: "Holidays to exclude (optional, one YYYY-MM-DD date per line)",
+      type: "textarea",
+      value: "",
+    },
+  ],
+  "countdown-timer": [
+    {
+      key: "targetDate",
+      label: "Target date",
+      type: "date",
+      value: "2027-01-01",
+    },
+    {
+      key: "targetTime",
+      label: "Target time (24-hour)",
+      type: "time",
+      value: "00:00",
+    },
+    { key: "fromDate", label: "From date", type: "date", value: "2026-09-26" },
+    {
+      key: "fromTime",
+      label: "From time (24-hour)",
+      type: "time",
+      value: "00:00",
+    },
+  ],
+  "cagr-calculator": [
+    number("initial", "Initial value", "100000"),
+    number("final", "Final value", "200000"),
+    number("years", "Years", "5"),
+  ],
+  "sales-tax-calculator": [
+    {
+      key: "mode",
+      label: "Calculation",
+      value: "exclusive",
+      options: [
+        ["exclusive", "Add tax to a base price"],
+        ["inclusive", "Extract tax from a total price"],
+      ],
+    },
+    number("amount", "Amount", "100"),
+    number("rate", "Sales tax rate (%)", "8"),
+  ],
+  "color-converter": [
+    {
+      key: "value",
+      label: "Color (hex, rgb(), or hsl())",
+      value: "#3B82F6",
+    },
+  ],
+  "reading-time-calculator": [
+    {
+      key: "wpm",
+      label: "Reading speed",
+      value: "200",
+      options: [
+        ["130", "130 wpm — reading aloud"],
+        ["150", "150 wpm — careful reading"],
+        ["200", "200 wpm — average adult"],
+        ["250", "250 wpm — fast reading"],
+      ],
+    },
+  ],
+  "text-diff-checker": [
+    {
+      key: "original",
+      label: "Original text",
+      type: "textarea",
+      value:
+        "The quick brown fox jumps over the lazy dog.\nToolzPoint tools run in your browser.",
+    },
+    {
+      key: "changed",
+      label: "Changed text",
+      type: "textarea",
+      value:
+        "The quick brown fox leaps over a lazy dog.\nToolzPoint tools run in your browser.",
+    },
+  ],
+  "dog-age-calculator": [
+    number("age", "Dog's age (years)", "3"),
+    {
+      key: "size",
+      label: "Size category",
+      value: "medium",
+      options: [
+        ["small", "Small (up to 20 lb)"],
+        ["medium", "Medium (21–50 lb)"],
+        ["large", "Large (51–90 lb)"],
+        ["giant", "Giant (over 90 lb)"],
+      ],
+    },
+  ],
+  "magic-8-ball": [
+    {
+      key: "question",
+      label: "Your question (optional)",
+      value: "Will today be a good day?",
+    },
+  ],
+  "love-calculator": [
+    { key: "name1", label: "First name", value: "Alex" },
+    { key: "name2", label: "Second name", value: "Sam" },
+  ],
 };
 export const expansionSamples: Record<string, string> = {
   "number-base-converter": "255",
@@ -267,4 +396,6 @@ export const expansionSamples: Record<string, string> = {
   "roman-numeral-converter": "1994",
   "social-media-character-counter": "Check out our new feature! 🚀",
   "password-strength-checker": "Tr0ub4dor&3",
+  "reading-time-calculator":
+    "ToolzPoint is a collection of free, browser-based utilities built for everyday tasks like counting words, converting units, and generating documents. Every calculation runs directly on your device, so your text and files are never uploaded to a server. This sample paragraph exists purely to demonstrate how the reading time calculator estimates the minutes needed to read a piece of text at a chosen words-per-minute pace, whether you are checking a blog post, an email, or a script before you publish it.",
 };

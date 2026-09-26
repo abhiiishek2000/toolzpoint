@@ -81,6 +81,13 @@ import {
   MessageSquare,
   Ticket,
   FileUser,
+  Palette,
+  BookOpen,
+  GitCompare,
+  PawPrint,
+  Heart,
+  Timer,
+  Square,
 } from "lucide-react";
 const icons = {
   ArrowUpDown,
@@ -165,6 +172,13 @@ const icons = {
   MessageSquare,
   Ticket,
   FileUser,
+  Palette,
+  BookOpen,
+  GitCompare,
+  PawPrint,
+  Heart,
+  Timer,
+  Square,
 };
 export function Icon({
   name,

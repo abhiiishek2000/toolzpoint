@@ -24,7 +24,7 @@ it("covers every category and runs every new form with its defaults", () => {
         "add-page-numbers-to-pdf",
       ].includes(t.slug),
   );
-  expect(added).toHaveLength(44);
+  expect(added).toHaveLength(56);
   expect(new Set(added.map((t) => t.category))).toEqual(
     new Set(categories.map((c) => c.name)),
   );

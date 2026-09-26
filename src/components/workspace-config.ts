@@ -455,6 +455,7 @@ export const randomTools = [
   "random-number-generator",
   "random-name-picker",
   "lottery-number-generator",
+  "magic-8-ball",
 ];
 export const samples: Record<string, string> = {
   ...expansionSamples,

@@ -235,7 +235,7 @@ it("covers every published tool with specific guidance and search metadata", () 
     tools.map((tool) => tool.slug).sort(),
   );
   expect(new Set(tools.map((tool) => toolSeo(tool).description)).size).toBe(
-    100,
+    112,
   );
   for (const tool of tools) {
     expect(resultGuides[tool.slug]!.length).toBeGreaterThan(60);

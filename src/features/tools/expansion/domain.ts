@@ -1,5 +1,5 @@
 import { timezoneOptions } from "./timezones";
-import { textSchema, parseDate } from "../shared";
+import { textSchema, parseDate, addDays, daysBetween } from "../shared";
 import { nutrition } from "../nutrition-calculator/domain";
 import { emiLoan } from "../emi-loan-calculator/domain";
 import { compoundInterest } from "../compound-interest-calculator/domain";
@@ -38,6 +38,25 @@ export const unitFactors: Record<string, Record<string, number>> = {
     MiB: 1024 ** 2,
     GiB: 1024 ** 3,
     TiB: 1024 ** 4,
+  },
+  "volume-converter": {
+    L: 1,
+    mL: 0.001,
+    "US gal": 3.785411784,
+    "US qt": 0.946352946,
+    "US cup": 0.2365882365,
+    "US fl oz": 0.0295735295625,
+    "UK gal": 4.54609,
+    "m³": 1000,
+  },
+  "area-converter": {
+    "m²": 1,
+    "km²": 1e6,
+    "cm²": 0.0001,
+    "ft²": 0.09290304,
+    acre: 4046.8564224,
+    hectare: 10000,
+    "mile²": 2589988.110336,
   },
 };
 export const expansionSlugs = [
@@ -78,6 +97,16 @@ export const expansionSlugs = [
   "social-media-character-counter",
   "password-strength-checker",
   "lottery-number-generator",
+  "business-days-calculator",
+  "countdown-timer",
+  "cagr-calculator",
+  "sales-tax-calculator",
+  "color-converter",
+  "reading-time-calculator",
+  "text-diff-checker",
+  "dog-age-calculator",
+  "magic-8-ball",
+  "love-calculator",
 ];
 export function secureIndex(size: number): number {
   if (!Number.isSafeInteger(size) || size < 1 || size > 2 ** 32)
@@ -877,6 +906,311 @@ export function runExpansion(
       if (bonusCount > 0)
         result["Bonus numbers"] = drawUnique(bonusCount, bonusMax).join(", ");
       return result;
+    }
+    case "business-days-calculator": {
+      const start = parseDate(str("start").trim());
+      const end = parseDate(str("end").trim());
+      const totalDays = daysBetween(start, end);
+      if (totalDays < 0)
+        throw new Error("End date must be on or after the start date.");
+      if (totalDays > 36500)
+        throw new Error("Use a range of at most 100 years.");
+      const holidayLines = str("holidays")
+        .split(/\r?\n/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      if (holidayLines.length > 366)
+        throw new Error("Use at most 366 holiday dates.");
+      const holidays = new Set(
+        holidayLines.map((d) => {
+          parseDate(d);
+          return d;
+        }),
+      );
+      let businessDays = 0;
+      let holidaysExcluded = 0;
+      for (let i = 0; i <= totalDays; i++) {
+        const day = addDays(start, i);
+        const weekday = day.getUTCDay();
+        if (weekday === 0 || weekday === 6) continue;
+        if (holidays.has(day.toISOString().slice(0, 10))) {
+          holidaysExcluded++;
+          continue;
+        }
+        businessDays++;
+      }
+      return {
+        "Business days": businessDays,
+        "Holidays excluded": holidaysExcluded,
+        "Total calendar days": totalDays + 1,
+      };
+    }
+    case "countdown-timer": {
+      const toUtcMs = (dateKey: string, timeKey: string) => {
+        const time = str(timeKey).trim();
+        const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(time);
+        if (!match) throw new Error("Enter a valid 24-hour time.");
+        const day = parseDate(str(dateKey).trim());
+        return (
+          day.getTime() + (Number(match[1]) * 60 + Number(match[2])) * 60000
+        );
+      };
+      const fromMs = toUtcMs("fromDate", "fromTime");
+      const targetMs = toUtcMs("targetDate", "targetTime");
+      const diffMs = targetMs - fromMs;
+      if (Math.abs(diffMs) > 100 * 365 * 86400000)
+        throw new Error("Use two moments within 100 years of each other.");
+      const totalSeconds = Math.floor(Math.abs(diffMs) / 1000);
+      return {
+        Direction:
+          diffMs === 0
+            ? "Same moment"
+            : diffMs > 0
+              ? "Time remaining until target"
+              : "Time elapsed since target",
+        Days: Math.floor(totalSeconds / 86400),
+        Hours: Math.floor((totalSeconds % 86400) / 3600),
+        Minutes: Math.floor((totalSeconds % 3600) / 60),
+        Seconds: totalSeconds % 60,
+      };
+    }
+    case "cagr-calculator": {
+      const initial = num("initial", 0.01);
+      const final = num("final", 0);
+      const years = num("years", 0.1, 100);
+      return {
+        "CAGR (%)": (Math.pow(final / initial, 1 / years) - 1) * 100,
+        "Total growth (%)": ((final - initial) / initial) * 100,
+      };
+    }
+    case "sales-tax-calculator": {
+      const mode = option("mode", ["exclusive", "inclusive"]);
+      const rate = num("rate", 0, 100);
+      if (mode === "inclusive") {
+        const total = num("amount", 0);
+        const base = total / (1 + rate / 100);
+        return {
+          "Base price": base,
+          "Sales tax": total - base,
+          "Total price": total,
+        };
+      }
+      const base = num("amount", 0);
+      const tax = (base * rate) / 100;
+      return {
+        "Base price": base,
+        "Sales tax": tax,
+        "Total price": base + tax,
+      };
+    }
+    case "color-converter": {
+      const raw = str("value").trim();
+      const hexMatch = /^#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.exec(raw);
+      const rgbMatch =
+        /^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*[\d.]+\s*)?\)$/i.exec(
+          raw,
+        );
+      const hslMatch =
+        /^hsla?\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*(?:,\s*[\d.]+\s*)?\)$/i.exec(
+          raw,
+        );
+      let r: number, g: number, b: number;
+      if (hexMatch) {
+        let hex = hexMatch[1]!;
+        if (hex.length === 3) hex = [...hex].map((c) => c + c).join("");
+        r = parseInt(hex.slice(0, 2), 16);
+        g = parseInt(hex.slice(2, 4), 16);
+        b = parseInt(hex.slice(4, 6), 16);
+      } else if (rgbMatch) {
+        [r, g, b] = [rgbMatch[1]!, rgbMatch[2]!, rgbMatch[3]!].map(Number) as [
+          number,
+          number,
+          number,
+        ];
+        if ([r, g, b].some((v) => v > 255))
+          throw new Error("RGB channel values must be 0–255.");
+      } else if (hslMatch) {
+        const h = Number(hslMatch[1]);
+        const s = Number(hslMatch[2]) / 100;
+        const l = Number(hslMatch[3]) / 100;
+        if (h > 360 || s > 1 || l > 1)
+          throw new Error("Enter a valid HSL color.");
+        const c = (1 - Math.abs(2 * l - 1)) * s;
+        const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        const m = l - c / 2;
+        const [r1, g1, b1] =
+          h < 60
+            ? [c, x, 0]
+            : h < 120
+              ? [x, c, 0]
+              : h < 180
+                ? [0, c, x]
+                : h < 240
+                  ? [0, x, c]
+                  : h < 300
+                    ? [x, 0, c]
+                    : [c, 0, x];
+        r = Math.round((r1 + m) * 255);
+        g = Math.round((g1 + m) * 255);
+        b = Math.round((b1 + m) * 255);
+      } else {
+        throw new Error(
+          "Enter a color as #rrggbb, rgb(r, g, b), or hsl(h, s%, l%).",
+        );
+      }
+      const toHex = (v: number) => v.toString(16).padStart(2, "0");
+      const hex = `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
+      const [rn, gn, bn] = [r / 255, g / 255, b / 255];
+      const max = Math.max(rn, gn, bn);
+      const min = Math.min(rn, gn, bn);
+      const l2 = (max + min) / 2;
+      let h2 = 0;
+      let s2 = 0;
+      if (max !== min) {
+        const d = max - min;
+        s2 = l2 > 0.5 ? d / (2 - max - min) : d / (max + min);
+        if (max === rn) h2 = (gn - bn) / d + (gn < bn ? 6 : 0);
+        else if (max === gn) h2 = (bn - rn) / d + 2;
+        else h2 = (rn - gn) / d + 4;
+        h2 *= 60;
+      }
+      return {
+        Hex: hex,
+        RGB: `rgb(${r}, ${g}, ${b})`,
+        HSL: `hsl(${Math.round(h2)}, ${Math.round(s2 * 100)}%, ${Math.round(l2 * 100)}%)`,
+      };
+    }
+    case "reading-time-calculator": {
+      const wpm = num("wpm", 50, 1000, true);
+      const tokens =
+        input.match(/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu) ?? [];
+      if (!tokens.length)
+        throw new Error("Enter some text to estimate its reading time.");
+      const minutes = tokens.length / wpm;
+      const totalSeconds = Math.round(minutes * 60);
+      return {
+        "Word count": tokens.length,
+        "Reading time (minutes, rounded up)": Math.ceil(minutes),
+        "Reading time (mm:ss)": `${Math.floor(totalSeconds / 60)}:${String(
+          totalSeconds % 60,
+        ).padStart(2, "0")}`,
+      };
+    }
+    case "text-diff-checker": {
+      const original = str("original");
+      const changed = str("changed");
+      if (original.length > 50000 || changed.length > 50000)
+        throw new Error("Use at most 50,000 characters in each text.");
+      const a = original.split(/\r?\n/);
+      const b = changed.split(/\r?\n/);
+      if (a.length > 2000 || b.length > 2000)
+        throw new Error("Use at most 2,000 lines in each text.");
+      const m = a.length;
+      const n2 = b.length;
+      const dp: number[][] = Array.from({ length: m + 1 }, () =>
+        new Array(n2 + 1).fill(0),
+      );
+      for (let i = m - 1; i >= 0; i--)
+        for (let j = n2 - 1; j >= 0; j--)
+          dp[i]![j] =
+            a[i] === b[j]
+              ? dp[i + 1]![j + 1]! + 1
+              : Math.max(dp[i + 1]![j]!, dp[i]![j + 1]!);
+      let i = 0;
+      let j = 0;
+      let added = 0;
+      let removed = 0;
+      let unchanged = 0;
+      while (i < m && j < n2) {
+        if (a[i] === b[j]) {
+          unchanged++;
+          i++;
+          j++;
+        } else if (dp[i + 1]![j]! >= dp[i]![j + 1]!) {
+          removed++;
+          i++;
+        } else {
+          added++;
+          j++;
+        }
+      }
+      removed += m - i;
+      added += n2 - j;
+      return {
+        "Lines added": added,
+        "Lines removed": removed,
+        "Lines unchanged": unchanged,
+        Identical: added === 0 && removed === 0 ? "Yes" : "No",
+      };
+    }
+    case "dog-age-calculator": {
+      const age = num("age", 0, 25);
+      const size = option("size", ["small", "medium", "large", "giant"]);
+      const perYear: Record<string, number> = {
+        small: 4,
+        medium: 4.5,
+        large: 5,
+        giant: 5.5,
+      };
+      const human =
+        age <= 1
+          ? age * 15
+          : age <= 2
+            ? 15 + (age - 1) * 9
+            : 24 + (age - 2) * perYear[size]!;
+      return {
+        "Human age equivalent (years)": human,
+        "Size category used": size[0]!.toUpperCase() + size.slice(1),
+      };
+    }
+    case "magic-8-ball": {
+      const answers = [
+        "It is certain.",
+        "It is decidedly so.",
+        "Without a doubt.",
+        "Yes, definitely.",
+        "You may rely on it.",
+        "As I see it, yes.",
+        "Most likely.",
+        "Outlook good.",
+        "Yes.",
+        "Signs point to yes.",
+        "Reply hazy, try again.",
+        "Ask again later.",
+        "Better not tell you now.",
+        "Cannot predict now.",
+        "Concentrate and ask again.",
+        "Don't count on it.",
+        "My reply is no.",
+        "My sources say no.",
+        "Outlook not so good.",
+        "Very doubtful.",
+      ];
+      return { Answer: answers[randomIndex(answers.length)]! };
+    }
+    case "love-calculator": {
+      const name1 = str("name1").trim();
+      const name2 = str("name2").trim();
+      if (!name1 || !name2 || name1.length > 60 || name2.length > 60)
+        throw new Error("Enter two names of 1–60 characters each.");
+      const combined = [name1, name2]
+        .map((n) => n.toLowerCase())
+        .sort()
+        .join("&");
+      let hash = 0;
+      for (const ch of combined) hash = (hash * 31 + ch.codePointAt(0)!) >>> 0;
+      const score = hash % 101;
+      const verdict =
+        score >= 90
+          ? "A rare match."
+          : score >= 70
+            ? "Great potential."
+            : score >= 50
+              ? "Worth exploring."
+              : score >= 30
+                ? "Could grow with effort."
+                : "Opposites, maybe just friends.";
+      return { "Compatibility (%)": score, Verdict: verdict };
     }
     default:
       throw new Error("This tool is unavailable.");
