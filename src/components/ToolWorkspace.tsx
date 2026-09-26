@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { ResultDetails as Details } from "@/features/tools/result-details";
 const DetailedResult = dynamic(() => import("./ResultDetails"));
@@ -36,7 +36,9 @@ export default function ToolWorkspace({
   const [values, setValues] = useState<Record<string, string>>(() =>
     initialValues(slug),
   );
-  const [autoRun, setAutoRun] = useState(false);
+  // Calculators open with example values, so show their result right away.
+  const [autoRun, setAutoRun] = useState(() => !randomTools.includes(slug));
+  const resultPane = useRef<HTMLDivElement>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [input, setInput] = useState("");
   const [mode, setMode] = useState("encode");
@@ -194,6 +196,10 @@ export default function ToolWorkspace({
         durationBucket: performance.now() - started < 100 ? "fast" : "slow",
       });
       setNotice("Result ready.");
+      // On stacked (phone) layouts the result sits below the form, out of view.
+      const pane = resultPane.current;
+      if (pane && pane.getBoundingClientRect().top > window.innerHeight - 120)
+        pane.scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (e) {
       setResult(null);
       setCoinPhase("idle");
@@ -689,7 +695,7 @@ export default function ToolWorkspace({
                 </button>
               </div>
             </div>
-            <div className="result-pane" aria-busy={busy}>
+            <div className="result-pane" aria-busy={busy} ref={resultPane}>
               <div className="pane-heading">
                 <h2>Your result</h2>
                 <button

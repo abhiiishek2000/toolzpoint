@@ -1814,8 +1814,8 @@
         "output": "Estimated ovulation 2026-01-15 · Fertile window 2026-01-10 to 2026-01-16"
       },
       {
-        "input": "Last period 2026-01-01, 28-day cycle",
-        "output": "Next expected period 2026-01-29"
+        "input": "Last period 2026-03-01, 30-day cycle",
+        "output": "Estimated ovulation 2026-03-17 · Fertile window 2026-03-12 to 2026-03-18 · Next expected period 2026-03-31"
       }
     ],
     "limitations": "This estimate assumes a consistent luteal (post-ovulation) phase of about fourteen days, which varies between individuals. It is not a contraceptive method and not a substitute for a fertility monitor, ovulation test, or medical advice.",
@@ -4753,11 +4753,11 @@
     "examples": [
       {
         "input": "$1,000 today; 6% annual inflation; 10 years",
-        "output": "$1,790.85 future equivalent value"
+        "output": "$1,790.85 future equivalent value; $790.85 additional amount needed; a fixed $1,000 has about $558.39 in today’s purchasing power"
       },
       {
-        "input": "$1,000 today; 6% annual inflation; 10 years",
-        "output": "$790.85 additional amount needed; a fixed $1,000 has about $558.39 in today’s purchasing power"
+        "input": "$1,000 today; 3% annual inflation; 5 years",
+        "output": "$1,159.27 future equivalent value; $159.27 additional amount needed"
       }
     ],
     "limitations": "Assumes one constant inflation rate for the entire period; real-world inflation varies year to year and by what you're buying. This is an illustrative estimate, not a forecast.",

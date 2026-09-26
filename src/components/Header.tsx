@@ -23,11 +23,18 @@ export function Header() {
           </button>
         </form>
         <div className="header-actions">
+          <Link
+            href="/search"
+            className="icon-button mobile-search-link"
+            aria-label="Search tools"
+          >
+            <Icon name="Search" size={19} />
+          </Link>
           <Link href="/tools" className="all-tools-link">
             Explore tools
             <Icon name="ArrowUpRight" size={15} />
           </Link>
-          <Link href="/apps" className="all-tools-link">
+          <Link href="/apps" className="all-tools-link apps-link">
             Apps
             <Icon name="ArrowUpRight" size={15} />
           </Link>
